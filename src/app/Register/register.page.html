@@ -13,7 +13,7 @@
         <img src="https://seeklogo.com/images/C/capacitor-logo-DF3634DD70-seeklogo.com.png" alt="Logo" class="logo">
       </div>
       <ion-card-header>
-        <ion-card-title class="ion-text-center">Giriş Yap</ion-card-title>
+        <ion-card-title class="ion-text-center">Kayıt Ol</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -25,12 +25,11 @@
             <ion-label position="floating">Şifre</ion-label>
             <ion-input formControlName="password" type="password"></ion-input>
           </ion-item>
-          <ion-button expand="block" type="submit" style="margin-top: 20px;">Giriş Yap</ion-button>
+          <ion-button expand="block" type="submit" style="margin-top: 20px;">Kayıt Ol</ion-button>
         </form>
-        <ion-button expand="block" (click)="loginWithGoogle()" style="margin-top: 20px;">Google ile Giriş
-          Yap</ion-button>
+        <ion-button expand="block" (click)="loginWithGoogle()" style="margin-top: 20px;">Google ile Kayıt Ol</ion-button>
         <div class="register-container">
-          <p>Hesabın yok mu? <a routerLink="/register">Kayıt ol</a></p>
+          <p>Hesabın Var Mı ? <a routerLink="/login">Giriş yap</a></p>
         </div>
       </ion-card-content>
     </ion-card>

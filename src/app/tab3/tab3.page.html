@@ -1,17 +1,117 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header>
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="medium">User Profile</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <!-- Profile card with grid and styled content -->
+  <ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" class="ion-text-center">
+          <div class="profile-picture">
+            <ion-img src="https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg"></ion-img>
+          </div>
+        </ion-col>
+        <ion-col size="8" class="ion-align-self-center">
+          <ion-row>
+            <ion-col size="12" class="ion-text-center">
+              <ion-text class="profile-text">
+                <h2>Arif Can Erciyas</h2>
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" class="ion-text-center">
+              <ion-text class="profile-text">
+                <h3>01/06/2004</h3>
+              </ion-text>
+            </ion-col>
+
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" class="ion-align-self-center">
+          <ion-button id="open-modal" expand="block" color="secondary" type="submit" style="margin-top: 20px;">
+            <ion-icon name="settings-outline" slot="start"></ion-icon> Profili Düzenle</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-list [inset]="true">
+    <ion-item [button]="true">
+      <ion-icon color="success" slot="start" name="sparkles-sharp" size="large"></ion-icon>
+      <ion-label>Profil Gözlemleri</ion-label>
+      <ion-note slot="end">6</ion-note>
+    </ion-item>
+    <ion-item [button]="true">
+      <ion-icon color="tertiary" slot="start" name="pulse-sharp" size="large"></ion-icon>
+      <ion-label>Son Görüşmelerim</ion-label>
+      <ion-note slot="end">15</ion-note>
+    </ion-item>
+    <ion-item [button]="true">
+      <ion-icon color="primary" slot="start" name="pie-chart-sharp" size="large"></ion-icon>
+      <ion-label>Skorum</ion-label>
+      <ion-note slot="end">3</ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-list [inset]="true">
+    <ion-list-header>
+      <ion-label>Ayarlar</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="cellular-outline" slot="start"></ion-icon>
+      <ion-label>Meşgul</ion-label>
+      <ion-toggle slot="end" checked></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="notifications-outline" slot="start"></ion-icon>
+      <ion-label>Bildirim</ion-label>
+      <ion-toggle slot="end"></ion-toggle>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
+<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">İptal</ion-button>
+        </ion-buttons>
+        <ion-title>Profil Güncelle</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="confirm()" [strong]="true">Kaydet</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item>
+          <ion-input label="Ad Soyad" labelPlacement="floating" placeholder="Ad Soyad"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="E-Mail" labelPlacement="floating" placeholder="E-Mail"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        </ion-item>
+
+
+        <ion-button expand="block" type="submit" color="success" fill="outline"  style="margin-top: 20px; color: #fff;">Kaydet</ion-button>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime presentation="date" id="datetime"></ion-datetime>
+  </ng-template>
+</ion-modal>
