@@ -1,0 +1,7 @@
+{
+  "name": "mobilepsikolog",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
