@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "832039197109",
+    "project_id": "psikologmobile",
+    "storage_bucket": "psikologmobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832039197109:android:2e666b1aaeae42b3c6a1fc",
+        "android_client_info": {
+          "package_name": "com.psikologmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832039197109-c9d7ch34qqs3tou1upp95jvl21shmp3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-R3GhJEVCa2xHBPkoPPt7k2A6eAytMWA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "832039197109-c9d7ch34qqs3tou1upp95jvl21shmp3k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
