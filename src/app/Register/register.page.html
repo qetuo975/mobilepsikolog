@@ -27,7 +27,9 @@
           </ion-item>
           <ion-button expand="block" type="submit" style="margin-top: 20px;">Kayıt Ol</ion-button>
         </form>
-        <ion-button expand="block" (click)="loginWithGoogle()" style="margin-top: 20px;">Google ile Kayıt Ol</ion-button>
+        <ion-button expand="block" fill="outline" color="warning" (click)="loginWithGoogle()" style="margin-top: 20px;">
+          <b>Google İle Kayıt Ol</b>
+        </ion-button>
         <div class="register-container">
           <p>Hesabın Var Mı ? <a routerLink="/login">Giriş yap</a></p>
         </div>
