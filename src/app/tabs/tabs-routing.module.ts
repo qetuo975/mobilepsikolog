@@ -8,27 +8,27 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
+        path: 'ara',
+        loadChildren: () => import('../Terapist/terapist.module').then(m => m.TerapistPageModule)
       },
       {
-        path: 'tab2',
+        path: 'psikologlar',
         loadChildren: () => import('../Psikologlar/psikologlar.module').then(m => m.PsikologlarModule)
       },
       {
-        path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+        path: 'hesabim',
+        loadChildren: () => import('../Hesabım/hesabim.module').then(m => m.HesabimModule)
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/ara',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/ara',
     pathMatch: 'full'
   }
 ];

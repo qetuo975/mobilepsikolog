@@ -1,0 +1,35 @@
+ion-content {
+  --background: none !important;
+  background-image: url('https://i.pinimg.com/originals/a0/7e/8f/a07e8f05a7d516ba7fd90519c5126058.jpg') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+}
+
+
+
+p {
+    font-family: Inter !important;
+      font-weight: 400 !important;
+      color: #34343C !important;
+      font-size: 14px;
+}
+
+ion-button {
+      font-family: Inter !important;
+        font-weight: 500 !important;
+
+        font-size: 14px;
+}
+
+h2, h3 {
+  font-family: Inter !important;
+  font-weight: 700 !important;
+  color: #262626 !important;
+}
+
+ion-loading.custom-loading {
+  --background: #e3edff;
+  --spinner-color: #1c6dff;
+
+  color: #1c6dff;
+}

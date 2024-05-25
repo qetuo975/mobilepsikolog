@@ -43,7 +43,8 @@
 
 ion-text, ion-label, ion-card-title, b, p {
   font-family: Inter !important;
-  font-weight: 700;
+  font-weight: 700 !important;
+  color: #34343C !important;
 }
 
 ion-text, ion-card-title {
@@ -53,7 +54,7 @@ ion-text, ion-card-title {
 
 ion-content {
   --background: none !important;
-  background-image: url('https://img.freepik.com/free-vector/blur-pink-blue-abstract-gradient-background-vector_53876-174836.jpg') !important;
+  background-image: url('https://i.pinimg.com/originals/a0/7e/8f/a07e8f05a7d516ba7fd90519c5126058.jpg') !important;
   background-size: cover !important;
   background-position: center center !important;
 }
