@@ -1,1 +1,40 @@
+ion-label {
+
+      font-size: 14px;
+
+}
+.transparent-tab-bar {
+  --background: #fff;
+  /* Yapıldı: Arka planı tamamen şeffaf yap */
+  --border-width: 0;
+  /* Kenarlık yok */
+  --color: rgba(43, 40, 40, 0.8);
+  /* Tab etiketleri ve ikonları için hafif şeffaf beyaz renk */
+  --color-selected: deepskyblue;
+  /* Seçili tabın vurgu rengi */
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  box-shadow: none;
+  /* Gölge yok */
+}
+
+.transparent-tab-bar ion-tab-button {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: none;
+  /* Otomatikten sınırlamaları kaldır */
+}
+
+.transparent-tab-bar ion-tab-button ion-icon {
+  font-size: 24px;
+  /* İkon boyutu */
+}
+
+.transparent-tab-bar ion-tab-button ion-label {
+  font-size: 12px;
+  /* Etiket boyutu */
+  font-weight: normal;
+  /* Normal font ağırlığı */
+}
 

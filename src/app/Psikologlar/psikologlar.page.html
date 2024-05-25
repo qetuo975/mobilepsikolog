@@ -1,47 +1,60 @@
 <ion-content [fullscreen]="true">
-  <ion-header [translucent]="true" id="header">
-    <ion-toolbar>
-      <ion-title>
-        Psikologlar
-      </ion-title>
+  <ion-header mode="ios" [translucent]="true" id="header">
+    <ion-toolbar mode="ios" class="transparent-toolbar">
+      <ion-title>Psikologlar</ion-title>
     </ion-toolbar>
-    <ion-toolbar>
-      <ion-searchbar color="light" placeholder="Psikolog Ara"></ion-searchbar>
+    <ion-toolbar mode="ios" class="transparent-toolbar">
+      <ion-searchbar mode="ios" class="ion-padding-top" placeholder="Terapini Ara"></ion-searchbar>
     </ion-toolbar>
   </ion-header>
 
+  <div style="padding: 16px; text-align: left; line-height: 30px;">
+    <ion-text mode="ios">
+      Terapi almak istediğin konuyu seçerek uzman psikologlarımıza ulaşabilirsin
+    </ion-text>
+  </div>
 
-  <ng-container *ngFor="let i of [1,2,3]">
-    <ion-card>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="4" class="ion-text-center">
-            <div class="profile-picture">
-              <ion-img src="https://wallpapers.com/images/featured/cool-profile-picture-87h46gcobjl5e4xu.jpg"></ion-img>
-            </div>
-          </ion-col>
-          <ion-col size="8" class="ion-align-self-center">
-            <ion-list [inset]="true">
-              <ion-item>
-                <ion-label>Arif Can Erciyas</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>232 Başvuru</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="12" class="ion-align-self-center">
-            <ion-button id="open-modal" expand="block" color="secondary" type="submit">
-              <ion-icon name="arrow-forward-outline" slot="end"></ion-icon> <b>Profile Git</b></ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card>
-    <ion-item-divider></ion-item-divider>
-  </ng-container>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="4" *ngFor="let card of cards">
+        <ion-card mode="ios" class="custom-card">
+          <ion-card-content>
+            <ion-card-title>{{card.title}}</ion-card-title>
+          </ion-card-content>
+          <img src="{{card.image}}" alt="{{card.title}}">
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+    <div style="padding: 16px; text-align: left; line-height: 30px;">
+      <ion-text mode="ios">
+        Sana uygun en iyi psikoloğu bul
+      </ion-text>
+    </div>
 
+<div class="horizontal-scroll">
+  <ion-card mode="ios" *ngFor="let profile of profiles" class="profile-card">
+    <ion-avatar>
+      <ion-img [src]="profile.image" [alt]="profile.name"></ion-img>
+    </ion-avatar>
+    <ion-card-content>
+      <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+        <div *ngIf="profile.isActive" class="status-indicator status-indicator-active">
+          <ion-text>Aktif</ion-text>
+        </div>
+        <div *ngIf="!profile.isActive" class="status-indicator status-indicator-passive">
+          <ion-text>Pasif</ion-text>
+        </div>
+      </div>
+      <ion-card-title>{{profile.name}}</ion-card-title>
+      <p>Yorumlar: {{profile.reviews}}</p>
+      <p>Puan: {{profile.rating}}</p>
+      <ion-chip>
+        <ion-label>{{profile.specialty}}</ion-label>
+      </ion-chip>
+    </ion-card-content>
+  </ion-card>
+</div>
 
 </ion-content>

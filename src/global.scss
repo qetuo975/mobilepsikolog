@@ -35,3 +35,67 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 // @import "@ionic/angular/css/palettes/dark.system.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+ion-text, ion-label, ion-card-title, b, p {
+  font-family: Inter !important;
+  font-weight: 700;
+}
+
+ion-text, ion-card-title {
+  font-size: 17px;
+  line-height: 25px !important;
+}
+
+ion-content {
+  --background: none !important;
+  background-image: url('https://img.freepik.com/free-vector/blur-pink-blue-abstract-gradient-background-vector_53876-174836.jpg') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+}
+
+ion-header {
+  --background: transparent;
+}
+
+.transparent-toolbar {
+  --background: rgba(255, 255, 255, 0.5);
+  /* Şeffaf beyaz arka plan */
+  --backdrop-filter: blur(10px);
+  /* Arka plan bulanıklaştırma efekti */
+  --border-color: transparent;
+  /* Kenarlıkları şeffaf yapar */
+}
+
+
+ion-searchbar {
+  --background: #ffffff;
+  --color: #777;
+  --placeholder-color: #bbb;
+  --icon-color: #999;
+  --clear-icon-color: #999;
+  --height: 40px;
+  --border-radius: 20px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease-in-out;
+}
+
+ion-searchbar:hover {
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+ion-searchbar:focus-within {
+  --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+ion-card-content {
+  text-align: center;
+}
+

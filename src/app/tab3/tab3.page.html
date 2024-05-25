@@ -4,8 +4,6 @@
       <ion-title size="medium">User Profile</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <!-- Profile card with grid and styled content -->
   <ion-card>
     <ion-grid>
       <ion-row>
@@ -74,7 +72,7 @@
   </ion-list>
 </ion-content>
 
-<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+<ion-modal trigger="open-modal">
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -82,9 +80,6 @@
           <ion-button (click)="cancel()">İptal</ion-button>
         </ion-buttons>
         <ion-title>Profil Güncelle</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="confirm()" [strong]="true">Kaydet</ion-button>
-        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
@@ -101,8 +96,7 @@
           <ion-datetime-button datetime="datetime"></ion-datetime-button>
         </ion-item>
 
-
-        <ion-button expand="block" type="submit" color="success" fill="outline"  style="margin-top: 20px; color: #fff;">Kaydet</ion-button>
+        <ion-button expand="block" [strong]="true" type="submit" color="success" fill="outline"  style="margin-top: 20px;">Kaydet</ion-button>
       </ion-list>
     </ion-content>
   </ng-template>

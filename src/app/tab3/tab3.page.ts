@@ -12,22 +12,8 @@ export class Tab3Page {
 
   constructor() {}
 
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      this.message = `Hello, ${ev.detail.data}!`;
-    }
-  }
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
   }
-
-  confirm() {
-    this.modal.dismiss(this.name, 'confirm');
-  }
-
-  message =
-    'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  name: string = '';
 }
