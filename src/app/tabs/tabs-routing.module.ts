@@ -9,15 +9,15 @@ const routes: Routes = [
     children: [
       {
         path: 'ara',
-        loadChildren: () => import('../Terapist/terapist.module').then(m => m.TerapistPageModule)
+        loadChildren: () => import('../Components/Terapist/terapist.module').then(m => m.TerapistPageModule)
       },
       {
         path: 'psikologlar',
-        loadChildren: () => import('../Psikologlar/psikologlar.module').then(m => m.PsikologlarModule)
+        loadChildren: () => import('../Components/Psikologlar/psikologlar.module').then(m => m.PsikologlarModule)
       },
       {
         path: 'hesabim',
-        loadChildren: () => import('../Hesabım/hesabim.module').then(m => m.HesabimModule)
+        loadChildren: () => import('../Components/Hesabım/hesabim.module').then(m => m.HesabimModule)
       },
       {
         path: '',
