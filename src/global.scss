@@ -44,19 +44,18 @@
 ion-text, ion-label, ion-card-title, b, p {
   font-family: Inter !important;
   font-weight: 700 !important;
-  color: #34343C !important;
 }
 
-ion-text, ion-card-title {
-  font-size: 17px;
-  line-height: 25px !important;
-}
 
 ion-content {
   --background: none !important;
   background-image: url('https://i.pinimg.com/originals/a0/7e/8f/a07e8f05a7d516ba7fd90519c5126058.jpg') !important;
   background-size: cover !important;
-  background-position: center center !important;
+  background-position: center !important;
+}
+
+ion-card-content {
+  text-align: center;
 }
 
 ion-header {
@@ -65,11 +64,8 @@ ion-header {
 
 .transparent-toolbar {
   --background: rgba(255, 255, 255, 0.5);
-  /* Şeffaf beyaz arka plan */
   --backdrop-filter: blur(10px);
-  /* Arka plan bulanıklaştırma efekti */
   --border-color: transparent;
-  /* Kenarlıkları şeffaf yapar */
 }
 
 
@@ -96,7 +92,34 @@ ion-searchbar:focus-within {
 }
 
 
-ion-card-content {
+
+
+
+.status-indicator {
+  height: 25px;
+  background-color: #90ee90;
+  /* Açık yeşil renk */
+  width: 100px;
+  padding: 5px;
+  margin-bottom: 10px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
 }
 
+.status-indicator-active {
+  background-color: #90ee90;
+  /* Aktif durum için açık yeşil */
+}
+
+.status-indicator-passive {
+  background-color: #ff6666;
+  /* Pasif durum için açık kırmızı */
+}
+
+.status-indicator ion-text {
+  color: white;
+  font-weight: bold;
+}

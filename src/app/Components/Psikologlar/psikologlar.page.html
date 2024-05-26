@@ -8,53 +8,8 @@
     </ion-toolbar>
   </ion-header>
 
-  <div style="padding: 16px; text-align: left; line-height: 30px;">
-    <ion-text mode="ios">
-      Terapi almak istediğin konuyu seçerek uzman psikologlarımıza ulaşabilirsin
-    </ion-text>
-  </div>
-
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" size-md="4" *ngFor="let card of cards">
-        <ion-card mode="ios" class="custom-card">
-          <ion-card-content>
-            <ion-card-title>{{card.title}}</ion-card-title>
-          </ion-card-content>
-          <img src="{{card.image}}" alt="{{card.title}}">
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-    <div style="padding: 16px; text-align: left; line-height: 30px;">
-      <ion-text mode="ios">
-        Sana uygun en iyi psikoloğu bul
-      </ion-text>
-    </div>
-
-<div class="horizontal-scroll">
-  <ion-card mode="ios" *ngFor="let profile of profiles" class="profile-card">
-    <ion-avatar>
-      <ion-img [src]="profile.image" [alt]="profile.name"></ion-img>
-    </ion-avatar>
-    <ion-card-content>
-      <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-        <div *ngIf="profile.isActive" class="status-indicator status-indicator-active">
-          <ion-text>Aktif</ion-text>
-        </div>
-        <div *ngIf="!profile.isActive" class="status-indicator status-indicator-passive">
-          <ion-text>Pasif</ion-text>
-        </div>
-      </div>
-      <ion-card-title>{{profile.name}}</ion-card-title>
-      <p>Yorumlar: {{profile.reviews}}</p>
-      <p>Puan: {{profile.rating}}</p>
-      <ion-chip>
-        <ion-label>{{profile.specialty}}</ion-label>
-      </ion-chip>
-    </ion-card-content>
-  </ion-card>
-</div>
-
+  <app-kategoriler></app-kategoriler>
+  <app-filterpsikolog></app-filterpsikolog>
+  <app-popular-psikologlar></app-popular-psikologlar>
+  <app-blogs></app-blogs>
 </ion-content>
