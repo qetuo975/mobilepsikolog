@@ -9,28 +9,44 @@ const routes: Routes = [
     children: [
       {
         path: 'ara',
-        loadChildren: () => import('../Components/Terapist/terapist.module').then(m => m.TerapistPageModule)
+        loadChildren: () =>
+          import('../Components/Terapist/terapist.module').then(
+            (m) => m.TerapistPageModule
+          ),
       },
       {
         path: 'psikologlar',
-        loadChildren: () => import('../Components/Psikologlar/psikologlar.module').then(m => m.PsikologlarModule)
+        loadChildren: () =>
+          import('../Components/Psikologlar/psikologlar.module').then(
+            (m) => m.PsikologlarModule
+          ),
       },
       {
         path: 'hesabim',
-        loadChildren: () => import('../Components/Hesabım/hesabim.module').then(m => m.HesabimModule)
+        loadChildren: () =>
+          import('../Components/Hesabım/hesabim.module').then(
+            (m) => m.HesabimModule
+          ),
+      },
+      {
+        path: 'seanslar',
+        loadChildren: () =>
+          import('../Components/Seanslar/seanslar.module').then(
+            (m) => m.SeanslarModule
+          ),
       },
       {
         path: '',
-        redirectTo: '/tabs/ara',
-        pathMatch: 'full'
-      }
-    ]
+        redirectTo: '/tabs/psikologlar',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: '',
-    redirectTo: '/tabs/ara',
-    pathMatch: 'full'
-  }
+    redirectTo: '/tabs/psikologlar',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

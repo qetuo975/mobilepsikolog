@@ -18,8 +18,16 @@ import { environment } from '../environments/environment';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule
+    AngularFireModule.initializeApp({
+      apiKey: 'AIzaSyA9Yl6lssE1UkdCiH1WALuElKYEYOpwQ7c',
+      authDomain: 'psikologmobile.firebaseapp.com',
+      projectId: 'psikologmobile',
+      storageBucket: 'psikologmobile.appspot.com',
+      messagingSenderId: '832039197109',
+      appId: '1:832039197109:web:66eda5e478d71905c6a1fc',
+      measurementId: 'G-0HRCTRM1B3',
+    }),
+    AngularFireAuthModule,
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

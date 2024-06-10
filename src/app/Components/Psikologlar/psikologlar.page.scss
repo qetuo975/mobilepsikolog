@@ -1,8 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 .transparent-toolbar {
-  --background: rgba(255, 255, 255, 0.5);
-  --backdrop-filter: blur(10px);
   --border-color: transparent;
 }
 
 
+ion-searchbar {
+  --background: #f5f6fa;
+  --icon-color: #5758BB !important;
+  --clear-button-color: #5758BB !important;
+  --cancel-button-color: #5758BB !important;
+  --border-radius: 5px !important;
+  --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  --transition: all 0.3s ease-in-out;
+}
+
+ion-searchbar:hover {
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+ion-searchbar:focus-within {
+  --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep ion-searchbar div input:focus {
+  border: 2px solid #5758BB !important;
+}
+
+:host ion-icon {
+  color: #5758BB;
+  font-size: 1.5rem !important;
+}
+
+h3, a {
+  font-family: Inter !important;
+  font-weight: 600 !important;
+
+}
+
+h5 {
+    font-family: Inter !important;
+      font-weight: 600 !important;
+      font-size: 16px;
+}
+
+ion-radio, div {
+      font-family: Inter !important;
+        font-weight: 500 !important;
+        font-size: 14px;
+}
+
+h4,
+h2 {
+  font-family: Inter !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  font-size: 16px;
+}
+
+p {
+  font-family: Inter !important;
+  font-weight: 500 !important;
+  color: #707070;
+  margin: 0 !important;
+}
+
+
+
+img {
+  object-fit: contain;
+}
+
+button {
+    font-family: Inter !important;
+      font-weight: 500 !important;
+      border: 2px solid #54a0ff;
+      background-color: unset;
+      color: #54a0ff;
+      padding: 10px;
+      border-radius: 10px;
+}
+
+.blog-card {
+  margin: 10px 0;
+}
+
+.blog-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+ion-card-header {
+  padding-top: 0;
+  gap: 10px;
+}
+
+ion-grid {
+  margin-bottom: 50px !important;
+}
+
+ion-card-title {
+  margin-top: 8px;
+  font-size: 17px;
+}
+
+ion-card-subtitle {
+  color: #8c8c8c;
+  font-size: 0.875em;
+}
+
+ion-card-content {
+  padding-top: 0;
+}
+
+a {
+  color: #8c8c8c;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
 

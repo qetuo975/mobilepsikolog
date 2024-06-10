@@ -49,7 +49,7 @@ ion-text, ion-label, ion-card-title, b, p {
 
 ion-content {
   --background: none !important;
-  background-image: url('https://i.pinimg.com/originals/a0/7e/8f/a07e8f05a7d516ba7fd90519c5126058.jpg') !important;
+  background-image: url('https://i.pinimg.com/originals/ad/66/44/ad6644b0dd2f369f5d46cb0aecc90818.jpg') !important;
   background-size: cover !important;
   background-position: center !important;
 }
@@ -67,30 +67,6 @@ ion-header {
   --backdrop-filter: blur(10px);
   --border-color: transparent;
 }
-
-
-ion-searchbar {
-  --background: #ffffff;
-  --color: #777;
-  --placeholder-color: #bbb;
-  --icon-color: #999;
-  --clear-icon-color: #999;
-  --height: 40px;
-  --border-radius: 20px;
-  --padding-start: 15px;
-  --padding-end: 15px;
-  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --transition: all 0.3s ease-in-out;
-}
-
-ion-searchbar:hover {
-  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-ion-searchbar:focus-within {
-  --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
 
 
 
@@ -122,4 +98,10 @@ ion-searchbar:focus-within {
 .status-indicator ion-text {
   color: white;
   font-weight: bold;
+}
+
+
+
+.blue {
+  color: #54a0ff;
 }

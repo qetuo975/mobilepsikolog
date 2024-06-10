@@ -5,10 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { PsikologlarPage } from './psikologlar.page';
 
 import { PsikologlarPageRoutingModule } from './psikologlar-routing.module';
-import { BlogsComponent } from 'src/app/Helpers/blogs/blogs.component';
-import { PopularPsikologlarComponent } from 'src/app/Helpers/popular-psikologlar/popular-psikologlar.component';
-import { KategorilerComponent } from 'src/app/Helpers/kategoriler/kategoriler.component';
-import { FilterpsikologComponent } from 'src/app/Helpers/filterpsikolog/filterpsikolog.component';
 
 @NgModule({
   imports: [
@@ -17,6 +13,6 @@ import { FilterpsikologComponent } from 'src/app/Helpers/filterpsikolog/filterps
     FormsModule,
     PsikologlarPageRoutingModule,
   ],
-  declarations: [PsikologlarPage, BlogsComponent, PopularPsikologlarComponent, KategorilerComponent, FilterpsikologComponent],
+  declarations: [PsikologlarPage],
 })
 export class PsikologlarModule {}

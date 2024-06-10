@@ -26,6 +26,13 @@ const routes: Routes = [
         (m) => m.BloglarModule
       ),
   },
+  {
+    path: 'test/:id',
+    loadChildren: () =>
+      import('./Components/Test/test.module').then(
+        (m) => m.TestModule
+      ),
+  },
 ];
 @NgModule({
   imports: [
