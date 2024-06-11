@@ -2,17 +2,16 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TerapistPage } from './terapist.page';
-import { TerapistPageRoutingModule } from './terapist.routing.module';
-
+import { PsikologHesabiPage } from './psikologhesabi.page';
+import { PsikologHesabiRoutingModule } from './psikologhesabi-routing.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    TerapistPageRoutingModule
+    PsikologHesabiRoutingModule,
   ],
-  declarations: [TerapistPage]
+  declarations: [PsikologHesabiPage],
 })
-export class TerapistPageModule {}
+export class PsikologHesabiModule {}

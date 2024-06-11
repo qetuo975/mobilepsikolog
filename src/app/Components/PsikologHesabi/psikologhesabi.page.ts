@@ -3,11 +3,11 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 @Component({
-  selector: 'app-hesabim',
-  templateUrl: 'hesabim.page.html',
-  styleUrls: ['hesabim.page.scss'],
+  selector: 'app-psikologhesabi',
+  templateUrl: 'psikologhesabi.page.html',
+  styleUrls: ['psikologhesabi.page.scss'],
 })
-export class HesabimPage {
+export class PsikologHesabiPage {
   @ViewChild('modal1', { static: false }) modal1!: IonModal;
   @ViewChild('modal2', { static: false }) modal2!: IonModal;
   @ViewChild('modal3', { static: false }) modal3!: IonModal;

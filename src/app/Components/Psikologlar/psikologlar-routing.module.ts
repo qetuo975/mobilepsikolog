@@ -7,10 +7,17 @@ const routes: Routes = [
     path: '',
     component: PsikologlarPage,
   },
+  {
+    path: ':id',
+    loadChildren: () =>
+      import('../../Components/PsikologHesabi/psikologhesabi.module').then(
+        (m) => m.PsikologHesabiModule
+      )
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PsikologlarPageRoutingModule {}
+export class PsikologlarRoutingModule {}

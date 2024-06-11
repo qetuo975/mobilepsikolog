@@ -8,17 +8,10 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'ara',
+        path: 'anasayfa',
         loadChildren: () =>
-          import('../Components/Terapist/terapist.module').then(
-            (m) => m.TerapistPageModule
-          ),
-      },
-      {
-        path: 'psikologlar',
-        loadChildren: () =>
-          import('../Components/Psikologlar/psikologlar.module').then(
-            (m) => m.PsikologlarModule
+          import('../Components/Anasayfa/anasayfa.module').then(
+            (m) => m.AnasayfaModule
           ),
       },
       {
@@ -26,6 +19,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('../Components/Hesabım/hesabim.module').then(
             (m) => m.HesabimModule
+          ),
+      },
+      {
+        path: 'psikologlar',
+        loadChildren: () =>
+          import('../Components/Psikologlar/psikologlar.module').then(
+            (m) => m.PsikologlarModule
           ),
       },
       {
@@ -37,14 +37,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/psikologlar',
+        redirectTo: '/tabs/anasayfa',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/psikologlar',
+    redirectTo: '/tabs/anasayfa',
     pathMatch: 'full',
   },
 ];

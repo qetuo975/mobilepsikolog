@@ -6,35 +6,29 @@ h2 {
   font-weight: 600 !important;
   margin: 0 !important;
   font-size: 18px;
-  color: #fff;
+  color: #262626;
+}
+
+h3 {
+    font-family: Inter !important;
+      font-weight: 500 !important;
+        font-size: 16px;
+        margin: 0 !important;
+        color: #54a0ff;
 }
 
 p {
   font-family: Inter !important;
   font-weight: 500 !important;
   font-size: 14px;
-  color: #fff;
+  color: #707070;
   margin: 0 !important;
 }
 
-
-
-ion-label {
-    font-family: Inter !important;
-      font-weight: 500 !important;
-      font-size: 14px;
-}
-
-ion-item {
-  margin-bottom: 15px !important;
-}
-
 ion-button {
-      font-family: Inter !important;
-        font-weight: 500 !important;
-        font-size: 14px;
-}
-
-.update-button {
   --background: #54a0ff;
+    font-family: Inter !important;
+    font-weight: 600 !important;
+    padding: 0px 15px 15px 15px;
+    width: 100%;
 }

@@ -1,0 +1,261 @@
+<ion-content [fullscreen]="true">
+  <ion-header [translucent]="true" id="header">
+    <ion-toolbar class="transparent-toolbar">
+      <ion-title>
+        <img src="https://terappin.com/images/minifies/terappin-logo-small.webp" alt="Logo"
+          style="height: 40px; vertical-align: middle;">
+      </ion-title>
+    </ion-toolbar>
+    <ion-toolbar class="transparent-toolbar">
+      <ion-searchbar placeholder="Terapini Ara"></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+
+  <div style="padding: 0 16px 16px 16px; text-align: left; line-height: 15px; background-color: transparent;">
+    <h3>Günaydın Arif,</h3>
+    <p>
+      En iyi psikologlarımızdan terapi al.
+    </p>
+  </div>
+
+
+  <div style="padding: 16px 16px 0px 16px;">
+    <h4>Yaklaşan Randevularım</h4>
+  </div>
+
+  <div style="padding: 16px;">
+    <div
+      style="width: 100%; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: 150px; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid #54a0ff; border-radius: 5px; padding: 5px;">
+      <div style="width: 100%; height: 50%; display: flex; align-items: center; justify-content: space-between;">
+        <div
+          style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: baseline; width: 100%; height: 100%;">
+          <p>Randevu Tarihi</p>
+          <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <ion-icon name="time-outline" slot="start"></ion-icon>
+            <h4>10.06.2024 - 8:00</h4>
+          </div>
+        </div>
+      </div>
+      <div style="width: 100%; height: 1px; background-color: #707070; margin-top: 5px; margin-bottom: 5px;"></div>
+      <div style="width: 100%; height: 50%; display: flex; align-items: center; justify-content: left; gap: 15px;">
+
+        <img style="width: 60px; height: 60px; border-radius: 50%;" alt="Silhouette of a person's head"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4j6P_40m6z-_ZbAVkUsKt05BmGX8WUX-2cuY1PMLFng&s" />
+
+        <div
+          style="width: 100%; height: 100%; display: flex; flex-direction: column; align-content: center; justify-content: center; gap: 10px;">
+          <h4>Ayşe Kanatlı</h4>
+          <p>Cinsel Terapist</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div style="padding: 16px; border-radius: 5px; width: 100%; height: 125px; border-radius: 5px; ">
+    <div
+      style="display: flex; width: 100; height: 100%; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); border-radius: 5px; background-position: center; background-repeat: no-repeat; background-size: cover; background-image: url(https://img.freepik.com/free-vector/watercolor-background_87374-69.jpg?t=st=1718013284~exp=1718016884~hmac=fa85e86f7993a992e485fd3f9641b2f6abe1e5cd8672f828c30539570dcfbede&w=1380);">
+      <div
+        style="width: 70%; height: 100%; padding: 15px; display: flex; justify-content: center; align-items: center;">
+        <h2 style="color: #0abde3;">İlk Seans %15 İndirimli</h2>
+      </div>
+      <img src="../../../assets/bannerreklam.png" alt="bannerreklam" width="30%" height="100%">
+    </div>
+  </div>
+
+
+  <div
+    style="display: flex; justify-content: space-between; padding: 8px 12px; align-items: center; background-color: #fff; margin: 15px 0px;">
+    <h3 style="font-size: 16px;">Psikologlar</h3>
+    <a id="open-modal" style="color: #54a0ff;">Psikoloğumu Bul</a>
+
+      <ion-modal trigger="open-modal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()" [strong]="true">İptal</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+  <div style="padding: 16px; width: 100%;">
+    <div style="width: 100%; height: 250px; display: flex; justify-content: center; align-items: center;">
+      <img src="../../../assets/search.png" alt="alone" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+
+    <div style="width: 100%; margin-top: 25px; margin-bottom: 25px;">
+      <h2 style="text-align: center;">Sana uygun en iyi psikoloğu bulalım.</h2>
+    </div>
+
+      <div style="width: 100%; padding: 8px; display: flex; flex-direction: column; gap: 15px;">
+
+        <div style="
+          width: 100%;
+          padding: 0px 10px 10px 10px;
+          border-radius: 5px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          background-color: #fff;">
+          <h5>Cinsiyet Tercihi</h5>
+
+          <ion-radio-group value="strawberries">
+            <ion-radio value="grapes" labelPlacement="end">Erkek</ion-radio><br />
+            <ion-radio value="strawberries" labelPlacement="end">Kadın</ion-radio>
+          </ion-radio-group>
+        </div>
+
+  <div style="
+          width: 100%;
+          padding: 0px 10px 10px 10px;
+          border-radius: 5px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          background-color: #fff;">
+    <h5>Yaş aralığı</h5>
+    <ion-range dualKnobs="true" min="0" max="100" step="1" pin="true" [(ngModel)]="ageRange">
+      <ion-label slot="start">0</ion-label>
+      <ion-label slot="end">100</ion-label>
+    </ion-range>
+    <div>
+      Seçilen yaş aralığı: {{ ageRange.lower }} - {{ ageRange.upper }}
+    </div>
+  </div>
+
+    <div style="
+              width: 100%;
+              padding: 0px 10px 10px 10px;
+              border-radius: 5px;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              background-color: #fff;">
+    <h5>Kategori Seçimi</h5>
+    <ion-item>
+      <ion-label>Kategori</ion-label>
+      <ion-select [(ngModel)]="selectedCategory" placeholder="Kategori seçin">
+        <ion-select-option value="spor">Spor</ion-select-option>
+        <ion-select-option value="teknoloji">Teknoloji</ion-select-option>
+        <ion-select-option value="sanat">Sanat</ion-select-option>
+        <ion-select-option value="bilim">Bilim</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div>
+      Seçilen kategori: {{ selectedCategory }}
+    </div>
+    </div>
+
+
+    <div style="
+              width: 100%;
+              padding: 0px 10px 10px 10px;
+              border-radius: 5px;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              background-color: #fff;">
+      <h5>Fiyat Aralığı</h5>
+      <ion-range dualKnobs="true" min="0" max="10000" step="100" pin="true" [(ngModel)]="priceRange">
+        <ion-label slot="start">0</ion-label>
+        <ion-label slot="end">10000</ion-label>
+      </ion-range>
+      <div>
+        Seçilen fiyat aralığı: {{ priceRange.lower }} - {{ priceRange.upper }}
+      </div>
+    </div>
+
+        <ion-button fill="outline" expand="block" color="info">Filtrele</ion-button>
+      </div>
+  </div>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+  </div>
+
+
+<div
+  style="border-radius: 5px; display: flex; flex-direction: column; gap: 10px; width: 100%;  overflow-y: auto; overflow-x: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+  <a  routerLink="/tabs/psikologlar/1" *ngFor="let terapist of psikologlar"
+    style="width: 100%; display: flex; flex-direction: column; background-color: #fff; padding: 10px;  color: unset;
+  font-size: unset !important;
+  font-weight: unset !important;
+  text-decoration: none !important;">
+    <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+      <div style="width: 20%; height: 100%; display: flex; justify-content: center; align-items: center;">
+        <img style="border-radius: 50%; object-fit: cover; width: 60px; height: 60px;" src="{{terapist.photo}}"
+          alt="{{terapist.name}}">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 10px; width: 55%; height: 100%;">
+        <h2>{{terapist.name}}</h2>
+        <p>{{terapist.unvan}}</p>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 25%;">
+        <h2>{{terapist.fiyat}} TL</h2>
+      </div>
+    </div>
+  </a>
+</div>
+
+
+  <div
+    style="display: flex; justify-content: space-between; padding: 8px 12px; align-items: center; background-color: #fff; margin: 15px 0px;">
+    <h3 style="font-size: 16px;">Testler</h3>
+    <a  style="color: #54a0ff;">Senin için</a>
+  </div>
+
+  <div style="padding: 16px; border-radius: 5px; width: 100%; height: 125px; border-radius: 5px; ">
+    <div
+      style="display: flex; width: 100; height: 100%; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); border-radius: 5px;">
+      <div
+        style="width: 70%; height: 100%; padding: 15px; display: flex; justify-content: center; align-items: center;">
+        <h2 class="blue">Seni daha iyi anlamamıza yardımcı ol.</h2>
+      </div>
+      <img src="../../../assets/bannerreklam-2.png" alt="bannerreklam" width="30%" height="100%">
+    </div>
+  </div>
+
+  <div style="padding: 16px; width: 390px; height: 250px; display: -webkit-inline-box; gap: 10px; overflow: auto; ">
+    <div *ngFor="let i of tests"
+      style="height: 100%; width: 200px; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
+      <img src="../../../assets/{{i.photo}}" alt="stres" style="width: 100%; height: 50%; object-fit: contain;">
+      <div
+        style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding-top: 10px;">
+        <h2 style="font-size: 15px;">{{i.title}}</h2>
+        <button routerLink="/test/{{i.id}}"> Teste Başla </button>
+      </div>
+    </div>
+  </div>
+
+
+  <div
+    style="display: flex; justify-content: space-between; padding: 8px 12px; align-items: center; background-color: #fff; margin: 15px 0px;">
+    <h3 style="font-size: 16px;">Bloglar</h3>
+    <a routerLink="/bloglar" style="color: #54a0ff;">Hepsini Göster</a>
+  </div>
+
+
+  <div
+    style="padding: 16px; width: 390px; height: 300px; display: -webkit-inline-box; gap: 10px; overflow: auto; background-color: #c7ecee;">
+    <div *ngFor="let blog of blogs"
+      style="height: 100%; width: 350px; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
+      <img [src]="blog.imageUrl" alt="stres" style="width: 100%; height: 70%; object-fit: cover;">
+      <div style="display: flex; flex-direction: column; gap: 10px; justify-content: left; padding: 10px;">
+        <h2>{{ blog.title }}</h2>
+        <p style="font-size: 12px;">{{ blog.date }}</p>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div style="height: 75px;"></div>
+
+
+
+</ion-content>
