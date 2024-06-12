@@ -1,3 +1,4 @@
+import { UserService } from './../../../Service/user.service';
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -12,26 +13,29 @@ import { GoogleAuthServiceService } from 'src/Service/google-auth-service.servic
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup = this.formBuilder.group({
-    username: ['', Validators.required], // Kullanıcı adı alanı
-    password: ['', Validators.required], // Şifre alanı
+    email: ['', Validators.required],
+    password: ['', Validators.required],
   });
 
   constructor(
     private formBuilder: FormBuilder,
     private toastController: ToastController,
     private GoogleAuthService: GoogleAuthServiceService,
-    private router: Router
+    private router: Router,
+    private UserService: UserService
   ) {}
 
   ngOnInit(): void {}
 
-  async presentToast(position: 'top' | 'middle' | 'bottom') {
+  async presentToast(
+    message: string,
+    color: string,
+    position: 'top' | 'middle' | 'bottom'
+  ) {
     const toast = await this.toastController.create({
-      message: 'Lütfen Gerekli Alanları Doldurunuz.',
+      message: message,
       duration: 1500,
-      color: 'secondary',
-      icon: 'globe',
-      positionAnchor: 'header',
+      color: color,
       position: position,
     });
 
@@ -40,9 +44,28 @@ export class LoginPage implements OnInit {
 
   onSubmit() {
     if (this.loginForm && this.loginForm.valid) {
-      console.log('Form submitted:', this.loginForm.value);
+      const { email, password } = this.loginForm.value;
+      this.UserService.login(email, password).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+          this.presentToast('Giriş başarılı!', 'success', 'top');
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+          this.presentToast(
+            'Giriş başarısız. Lütfen tekrar deneyin.',
+            'danger',
+            'top'
+          );
+        },
+      });
     } else {
-      this.presentToast('top');
+      this.presentToast(
+        'Lütfen Gerekli Alanları Doldurunuz.',
+        'secondary',
+        'top'
+      );
     }
   }
 
@@ -50,7 +73,37 @@ export class LoginPage implements OnInit {
     this.GoogleAuthService.loginWithGoogle()
       .then((data) => {
         console.log(data);
-        this.router.navigate(['/']);
+        const email: any = data.user?.email;
+        const password: any = data.user?.uid;
+        const verifiy: any = data.user?.emailVerified;
+
+        if (verifiy) {
+          this.UserService.login(email, password).subscribe({
+            next: (response) => {
+              console.log('Login successful:', response);
+              localStorage.setItem('id', response.token.userId);
+              localStorage.setItem('type', response.token.type);
+              localStorage.setItem('adsoyad', response.token.adsoyad);
+
+              this.presentToast('Giriş başarılı!', 'success', 'top');
+              this.router.navigate(['/']);
+            },
+            error: (error) => {
+              console.error('Login failed:', error);
+              this.presentToast(
+                'Giriş başarısız. Lütfen tekrar deneyin.',
+                'danger',
+                'top'
+              );
+            },
+          });
+        } else {
+          this.presentToast(
+            'Lütfen Gerekli Alanları Doldurunuz.',
+            'secondary',
+            'top'
+          );
+        }
       })
       .catch((error) => {
         console.error(error);

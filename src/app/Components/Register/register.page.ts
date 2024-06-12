@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { GoogleAuthServiceService } from 'src/Service/google-auth-service.service';
+import { UserService } from 'src/Service/user.service'; // UserService'i ekleyin
 
 @Component({
   selector: 'app-tab1',
@@ -12,26 +13,30 @@ import { GoogleAuthServiceService } from 'src/Service/google-auth-service.servic
 })
 export class RegisterPage implements OnInit {
   loginForm: FormGroup = this.formBuilder.group({
-    username: ['', Validators.required], // Kullanıcı adı alanı
+    email: ['', [Validators.required, Validators.email]], // Email alanı
     password: ['', Validators.required], // Şifre alanı
+    isPsikolog: [false, Validators.required]
   });
 
   constructor(
     private formBuilder: FormBuilder,
     private toastController: ToastController,
     private GoogleAuthService: GoogleAuthServiceService,
-    private router: Router
+    private router: Router,
+    private userService: UserService // UserService'i enjekte edin
   ) {}
 
   ngOnInit(): void {}
 
-  async presentToast(position: 'top' | 'middle' | 'bottom') {
+  async presentToast(
+    message: string,
+    color: string,
+    position: 'top' | 'middle' | 'bottom'
+  ) {
     const toast = await this.toastController.create({
-      message: 'Lütfen Gerekli Alanları Doldurunuz.',
+      message: message,
       duration: 1500,
-      color: 'secondary',
-      icon: 'globe',
-      positionAnchor: 'header',
+      color: color,
       position: position,
     });
 
@@ -40,17 +45,71 @@ export class RegisterPage implements OnInit {
 
   onSubmit() {
     if (this.loginForm && this.loginForm.valid) {
-      console.log('Form submitted:', this.loginForm.value);
+      const { email, password } = this.loginForm.value;
+      this.userService
+        .register(email, password, this.loginForm.value.isPsikolog ? this.loginForm.value.isPsikolog : false)
+        .subscribe({
+          next: (response) => {
+            console.log('Registration successful:', response);
+            this.presentToast('Kayıt başarılı!', 'success', 'top');
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            console.error('Registration failed:', error);
+            this.presentToast(
+              'Kayıt başarısız. Lütfen tekrar deneyin.',
+              'danger',
+              'top'
+            );
+          },
+        });
     } else {
-      this.presentToast('top');
+      this.presentToast(
+        'Lütfen Gerekli Alanları Doldurunuz.',
+        'secondary',
+        'top'
+      );
     }
   }
 
   loginWithGoogle() {
     this.GoogleAuthService.loginWithGoogle()
       .then((data) => {
-        console.log(data);
-        this.router.navigate(['/']);
+        const email: any = data.user?.email;
+        const password: any = data.user?.uid;
+        const verifiy: any = data.user?.emailVerified;
+
+        if (verifiy) {
+          this.userService
+            .register(
+              email,
+              password,
+              this.loginForm.value.isPsikolog
+                ? this.loginForm.value.isPsikolog
+                : false
+            )
+            .subscribe({
+              next: (response) => {
+                console.log('Registration successful:', response);
+                this.presentToast('Kayıt başarılı!', 'success', 'top');
+                this.router.navigate(['/login']);
+              },
+              error: (error) => {
+                console.error('Registration failed:', error);
+                this.presentToast(
+                  'Kayıt başarısız. Lütfen tekrar deneyin.',
+                  'danger',
+                  'top'
+                );
+              },
+            });
+        } else {
+          this.presentToast(
+            'Lütfen Gerekli Alanları Doldurunuz.',
+            'secondary',
+            'top'
+          );
+        }
       })
       .catch((error) => {
         console.error(error);

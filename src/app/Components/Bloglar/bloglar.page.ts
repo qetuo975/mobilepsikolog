@@ -1,4 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { BlogsService } from './../../../Service/blogs.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -7,8 +8,19 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: 'bloglar.page.html',
   styleUrls: ['bloglar.page.scss'],
 })
-export class BloglarPage {
-  constructor() {}
+export class BloglarPage implements OnInit {
+  constructor(private BlogsService: BlogsService) {}
+  ngOnInit(): void {
+    this.BlogsService.getBlogs().subscribe({
+      next: (result: any) => {
+        console.log(result);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+
+  }
 
   blogs: any[] = [
     {

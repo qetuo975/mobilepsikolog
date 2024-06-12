@@ -1,4 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { UserService } from './../../../Service/user.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -7,12 +9,27 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: 'psikologhesabi.page.html',
   styleUrls: ['psikologhesabi.page.scss'],
 })
-export class PsikologHesabiPage {
+export class PsikologHesabiPage implements OnInit {
   @ViewChild('modal1', { static: false }) modal1!: IonModal;
   @ViewChild('modal2', { static: false }) modal2!: IonModal;
   @ViewChild('modal3', { static: false }) modal3!: IonModal;
 
-  constructor() {}
+  constructor(private UserService: UserService, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+        const id = this.route.snapshot.paramMap.get('id');
+
+        if (id) {
+          this.UserService.getPsikolog(parseInt(id, 10)).subscribe({
+            next: (result: any) => {
+              console.log(result);
+            },
+            error: (err: any) => {
+              console.log(err);
+            },
+          });
+        }
+  }
 
   cancel(modal: IonModal) {
     modal.dismiss(null, 'cancel');

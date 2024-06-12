@@ -1,4 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { UserService } from './../../../Service/user.service';
+import { TestService } from './../../../Service/test.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 
 @Component({
@@ -6,9 +8,30 @@ import { IonModal } from '@ionic/angular';
   templateUrl: 'anasayfa.page.html',
   styleUrls: ['anasayfa.page.scss'],
 })
-export class AnasayfaPage {
-  constructor() {}
+export class AnasayfaPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
+
+  constructor(private TestService: TestService, private UserService: UserService) {}
+
+  ngOnInit(): void {
+    this.TestService.getTests().subscribe({
+      next: (result: any) => {
+        console.log(result);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+
+    this.UserService.getPsikologs().subscribe({
+      next: (result: any) => {
+        console.log(result);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+  }
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
