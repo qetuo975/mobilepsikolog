@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { AuthGuard } from '../Guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
           import('../Components/Anasayfa/anasayfa.module').then(
             (m) => m.AnasayfaModule
           ),
+        canActivate: [AuthGuard],
       },
       {
         path: 'hesabim',
@@ -20,6 +22,7 @@ const routes: Routes = [
           import('../Components/Hesabım/hesabim.module').then(
             (m) => m.HesabimModule
           ),
+        canActivate: [AuthGuard],
       },
       {
         path: 'psikologlar',
@@ -27,6 +30,7 @@ const routes: Routes = [
           import('../Components/Psikologlar/psikologlar.module').then(
             (m) => m.PsikologlarModule
           ),
+        canActivate: [AuthGuard],
       },
       {
         path: 'seanslar',
@@ -34,6 +38,7 @@ const routes: Routes = [
           import('../Components/Seanslar/seanslar.module').then(
             (m) => m.SeanslarModule
           ),
+        canActivate: [AuthGuard],
       },
       {
         path: '',

@@ -1,5 +1,6 @@
 import { PsikologService } from './../../../Service/psikolog.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -8,19 +9,27 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: 'psikologlar.page.html',
   styleUrls: ['psikologlar.page.scss'],
 })
-export class PsikologlarPage implements OnInit
- {
-  constructor(private PsikologService: PsikologService) {}
+export class PsikologlarPage implements OnInit {
+  constructor(
+    private PsikologService: PsikologService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.PsikologService.getPsikologs().subscribe({
-      next: (result: any) => {
-        console.log(result);
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    })
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state) {
+      const filterData = state['filterData'];
+      console.log(filterData);
+    } else {
+      this.PsikologService.getPsikologs().subscribe({
+        next: (result: any) => {
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
   psikologlar: any[] = [

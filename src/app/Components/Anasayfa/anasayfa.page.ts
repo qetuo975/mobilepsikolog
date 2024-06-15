@@ -1,7 +1,11 @@
+import { PsikologService } from './../../../Service/psikolog.service';
+import { SeansService } from './../../../Service/seans.service';
 import { UserService } from './../../../Service/user.service';
 import { TestService } from './../../../Service/test.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-anasayfa',
@@ -11,16 +15,80 @@ import { IonModal } from '@ionic/angular';
 export class AnasayfaPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
 
-  constructor(private TestService: TestService, private UserService: UserService) {}
+  filterPsikologForm = new FormGroup({
+    cinsiyet: new FormControl('', Validators.required),
+    fiyat: new FormControl(
+      {
+        lower: 0,
+        upper: 10000,
+      },
+      Validators.required
+    ),
+    yas: new FormControl(
+      {
+        lower: 20,
+        upper: 50,
+      },
+      Validators.required
+    ),
+    kategori: new FormControl('', Validators.required),
+  });
+
+  type: any;
+  id: any;
+
+  psikologkategoriler: any;
+  secilenkategori: string = '';
+
+  constructor(
+    private TestService: TestService,
+    private SeansService: SeansService,
+    private PsikologService: PsikologService,
+    private UserService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.id = localStorage.getItem('id');
+    this.type = localStorage.getItem('type');
+
+    if (this.type == 'user') {
+      this.SeansService.getSeansUser(this.id).subscribe({
+        next: (result: any) => {
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    } else {
+      this.SeansService.getSeansPsikolog(this.id).subscribe({
+        next: (result: any) => {
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
+
+    this.PsikologService.getKategori().subscribe({
+      next: (result: any) => {
+        this.psikologkategoriler = result;
+        console.log(result);
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
+
     this.TestService.getTests().subscribe({
       next: (result: any) => {
         console.log(result);
       },
       error: (err: any) => {
         console.log(err);
-      }
+      },
     });
 
     this.UserService.getPsikologs().subscribe({
@@ -29,24 +97,33 @@ export class AnasayfaPage implements OnInit {
       },
       error: (err: any) => {
         console.log(err);
+      },
+    });
+  }
+
+  filterPsikolog()
+  {
+    this.PsikologService.filterpsikolog(this.filterPsikologForm.value).subscribe({
+      next: (result: any) => {
+        console.log(result);
+        const navigationExtras: NavigationExtras = {
+          state: {
+            filterData: result,
+          },
+        };
+        this.cancel();
+        this.router.navigate(['/tabs/psikologlar'], navigationExtras);
+      },
+      error: (err: any) => {
+        console.log(err);
       }
     });
+    console.log(this.filterPsikologForm.value);
   }
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
   }
-  selectedCategory: string = '';
-
-  ageRange = {
-    lower: 20,
-    upper: 50,
-  };
-
-  priceRange = {
-    lower: 0,
-    upper: 10000,
-  };
 
   psikologlar: any[] = [
     {

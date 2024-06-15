@@ -1,7 +1,7 @@
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestPage} from './test.page';
 import { TestRoutingModule } from './test-routing.module';
 
@@ -11,8 +11,9 @@ import { TestRoutingModule } from './test-routing.module';
     IonicModule,
     CommonModule,
     FormsModule,
-    TestRoutingModule
+    ReactiveFormsModule,
+    TestRoutingModule,
   ],
-  declarations: [TestPage]
+  declarations: [TestPage],
 })
 export class TestModule {}

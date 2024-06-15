@@ -81,9 +81,9 @@ export class LoginPage implements OnInit {
           this.UserService.login(email, password).subscribe({
             next: (response) => {
               console.log('Login successful:', response);
-              localStorage.setItem('id', response.token.userId);
+              localStorage.setItem('id', response.token.user.id);
               localStorage.setItem('type', response.token.type);
-              localStorage.setItem('adsoyad', response.token.adsoyad);
+
 
               this.presentToast('Giriş başarılı!', 'success', 'top');
               this.router.navigate(['/']);

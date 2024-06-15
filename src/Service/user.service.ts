@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
   private baseUrl: string = 'http://localhost:4000/api/user';
+  private general: string = 'http://localhost:4000/api/general';
 
   constructor(private http: HttpClient) {}
 
@@ -28,10 +29,44 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/psikolog/${id}`).pipe();
   }
 
+  getUser(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/user/${id}`).pipe();
+  }
+
+  getKategoriler(): Observable<any> {
+    return this.http.get(`${this.general}/kategoriler`).pipe();
+  }
 
   register(email: string, password: string, type: string): Observable<any> {
     const body = { email, password, type };
     return this.http.post(`${this.baseUrl}/register`, body).pipe();
+  }
+
+  updatePsikologAccount(accountData: any, id: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/updatepsikologaccount`, {
+      accountData,
+      id,
+    });
+  }
+
+  uploadPhoto(formdata: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/uploadphoto`, formdata);
+  }
+
+  addSeans(start: any, end: any, day: any, id: any): Observable<any> {
+    const body = { start, end, day, id };
+    return this.http.post(`${this.baseUrl}/addseans`, body).pipe();
+  }
+
+  getPsikologSeans(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/psikologseans/${id}`).pipe();
+  }
+
+  balancePsikologAccount(balanceData: any, id: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/balancepsikologaccount`, {
+      balanceData,
+      id,
+    });
   }
 
   login(email: string, password: string): Observable<any> {

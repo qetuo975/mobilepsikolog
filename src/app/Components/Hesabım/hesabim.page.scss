@@ -17,7 +17,16 @@ p {
   margin: 0 !important;
 }
 
+ion-col {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
 
+  // Bu stil, içeriğin ortalamanın dışına taşmasını önler
+    overflow: hidden;
+    white-space: nowrap;
+}
 
 ion-label {
     font-family: Inter !important;

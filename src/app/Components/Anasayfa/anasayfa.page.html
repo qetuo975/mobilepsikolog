@@ -88,7 +88,7 @@
       <h2 style="text-align: center;">Sana uygun en iyi psikoloğu bulalım.</h2>
     </div>
 
-      <div style="width: 100%; padding: 8px; display: flex; flex-direction: column; gap: 15px;">
+      <form [formGroup]="filterPsikologForm" style="width: 100%; padding: 8px; display: flex; flex-direction: column; gap: 15px;">
 
         <div style="
           width: 100%;
@@ -101,9 +101,9 @@
           background-color: #fff;">
           <h5>Cinsiyet Tercihi</h5>
 
-          <ion-radio-group value="strawberries">
-            <ion-radio value="grapes" labelPlacement="end">Erkek</ion-radio><br />
-            <ion-radio value="strawberries" labelPlacement="end">Kadın</ion-radio>
+          <ion-radio-group formControlName="cinsiyet">
+            <ion-radio value="erkek" labelPlacement="end">Erkek</ion-radio><br />
+            <ion-radio value="kadin" labelPlacement="end">Kadın</ion-radio>
           </ion-radio-group>
         </div>
 
@@ -117,12 +117,12 @@
           gap: 10px;
           background-color: #fff;">
     <h5>Yaş aralığı</h5>
-    <ion-range dualKnobs="true" min="0" max="100" step="1" pin="true" [(ngModel)]="ageRange">
+    <ion-range formControlName="yas" dualKnobs="true" min="0" max="100" step="1" pin="true" >
       <ion-label slot="start">0</ion-label>
       <ion-label slot="end">100</ion-label>
     </ion-range>
     <div>
-      Seçilen yaş aralığı: {{ ageRange.lower }} - {{ ageRange.upper }}
+      Seçilen yaş aralığı: {{ $any(this.filterPsikologForm.value.yas).lower }} - {{ $any(this.filterPsikologForm.value.yas).upper }}
     </div>
   </div>
 
@@ -138,15 +138,12 @@
     <h5>Kategori Seçimi</h5>
     <ion-item>
       <ion-label>Kategori</ion-label>
-      <ion-select [(ngModel)]="selectedCategory" placeholder="Kategori seçin">
-        <ion-select-option value="spor">Spor</ion-select-option>
-        <ion-select-option value="teknoloji">Teknoloji</ion-select-option>
-        <ion-select-option value="sanat">Sanat</ion-select-option>
-        <ion-select-option value="bilim">Bilim</ion-select-option>
+      <ion-select formControlName="kategori" placeholder="Kategori seçin">
+        <ion-select-option *ngFor="let kategori of psikologkategoriler" value="{{kategori.baslik}}">{{kategori.baslik}}</ion-select-option>
       </ion-select>
     </ion-item>
     <div>
-      Seçilen kategori: {{ selectedCategory }}
+      Seçilen kategori: {{ $any(this.filterPsikologForm.value.kategori) }}
     </div>
     </div>
 
@@ -161,17 +158,17 @@
               gap: 10px;
               background-color: #fff;">
       <h5>Fiyat Aralığı</h5>
-      <ion-range dualKnobs="true" min="0" max="10000" step="100" pin="true" [(ngModel)]="priceRange">
+      <ion-range formControlName="fiyat" dualKnobs="true" min="0" max="10000" step="100" pin="true">
         <ion-label slot="start">0</ion-label>
         <ion-label slot="end">10000</ion-label>
       </ion-range>
       <div>
-        Seçilen fiyat aralığı: {{ priceRange.lower }} - {{ priceRange.upper }}
+        Seçilen fiyat aralığı: {{ $any(this.filterPsikologForm.value.fiyat).lower }} - {{ $any(this.filterPsikologForm.value.fiyat).upper }}
       </div>
     </div>
 
-        <ion-button fill="outline" expand="block" color="info">Filtrele</ion-button>
-      </div>
+        <ion-button (click)="filterPsikolog()" fill="outline" expand="block" color="info">Filtrele</ion-button>
+      </form>
   </div>
           </ion-content>
         </ng-template>
@@ -220,7 +217,7 @@
     </div>
   </div>
 
-  <div style="padding: 16px; width: 390px; height: 250px; display: -webkit-inline-box; gap: 10px; overflow: auto; ">
+  <div style="padding: 16px; width: 100%; height: 250px; display: -webkit-inline-box; gap: 10px; overflow: auto; ">
     <div *ngFor="let i of tests"
       style="height: 100%; width: 200px; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
       <img src="../../../assets/{{i.photo}}" alt="stres" style="width: 100%; height: 50%; object-fit: contain;">
@@ -241,15 +238,15 @@
 
 
   <div
-    style="padding: 16px; width: 390px; height: 300px; display: -webkit-inline-box; gap: 10px; overflow: auto; background-color: #c7ecee;">
-    <div *ngFor="let blog of blogs"
-      style="height: 100%; width: 350px; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
+    style="padding: 16px; width: 100%; height: 300px; display: -webkit-inline-box; gap: 10px; overflow: auto; background-color: #c7ecee;">
+    <a routerLink="/bloglar/{{blog.id}}" *ngFor="let blog of blogs"
+      style="height: 100%; width: 100%; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
       <img [src]="blog.imageUrl" alt="stres" style="width: 100%; height: 70%; object-fit: cover;">
       <div style="display: flex; flex-direction: column; gap: 10px; justify-content: left; padding: 10px;">
-        <h2>{{ blog.title }}</h2>
+        <h2 style="color: #262626;">{{ blog.title }}</h2>
         <p style="font-size: 12px;">{{ blog.date }}</p>
       </div>
-    </div>
+    </a>
   </div>
 
 
