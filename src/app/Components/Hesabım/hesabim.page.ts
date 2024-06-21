@@ -19,39 +19,79 @@ export class HesabimPage implements OnInit {
   @ViewChild('modal1', { static: false }) modal1!: IonModal;
   @ViewChild('modal2', { static: false }) modal2!: IonModal;
   @ViewChild('modal3', { static: false }) modal3!: IonModal;
+  type: any;
 
-  accountform = new FormGroup({
-    adsoyad: new FormControl('', Validators.required),
-    yas: new FormControl('', Validators.required),
-    hakkimda: new FormControl('', Validators.required),
-    universite: new FormControl('', Validators.required),
-    bolum: new FormControl('', Validators.required),
-    kategori: new FormControl('', Validators.required),
-    cinsiyet: new FormControl('', Validators.required),
-    ozellik1: new FormControl('', Validators.required),
-    ozellik2: new FormControl('', Validators.required),
-    ozellik3: new FormControl('', Validators.required),
-    ozellik4: new FormControl('', Validators.required),
-    ozellik5: new FormControl('', Validators.required),
-  });
+  constructor(
+    private UserService: UserService,
+    private toastController: ToastController
+  ) {}
 
-  balanceform = new FormGroup({
-    IBAN: new FormControl('', Validators.required),
-  });
+  ngOnInit(): void {
+    this.type = localStorage.getItem('type');
+    if (this.type == 'user') {
+      console.log('User Hesabi');
+    } else {
+      this.UserService.getKategoriler().subscribe({
+        next: (result: any) => {
+          this.kategoriler = result;
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
 
-  balance: number = 0;
-  kategoriler: any[] = [];
-  gunler: any[] = [
-    'Pazartesi',
-    'Salı',
-    'Çarşamba',
-    'Perşembe',
-    'Cuma',
-    'Cumartesi',
-    'Pazar',
-  ];
+      this.UserService.getPsikologSeans(
+        Number(localStorage.getItem('id'))
+      ).subscribe({
+        next: (result: any) => {
+          console.log(result);
+          this.seanslar = result;
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
 
-  starttimepopover: boolean = false;
+      this.setAccountPsikolog();
+    }
+  }
+
+  // Ortak Fonksiyonlar
+  // --------------------------------------------
+  async uploadPhoto() {
+    const image: Photo = await Camera.getPhoto({
+      resultType: CameraResultType.Uri, // Görüntü URI olarak dönecek
+      source: CameraSource.Prompt, // Kullanıcıya kamera veya galeriyi seçme seçeneği sunulacak
+      quality: 100, // Görüntü kalitesi %100 olacak
+    });
+
+    const base64Data: any = image.base64String;
+    const fileName: any = `photo.${image.format}`;
+    const imageBlob = this.base64ToBlob(base64Data, `image/${image.format}`);
+
+    const formData = new FormData();
+    formData.append('file', imageBlob, fileName);
+
+    if (this.type != 'user') {
+      this.UserService.uploadPhotoPsikolog(formData).subscribe({
+        next: (result: any) => {
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    } else {
+      this.UserService.uploadPhotoUser(formData).subscribe({
+        next: (result: any) => {
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
+  }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
     const toast = await this.toastController.create({
@@ -63,10 +103,62 @@ export class HesabimPage implements OnInit {
     await toast.present();
   }
 
-  accountFormSubmit() {
-    if (this.accountform.valid) {
+  base64ToBlob(base64Data: string, contentType: string) {
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
+  }
+
+  cancel(modal: IonModal) {
+    modal.dismiss(null, 'cancel');
+  }
+
+  // User Değişkenleri
+  accountformUser = new FormGroup({
+    adsoyad: new FormControl('', Validators.required),
+    yas: new FormControl('', Validators.required),
+    cinsiyet: new FormControl('', Validators.required),
+  });
+
+  // User Fonksiyonları
+  // --------------------------------------------
+  accountFormUserSubmit() {
+    if (this.accountformUser.valid) {
+      this.UserService.updateUserAccount(
+        this.accountformUser.value,
+        localStorage.getItem('id')
+      ).subscribe({
+        next: (result: any) => {
+          console.log(result);
+          this.presentToast('top', 'Güncelleme Başarılı.');
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.presentToast('top', 'Güncelleme Başarısız.');
+        },
+      });
+    } else {
+      console.error('Form is invalid');
+      this.presentToast('top', 'Form Verilerini Doldurunuz.');
+    }
+  }
+
+  writeNameUser() {
+    return this.accountformUser.value.adsoyad
+      ? this.accountformUser.value.adsoyad
+      : 'İsminizi Güncelleyin.';
+  }
+
+  // Psikolog Fonksiyonları
+  // --------------------------------------------
+  accountFormPsikologSubmit() {
+    if (this.accountformPsikolog.valid) {
       this.UserService.updatePsikologAccount(
-        this.accountform.value,
+        this.accountformPsikolog.value,
         localStorage.getItem('id')
       ).subscribe({
         next: (result: any) => {
@@ -84,10 +176,10 @@ export class HesabimPage implements OnInit {
     }
   }
 
-  balanceFormSubmit() {
-    if (this.balanceform.valid) {
+  balanceFormPsikologSubmit() {
+    if (this.balanceformPsikolog.valid) {
       this.UserService.balancePsikologAccount(
-        this.balanceform.value,
+        this.balanceformPsikolog.value,
         localStorage.getItem('id')
       ).subscribe({
         next: (result: any) => {
@@ -105,14 +197,14 @@ export class HesabimPage implements OnInit {
     }
   }
 
-  setAccount() {
+  setAccountPsikolog() {
     this.UserService.getPsikolog(Number(localStorage.getItem('id'))).subscribe({
       next: (result: any) => {
         console.log(result);
         const usercontrol = result.adsoyad;
         if (usercontrol) {
           this.balance = result.bakiye;
-          this.accountform.patchValue({
+          this.accountformPsikolog.patchValue({
             adsoyad: result.adsoyad,
             yas: result.yas,
             hakkimda: result.hakkimda,
@@ -134,13 +226,22 @@ export class HesabimPage implements OnInit {
     });
   }
 
-  startTime!: string;
-  endTime!: string;
-  selectedDay!: string;
-  isPopoverOpen: boolean = false;
-  selectedTime!: string;
-  timeType!: string;
-  seanslar: any[] = [];
+  writeNamePsikolog() {
+    return this.accountformPsikolog.value.adsoyad
+      ? this.accountformPsikolog.value.adsoyad
+      : 'İsminizi Güncelleyin.';
+  }
+
+  writeKategoriPsikolog() {
+    return this.accountformPsikolog.value.kategori
+      ? this.accountformPsikolog.value.kategori
+      : 'İsminizi Güncelleyin.';
+  }
+
+  customCounterFormatter(inputLength: number, maxLength: number) {
+    return `${maxLength - inputLength} Karakter Kaldı`;
+  }
+
   onPopoverDismiss() {
     this.isPopoverOpen = false;
   }
@@ -189,87 +290,44 @@ export class HesabimPage implements OnInit {
     this.isPopoverOpen = true;
   }
 
-  constructor(
-    private UserService: UserService,
-    private toastController: ToastController
-  ) {}
+  // Psikolog Değişkenleri
+  // --------------------------------------------
+  gunler: any[] = [
+    'Pazartesi',
+    'Salı',
+    'Çarşamba',
+    'Perşembe',
+    'Cuma',
+    'Cumartesi',
+    'Pazar',
+  ];
 
-  ngOnInit(): void {
-    this.UserService.getKategoriler().subscribe({
-      next: (result: any) => {
-        this.kategoriler = result;
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-    });
+  startTime!: string;
+  endTime!: string;
+  selectedDay!: string;
+  isPopoverOpen: boolean = false;
+  selectedTime!: string;
+  timeType!: string;
+  seanslar: any[] = [];
+  balance: number = 0;
+  kategoriler: any[] = [];
+  accountformPsikolog = new FormGroup({
+    adsoyad: new FormControl('', Validators.required),
+    yas: new FormControl('', Validators.required),
+    hakkimda: new FormControl('', Validators.required),
+    universite: new FormControl('', Validators.required),
+    bolum: new FormControl('', Validators.required),
+    kategori: new FormControl('', Validators.required),
+    cinsiyet: new FormControl('', Validators.required),
+    ozellik1: new FormControl('', Validators.required),
+    ozellik2: new FormControl('', Validators.required),
+    ozellik3: new FormControl('', Validators.required),
+    ozellik4: new FormControl('', Validators.required),
+    ozellik5: new FormControl('', Validators.required),
+  });
 
-    this.UserService.getPsikologSeans(
-      Number(localStorage.getItem('id'))
-    ).subscribe({
-      next: (result: any) => {
-        console.log(result);
-        this.seanslar = result;
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-    });
-
-    this.setAccount();
-  }
-
-  async uploadPhoto() {
-    const image: Photo = await Camera.getPhoto({
-      resultType: CameraResultType.Uri, // Görüntü URI olarak dönecek
-      source: CameraSource.Prompt, // Kullanıcıya kamera veya galeriyi seçme seçeneği sunulacak
-      quality: 100, // Görüntü kalitesi %100 olacak
-    });
-
-    const base64Data: any = image.base64String;
-    const fileName: any = `photo.${image.format}`;
-    const imageBlob = this.base64ToBlob(base64Data, `image/${image.format}`);
-
-        const formData = new FormData();
-        formData.append('file', imageBlob, fileName);
-
-    this.UserService.uploadPhoto(formData).subscribe({
-      next: (result: any) => {
-        console.log(result);
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    });
-  }
-
-  base64ToBlob(base64Data: string, contentType: string) {
-    const byteCharacters = atob(base64Data);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], { type: contentType });
-  }
-
-  cancel(modal: IonModal) {
-    modal.dismiss(null, 'cancel');
-  }
-
-  customCounterFormatter(inputLength: number, maxLength: number) {
-    return `${maxLength - inputLength} Karakter Kaldı`;
-  }
-
-  writeName()
-  {
-    return this.accountform.value.adsoyad ? this.accountform.value.adsoyad: 'İsminizi Güncelleyin.'
-  }
-
-  writeKategori()
-  {
-    return this.accountform.value.kategori
-      ? this.accountform.value.kategori
-      : 'İsminizi Güncelleyin.';
-  }
+  balanceformPsikolog = new FormGroup({
+    IBAN: new FormControl('', Validators.required),
+    fiyat: new FormControl('', Validators.required),
+  });
 }

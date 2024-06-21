@@ -13,22 +13,30 @@ export class PsikologHesabiPage implements OnInit {
   @ViewChild('modal1', { static: false }) modal1!: IonModal;
   @ViewChild('modal2', { static: false }) modal2!: IonModal;
   @ViewChild('modal3', { static: false }) modal3!: IonModal;
+  psikolog: any;
+  type: any;
 
-  constructor(private UserService: UserService, private route: ActivatedRoute) {}
+
+  constructor(
+    private UserService: UserService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-        const id = this.route.snapshot.paramMap.get('id');
+    this.type = localStorage.getItem('type');
+    const id = this.route.snapshot.paramMap.get('id');
 
-        if (id) {
-          this.UserService.getPsikolog(parseInt(id, 10)).subscribe({
-            next: (result: any) => {
-              console.log(result);
-            },
-            error: (err: any) => {
-              console.log(err);
-            },
-          });
-        }
+    if (id) {
+      this.UserService.getPsikolog(parseInt(id, 10)).subscribe({
+        next: (result: any) => {
+          this.psikolog = result;
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
   cancel(modal: IonModal) {

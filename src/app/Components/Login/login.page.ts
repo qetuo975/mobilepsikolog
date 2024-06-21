@@ -25,7 +25,10 @@ export class LoginPage implements OnInit {
     private UserService: UserService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+                            localStorage.removeItem('id');
+                            localStorage.removeItem('type');
+  }
 
   async presentToast(
     message: string,
@@ -48,6 +51,9 @@ export class LoginPage implements OnInit {
       this.UserService.login(email, password).subscribe({
         next: (response) => {
           console.log('Login successful:', response);
+
+                        localStorage.setItem('id', response.token.user.id);
+                        localStorage.setItem('type', response.token.type);
           this.presentToast('Giriş başarılı!', 'success', 'top');
           this.router.navigate(['/']);
         },

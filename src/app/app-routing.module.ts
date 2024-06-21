@@ -35,6 +35,13 @@ const routes: Routes = [
       import('./Components/Test/test.module').then((m) => m.TestModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'psikolog/:id',
+    loadChildren: () =>
+      import('./Components/PsikologHesabi/psikologhesabi.module').then(
+        (m) => m.PsikologHesabiModule
+      ),
+  },
 ];
 @NgModule({
   imports: [

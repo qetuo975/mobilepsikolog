@@ -10,11 +10,16 @@
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4j6P_40m6z-_ZbAVkUsKt05BmGX8WUX-2cuY1PMLFng&s"
           style="width: 80px; height: 80px; border-radius: 50%;" />
       </div>
-      <div
+      <div *ngIf="type !== 'user'"
         style="width: 70%; display: flex; flex-direction: column; gap: 10px; padding: 10px; justify-content: center;">
-        <h2>{{writeName()}}</h2>
-        <p>{{writeKategori()}}</p>
+        <h2>{{writeNamePsikolog()}}</h2>
+        <p>{{writeKategoriPsikolog()}}</p>
       </div>
+      <div *ngIf="type === 'user'"
+        style="width: 70%; display: flex; flex-direction: column; gap: 10px; padding: 10px; justify-content: center;">
+        <h2>{{writeNameUser()}}</h2>
+      </div>
+
     </div>
   </div>
 
@@ -35,7 +40,7 @@
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding">
-            <form [formGroup]="accountform" (ngSubmit)="accountFormSubmit()">
+            <form *ngIf="type !== 'user'" [formGroup]="accountformPsikolog" (ngSubmit)="accountFormPsikologSubmit()">
               <br>
               <ion-input formControlName="adsoyad" label="Ad Soyad" label-placement="floating" fill="outline"
                 placeholder="Ad Soyad Giriniz."></ion-input>
@@ -91,6 +96,28 @@
                 Güncelle
               </ion-button>
             </form>
+            <form *ngIf="type === 'user'" [formGroup]="accountformUser" (ngSubmit)="accountFormUserSubmit()">
+              <br>
+              <ion-input formControlName="adsoyad" label="Ad Soyad" label-placement="floating" fill="outline"
+                placeholder="Ad Soyad Giriniz."></ion-input>
+              <br>
+              <ion-input formControlName="yas" label="Yaş" type="number" label-placement="floating" fill="outline"
+                placeholder="Yaş Giriniz."></ion-input>
+              <br>
+              <ion-select formControlName="cinsiyet" label="Cinsiyet" label-placement="floating" fill="outline">
+                <ion-select-option value="erkek">Erkek</ion-select-option>
+                <ion-select-option value="kadin">Kadın</ion-select-option>
+              </ion-select>
+              <br>
+              <ion-button (click)="uploadPhoto()" expand="block" fill="outline">
+                <ion-icon slot="start" name="camera"></ion-icon>
+                Fotoğraf Yükle
+              </ion-button>
+              <br>
+              <ion-button type="submit" class="update-button" expand="block">
+                Güncelle
+              </ion-button>
+            </form>
 
           </ion-content>
 
@@ -98,7 +125,8 @@
         </ng-template>
       </ion-modal>
     </ion-item>
-    <ion-item [button]="true" id="odeme">
+
+    <ion-item *ngIf="type !== 'user'" [button]="true" id="odeme">
       <ion-icon color="primary" slot="start" name="card-outline" size="medium"></ion-icon>
       <ion-label>Ödeme Bilgileri</ion-label>
       <ion-note slot="end">Yönet</ion-note>
@@ -112,10 +140,13 @@
             </ion-toolbar>
           </ion-header>
           <ion-content class="ion-padding">
-            <form [formGroup]="balanceform" (ngSubmit)="balanceFormSubmit()">
+            <form [formGroup]="balanceformPsikolog" (ngSubmit)="balanceFormPsikologSubmit()">
               <br>
               <ion-input formControlName="IBAN" label="IBAN" label-placement="floating" fill="outline"
-                placeholder="Enter text"></ion-input>
+                placeholder="IBAN"></ion-input>
+              <br>
+              <ion-input type="number" formControlName="fiyat" label="Seans Ücreti" label-placement="floating"
+                fill="outline" placeholder="Seans Ücreti"></ion-input>
               <br>
               <ion-item lines="none">
                 <ion-label>Aktarılacak Bakiye</ion-label>
@@ -132,7 +163,7 @@
         </ng-template>
       </ion-modal>
     </ion-item>
-    <ion-item [button]="true" id="seans">
+    <ion-item *ngIf="type !== 'user'" [button]="true" id="seans">
       <ion-icon color="tertiary" slot="start" name="construct-outline" size="medium"></ion-icon>
       <ion-label>Seans Ayarlarım</ion-label>
       <ion-note slot="end">Yönet</ion-note>
@@ -149,13 +180,14 @@
             <h2 style="color: #5a5353; margin: 20px 0px !important;">Çalışma Planı (Haftalık)</h2>
             <ion-list *ngIf="seanslar.length > 0" style="margin-bottom: 30px;">
 
-                <ion-item *ngFor="let seans of seanslar">
-                  <ion-label>
-                    {{seans.tarih}}: {{seans.baslangicsaat}} - {{seans.bitissaat}}
-                  </ion-label>
-                </ion-item>
+              <ion-item *ngFor="let seans of seanslar">
+                <ion-label>
+                  {{seans.tarih}}: {{seans.baslangicsaat}} - {{seans.bitissaat}}
+                </ion-label>
+              </ion-item>
             </ion-list>
-                          <h2 style="color: #5a5353; margin-bottom: 50px !important; font-size: 15px;" *ngIf="seanslar.length === 0">Henüz Seansınız Yok</h2>
+            <h2 style="color: #5a5353; margin-bottom: 50px !important; font-size: 15px;" *ngIf="seanslar.length === 0">
+              Henüz Seansınız Yok</h2>
 
 
             <h2 style="color: #5a5353; margin: 20px 0px !important;">Seans Günü Ekle</h2>

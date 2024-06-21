@@ -49,8 +49,19 @@ export class UserService {
     });
   }
 
-  uploadPhoto(formdata: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/uploadphoto`, formdata);
+  updateUserAccount(accountData: any, id: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/updateuseraccount`, {
+      accountData,
+      id,
+    });
+  }
+
+  uploadPhotoPsikolog(formdata: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/uploadphotopsikolog`, formdata);
+  }
+
+  uploadPhotoUser(formdata: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/uploadphotouser`, formdata);
   }
 
   addSeans(start: any, end: any, day: any, id: any): Observable<any> {

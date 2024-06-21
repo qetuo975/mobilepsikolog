@@ -19,6 +19,10 @@ export class PsikologService {
     return this.http.get(`${this.baseUrl}/psikologkategori`).pipe();
   }
 
+  getSearch(psikologname: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/getsearch?query=${psikologname}`).pipe();
+  }
+
   filterpsikolog(formdata: any): Observable<any> {
     const body = { formdata };
     return this.http.post(`${this.psikolog}/filterpsikolog`, body).pipe();

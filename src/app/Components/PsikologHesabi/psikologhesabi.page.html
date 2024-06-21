@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Zhafira Azalea</ion-title>
+    <ion-title *ngIf="psikolog">{{psikolog.adsoyad}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,12 +17,12 @@
       </div>
       <div
         style="width: 70%; display: flex; flex-direction: column; gap: 10px; padding: 10px; justify-content: center;">
-        <h2>Zhafira Azalea</h2>
-        <p>Aile Terapist</p>
+        <h2 *ngIf="psikolog">{{psikolog.adsoyad}}</h2>
+        <p *ngIf="psikolog">{{psikolog.kategoriler[0].baslik}}</p>
       </div>
     </div>
-    <ion-button expand="block">
-      <ion-icon name="color-wand-outline" slot="start" size="medium"></ion-icon>
+    <ion-button *ngIf="type === 'user'" expand="block">
+      <ion-icon  name="color-wand-outline" slot="start" size="medium"></ion-icon>
       Görüşme Ayarla
     </ion-button>
   </div>
@@ -30,31 +30,29 @@
   <h2 style="margin: 20px 0px !important; color: #463c3c;">Uzmanlık Alanları</h2>
   <div style="border-radius: 5px;  width: 100%; display: flex; flex-direction: column; gap: 10px;">
 
-    <div style="border-radius: 5px; background-color: #fff; width: 100%; padding: 15px;">
-      <h3>Stres</h3>
-    </div>
+    <ng-container *ngIf="psikolog">
+      <div *ngFor="let skill of psikolog.ozellikler"
+        style="border-radius: 5px; background-color: #fff; width: 100%; padding: 15px;">
+        <h3>{{skill.baslik}}</h3>
+      </div>
+    </ng-container>
 
-    <div style="border-radius: 5px; background-color: #fff; width: 100%; padding: 15px;">
-      <h3>Kaygı</h3>
-    </div>
 
-    <div style="border-radius: 5px; background-color: #fff; width: 100%; padding: 15px;">
-      <h3>Anksiyete</h3>
-    </div>
+
   </div>
   <h2 style="margin: 20px 0px !important; color: #463c3c;">Hakkında</h2>
-  <p style="line-height: 23px; border-radius: 5px; font-size: 16px; background-color: #fff; padding: 15px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit laboriosam maiores rerum delectus ducimus, obcaecati nesciunt, dolor dignissimos dolore modi culpa doloribus sunt architecto magnam aliquid earum possimus esse exercitationem in! Modi mollitia officiis soluta tempore at repellat fuga blanditiis doloribus? Ratione pariatur, non suscipit ipsa labore aspernatur ea porro iste, corrupti officia, repellat in nam. Ea repudiandae animi rerum nam neque odio officiis doloribus quae perspiciatis, vitae sunt culpa dicta facere eaque quisquam eligendi laboriosam asperiores earum nostrum, ducimus autem. Iusto quasi at sint assumenda rerum aperiam quidem repellendus error commodi illum? A quasi tenetur nulla magni ex saepe.</p>
+  <p *ngIf="psikolog"
+    style="line-height: 23px; border-radius: 5px; font-size: 16px; background-color: #fff; padding: 15px;">
+    {{psikolog.hakkimda}}</p>
 
 
-    <h2 style="margin: 20px 0px !important; color: #463c3c;">Eğitim</h2>
+  <h2 style="margin: 20px 0px !important; color: #463c3c;">Eğitim</h2>
 
-  <div style="background-color: #fff; gap: 10px; flex-direction: column; display: flex; padding: 15px; border-radius: 5px;">
-        <b>Ankara Yıldırım Beyazıt Üniversitesi</b>
-        <p>Psikoloji Lisans</p>
+  <div
+    style="background-color: #fff; gap: 10px; flex-direction: column; display: flex; padding: 15px; border-radius: 5px;">
+    <b *ngIf="psikolog">{{psikolog.universite}}</b>
+    <p *ngIf="psikolog">{{psikolog.bolum}}</p>
   </div>
 
-  <div style="height: 50px;">
-
-  </div>
-
+  <div style="height: 50px;"></div>
 </ion-content>

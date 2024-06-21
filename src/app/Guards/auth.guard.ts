@@ -12,6 +12,7 @@ export class AuthGuard {
     const type = localStorage.getItem('type');
     if (type) {
       const id = localStorage.getItem('id');
+      console.log(type, id);
 
       if (type == 'psikolog') {
         return this.userService.getPsikolog(Number(id)).pipe(
@@ -32,6 +33,7 @@ export class AuthGuard {
       } else {
         return this.userService.getUser(Number(id)).pipe(
           tap((result: any) => {
+            console.log(result);
             if (result) {
               return of(true);
             } else {
