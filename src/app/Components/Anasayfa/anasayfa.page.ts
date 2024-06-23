@@ -8,6 +8,7 @@ import { IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import moment from 'moment';
 
 @Component({
   selector: 'app-anasayfa',
@@ -43,7 +44,8 @@ export class AnasayfaPage implements OnInit {
 
   type: any;
   id: any;
-  isLoading: boolean = false;
+  seanslar: any[] = [];
+  upcomingSeanslar: any[] = [];
 
   psikologkategoriler: any;
   secilenkategori: string = '';
@@ -57,40 +59,12 @@ export class AnasayfaPage implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.id = localStorage.getItem('id');
-    this.type = localStorage.getItem('type');
-
-this.searchControl.valueChanges
-  .pipe(
-    debounceTime(3000),
-    distinctUntilChanged()
-  )
-  .subscribe((searchTerm) => {
-    if (searchTerm) {
-      this.isLoading = true;
-      this.PsikologService.getSearch(searchTerm.toLowerCase()).subscribe({
-        next: (result: any) => {
-          this.isLoading = false;
-          console.log(result);
-          const navigationExtras: NavigationExtras = {
-            state: {
-              filterData: result,
-            },
-          };
-          this.router.navigate(['/tabs/psikologlar'], navigationExtras);
-        },
-        error: (err: any) => {
-          this.isLoading = false;
-          console.error(err);
-        },
-      });
-    }
-  });
-
+  getSeanslar() {
     if (this.type == 'user') {
       this.SeansService.getSeansUser(this.id).subscribe({
         next: (result: any) => {
+          this.seanslar = result.seans;
+          this.checkSeansDates();
           console.log(result);
         },
         error: (err: any) => {
@@ -98,9 +72,10 @@ this.searchControl.valueChanges
         },
       });
     } else {
-      console.log('Psikolog Seansları');
       this.SeansService.getSeansPsikolog(this.id).subscribe({
         next: (result: any) => {
+          this.seanslar = result.seans;
+          this.checkSeansDates();
           console.log(result);
         },
         error: (err: any) => {
@@ -108,6 +83,91 @@ this.searchControl.valueChanges
         },
       });
     }
+  }
+
+  checkSeansDates() {
+    this.seanslar.forEach((seans) => {
+      seans.isUpcoming = this.isSeansUpcoming(seans.tarih);
+      seans.isPast = this.isSeansPast(seans.tarih);
+
+      if (seans.isUpcoming) {
+        this.upcomingSeanslar.push(seans);
+      }
+    });
+  }
+
+  isSeansUpcoming(tarih: string): boolean {
+    const seansTarih = this.parseSeansDate(tarih);
+    const currentDate = moment();
+    const seansBitis = seansTarih.clone().add(2, 'hours'); // Seans bitiş saati, seans süresi 2 saat olduğunu varsaydım
+
+    return currentDate.isBetween(seansTarih, seansBitis);
+  }
+
+  isSeansPast(tarih: string): boolean {
+    const seansTarih = this.parseSeansDate(tarih);
+    const currentDate = moment();
+    return currentDate.isAfter(seansTarih.clone().add(2, 'hours'));
+  }
+
+  parseSeansDate(tarih: string): moment.Moment {
+    const [dayPart, timePart] = tarih.split('|').map((part) => part.trim());
+    const startTime = timePart.split(':')[0].trim();
+    const dayOfWeek = this.getDayOfWeek(dayPart);
+
+    const currentWeek = moment().isoWeek();
+
+    return moment()
+      .isoWeek(currentWeek)
+      .day(dayOfWeek)
+      .set({
+        hour: parseInt(startTime.split(':')[0], 10),
+        minute: parseInt(startTime.split(':')[1], 10),
+        second: 0,
+        millisecond: 0,
+      });
+  }
+
+  getDayOfWeek(day: string): number {
+    const days: { [key: string]: number } = {
+      Pazartesi: 1,
+      Salı: 2,
+      Çarşamba: 3,
+      Perşembe: 4,
+      Cuma: 5,
+      Cumartesi: 6,
+      Pazar: 7,
+    };
+    return days[day] ?? -1;
+  }
+
+  ngOnInit(): void {
+    this.id = localStorage.getItem('id');
+    this.type = localStorage.getItem('type');
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(3000), distinctUntilChanged())
+      .subscribe((searchTerm) => {
+        if (searchTerm) {
+          this.PsikologService.getSearch(searchTerm.toLowerCase()).subscribe({
+            next: (result: any) => {
+              console.log(result);
+              const navigationExtras: NavigationExtras = {
+                state: {
+                  filterData: result,
+                },
+              };
+              this.searchControl.reset();
+              this.router.navigate(['/filterpsikologlar'], navigationExtras);
+            },
+            error: (err: any) => {
+              console.error(err);
+            },
+          });
+        }
+      });
+
+      this.getSeanslar();
 
     this.BlogsService.getBlogs().subscribe({
       next: (result: any) => {
@@ -162,7 +222,7 @@ this.searchControl.valueChanges
           },
         };
         this.cancel();
-        this.router.navigate(['/tabs/psikologlar'], navigationExtras);
+              this.router.navigate(['/filterpsikologlar'], navigationExtras);
       },
       error: (err: any) => {
         console.log(err);

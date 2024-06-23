@@ -9,16 +9,18 @@ import { AppComponent } from './app.component';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { environment } from '../environments/environment';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './Guards/auth.guard';
 
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    SocketIoModule.forRoot(config),
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp({

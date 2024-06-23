@@ -1,8 +1,8 @@
 import { UserService } from './../../../Service/user.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IonModal } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core/components';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonModal, ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-psikologhesabi',
@@ -10,26 +10,97 @@ import { OverlayEventDetail } from '@ionic/core/components';
   styleUrls: ['psikologhesabi.page.scss'],
 })
 export class PsikologHesabiPage implements OnInit {
-  @ViewChild('modal1', { static: false }) modal1!: IonModal;
-  @ViewChild('modal2', { static: false }) modal2!: IonModal;
-  @ViewChild('modal3', { static: false }) modal3!: IonModal;
-  psikolog: any;
-  type: any;
+  @ViewChild('UserSeansModal', { static: false }) UserSeansModal!: IonModal;
 
+  psikolog: any;
+  psikologseanslar: any;
+  selectedSeans: any;
+  type: any;
+  selectedTime: any;
+  accountblock: any;
 
   constructor(
     private UserService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ToastController: ToastController,
+    private Router: Router
   ) {}
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
+    const toast = await this.ToastController.create({
+      message: message,
+      duration: 1500,
+      position: position,
+    });
+
+    await toast.present();
+  }
+
+  selectSeans(seans: any) {
+    this.selectedSeans = seans;
+    if (this.selectedSeans.dolu == true) {
+      this.presentToast(
+        'top',
+        'Seans dolu, lütfen başka tarihte seans seçiniz.'
+      );
+      this.selectedSeans = null;
+    }
+  }
+
+  seansAdd() {
+    this.UserService.PsikologSeans(
+      Number(localStorage.getItem('id')),
+      this.psikolog.id,
+      {
+        tarih: this.selectedSeans.tarih,
+        start: this.selectedSeans.baslangicsaat,
+        end: this.selectedSeans.bitissaat,
+      }
+    ).subscribe({
+      next: (result: any) => {
+        if (result.result == true) {
+          this.presentToast('top', result.seans.tarih + ' Seans Alınmıştır.');
+          this.getPsikologSeanslar();
+        } else {
+          this.presentToast('top', 'Seans alma başarısız.');
+        }
+        console.log(result);
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
+  }
 
   ngOnInit(): void {
     this.type = localStorage.getItem('type');
     const id = this.route.snapshot.paramMap.get('id');
 
+    if (this.type == 'user')
+      {
+        this.UserService.getUser(Number(localStorage.getItem('id'))).subscribe({
+          next: (result: any) => {
+            if (result.adsoyad == null)
+              {
+                this.presentToast('top', 'Hesap bilgilerinizi güncelleyin.');
+                this.accountblock = true;
+                setTimeout(() => {
+                  this.Router.navigate(['/tabs/hesabim']);
+                }, 2000);
+              }
+            console.log(result);
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        });
+      }
+
     if (id) {
       this.UserService.getPsikolog(parseInt(id, 10)).subscribe({
         next: (result: any) => {
           this.psikolog = result;
+          this.getPsikologSeanslar();
           console.log(result);
         },
         error: (err: any) => {
@@ -39,14 +110,20 @@ export class PsikologHesabiPage implements OnInit {
     }
   }
 
+  getPsikologSeanslar() {
+    this.UserService.getPsikologSeans(this.psikolog.id).subscribe({
+      next: (result: any) => {
+        this.psikologseanslar = result;
+        console.log(result);
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+    });
+  }
+
   cancel(modal: IonModal) {
     modal.dismiss(null, 'cancel');
   }
 
-  selectedTime: any;
-  sessions: { date: string; startTime: string; endTime: string }[] = [
-    { date: '2024-06-12', startTime: '09:00', endTime: '10:00' },
-    { date: '2024-06-13', startTime: '14:00', endTime: '15:00' },
-    { date: '2024-06-14', startTime: '11:00', endTime: '12:00' },
-  ];
 }

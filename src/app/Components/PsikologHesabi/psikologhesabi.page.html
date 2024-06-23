@@ -21,38 +21,66 @@
         <p *ngIf="psikolog">{{psikolog.kategoriler[0].baslik}}</p>
       </div>
     </div>
-    <ion-button *ngIf="type === 'user'" expand="block">
-      <ion-icon  name="color-wand-outline" slot="start" size="medium"></ion-icon>
+    <div style="width: 100%; padding-left: 16px; padding-right: 16px; padding-bottom: 16px;">
+    <ion-button [disabled]="accountblock" id="UserSeansModal" *ngIf="type === 'user'" expand="block">
+      <ion-icon name="color-wand-outline" slot="start" size="medium"></ion-icon>
       Görüşme Ayarla
     </ion-button>
+    </div>
+
   </div>
 
   <h2 style="margin: 20px 0px !important; color: #463c3c;">Uzmanlık Alanları</h2>
   <div style="border-radius: 5px;  width: 100%; display: flex; flex-direction: column; gap: 10px;">
-
     <ng-container *ngIf="psikolog">
       <div *ngFor="let skill of psikolog.ozellikler"
         style="border-radius: 5px; background-color: #fff; width: 100%; padding: 15px;">
         <h3>{{skill.baslik}}</h3>
       </div>
     </ng-container>
-
-
-
   </div>
   <h2 style="margin: 20px 0px !important; color: #463c3c;">Hakkında</h2>
   <p *ngIf="psikolog"
     style="line-height: 23px; border-radius: 5px; font-size: 16px; background-color: #fff; padding: 15px;">
     {{psikolog.hakkimda}}</p>
-
-
   <h2 style="margin: 20px 0px !important; color: #463c3c;">Eğitim</h2>
-
   <div
     style="background-color: #fff; gap: 10px; flex-direction: column; display: flex; padding: 15px; border-radius: 5px;">
     <b *ngIf="psikolog">{{psikolog.universite}}</b>
     <p *ngIf="psikolog">{{psikolog.bolum}}</p>
   </div>
-
   <div style="height: 50px;"></div>
 </ion-content>
+
+
+    <ion-modal trigger="UserSeansModal" #UserSeansModal>
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="cancel(UserSeansModal)" [strong]="true">İptal</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-list *ngIf="psikologseanslar.length > 0" style="margin-bottom: 30px;">
+            <ion-item button="true" (click)="selectSeans(seans)" *ngFor="let seans of psikologseanslar"
+              [class.selected]="selectedSeans === seans">
+              <ion-label>
+                {{seans.tarih}}: {{seans.baslangicsaat}} - {{seans.bitissaat}}
+              </ion-label>
+              <b *ngIf="seans.dolu === false" style="color: #2ecc71;">Boş</b>
+              <b *ngIf="seans.dolu === true" style="color: #c0392b;">Dolu</b>
+            </ion-item>
+          </ion-list>
+
+    <ion-button [disabled]="!selectedSeans" (click)="seansAdd()" expand="block">
+      <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
+      Seans Ekle
+    </ion-button>
+
+
+
+        </ion-content>
+      </ng-template>
+    </ion-modal>

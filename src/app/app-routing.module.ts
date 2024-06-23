@@ -22,6 +22,20 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'filterpsikologlar',
+    loadChildren: () =>
+      import('./Components/FilterPsikologlar/filterpsikologlar.module').then(
+        (m) => m.FilterPsikologlarModule
+      ),
+  },
+  {
+    path: 'chat',
+    loadChildren: () =>
+      import('./Components/Chat/chat.module').then(
+        (m) => m.ChatModule
+      ),
+  },
+  {
     path: 'bloglar',
     loadChildren: () =>
       import('./Components/Bloglar/bloglar.module').then(

@@ -80,6 +80,20 @@ export class UserService {
     });
   }
 
+
+
+  PsikologSeans(
+    userid: number,
+    psikologid: number,
+    tarih: any
+  ): Observable<any> {
+    return this.http.post(`${this.baseUrl}/psikologseans`, {
+      userid,
+      psikologid,
+      tarih,
+    });
+  }
+
   login(email: string, password: string): Observable<any> {
     const body = { email, password };
     return this.http.post(`${this.baseUrl}/login`, body).pipe();

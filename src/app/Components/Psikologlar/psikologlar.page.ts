@@ -13,16 +13,9 @@ export class PsikologlarPage implements OnInit {
 
   constructor(
     private PsikologService: PsikologService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
-    const state = this.router.getCurrentNavigation()?.extras.state;
-    if (state) {
-      this.psikologlar = state['filterData'];
-
-      console.log(this.psikologlar);
-    } else {
       this.PsikologService.getPsikologs().subscribe({
         next: (result: any) => {
           this.psikologlar = result;
@@ -32,6 +25,5 @@ export class PsikologlarPage implements OnInit {
           console.log(err);
         },
       });
-    }
   }
 }
