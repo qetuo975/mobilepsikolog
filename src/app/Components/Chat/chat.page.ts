@@ -1,16 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Socket } from 'ngx-socket-io';
+
 declare var Peer: any;
 var peer = new Peer();
 
-var myID: any;
-var clientHasCall: any = [];
 var myVideoStream: any = null;
-var howmany = null;
-
-var clientVideoStream: any = [];
-var clientCamera: any = null;
+var clientVideoStreams: any[] = [];
 
 @Component({
   selector: 'app-chat',
@@ -18,47 +14,42 @@ var clientCamera: any = null;
   styleUrls: ['chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  mypeerid: any;
-  anotherid: any;
+  MyPeerId: any;
+  clientHasCall: any = [];
+  clientCamera: any;
+  anotherId: any;
   roomId: any;
 
   constructor(private socket: Socket, private toastCtrl: ToastController) {}
+
   ngOnInit() {
     setTimeout(() => {
       this.openCamera();
       this.socket.connect();
-      myID = peer.id;
-      clientHasCall.push(peer.id);
-      this.mypeerid = peer.id;
-      //this.openCamera();
-      this.socket.emit('set-name', this.mypeerid);
+      this.MyPeerId = peer.id;
+      this.clientHasCall.push(peer.id);
+      this.socket.emit('set-name', this.MyPeerId);
       this.socket.fromEvent('users-changed').subscribe((data: any) => {
         let user = data['user'];
         if (data['event'] === 'left') {
-          this.showToast('User left: ' + user);
-          //document.getElementsByTagName("video")[howmany - 1].setAttribute("id", fname);
-          console.log(document.getElementById(user)!.remove());
+          this.showToast('Kullanıcı Ayrıldı ' + user);
+          document.getElementById(user)!.remove();
         } else {
-          this.showToast('User joined: ' + user);
+          this.showToast('Kullanıcı Katıldı ' + user);
         }
       });
-      this.socket.emit('set-camera', this.mypeerid, true);
+      this.socket.emit('set-camera', this.MyPeerId, true);
       this.socket.emit('list-client');
     }, 1000);
-
     this.socket.emit('request-camera');
     this.socket.fromEvent('request-camera').subscribe((data: any) => {
-      clientCamera = data['user'];
+      this.clientCamera = data['user'];
     });
     this.socket.fromEvent('list-client').subscribe((data: any) => {
-      //console.log(myID);
-      //console.log(clientHasCall);
       let client_available = data['user'];
-      // console.log(client_available);
-      // console.log(clientHasCall);
-      for (var i = 0; i < clientHasCall.length; i++) {
+      for (var i = 0; i < this.clientHasCall.length; i++) {
         for (var k = 0; k < client_available.length; k++) {
-          if (client_available[k] == clientHasCall[i]) {
+          if (client_available[k] == this.clientHasCall[i]) {
             client_available.splice(k, 1);
             i--;
           }
@@ -67,146 +58,144 @@ export class ChatPage implements OnInit {
       if (client_available.length == 0) {
       } else {
         for (var i = 0; i < client_available.length; i++) {
-          clientHasCall.push(client_available[i]);
+          this.clientHasCall.push(client_available[i]);
         }
         for (var i = 0; i < client_available.length; i++) {
-          this.anotherid = client_available[i];
+          this.anotherId = client_available[i];
           this.mediaCall();
           this.mediaAnswer();
         }
       }
     });
   }
+
   openCamera() {
-    var n = <any>navigator;
+    const n = <any>navigator;
     n.getUserMedia =
       n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
     n.getUserMedia(
       {
-        video: { width: 320, height: 320 },
+        video: { width: 1000, height: 320 },
         audio: true,
       },
-      function (stream: any) {
+      (stream: any) => {
         var video = document.createElement('video');
         video.srcObject = stream;
-        video.play();
-        document.getElementById('myList')!.appendChild(video);
-        document.getElementsByTagName('video')[0].setAttribute('id', myID);
+        video.setAttribute('autoplay', '');
+        video.setAttribute('playsinline', '');
+        video.style.width = '100%';
+        video.style.height = 'auto';
+        var myList = document.getElementById('myList');
+        if (myList) {
+          myList.appendChild(video);
+        }
+        var myID = 'myVideo';
+        video.setAttribute('id', myID);
         myVideoStream = stream;
-        //myVideoStream.getVideoTracks()[0].enabled = !(myVideoStream.getVideoTracks()[0].enabled);
+      },
+      (err: any) => {
+        console.error('Video kaynağı alınamadı: ', err);
       }
     );
   }
-  // ## Media calls ##
+
   mediaAnswer() {
-    var video = document.createElement('video');
-    var n = <any>navigator;
-    n.getUserMedia =
-      n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-    peer.on('call', function (call: any) {
+    const n = <any>navigator;
+    const chatclass = this;
+    peer.on('call', (call: any) => {
+      n.getUserMedia =
+        n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
       n.getUserMedia(
-        { video: { width: 320, height: 320 }, audio: false },
-        function (stream: any) {
-          call.answer(stream); // Answer the call with an A/V stream.
-          call.on('stream', function (remoteStream: any) {
-            clientVideoStream.push(stream);
-            stream.getVideoTracks()[0].enabled = !clientCamera;
+        { video: { width: 320, height: 320 }, audio: true },
+        (stream: any) => {
+          call.answer(stream);
+          call.on('stream', (remoteStream: any) => {
+            clientVideoStreams.push(stream);
+            stream.getVideoTracks()[0].enabled = !chatclass.clientCamera;
             if (stream.getVideoTracks()[0].enabled == true) {
             } else {
-              stream.getVideoTracks()[0].enabled = clientCamera;
-              if (myVideoStream.getVideoTracks()[0].enabled) {
-                stream.getVideoTracks()[0].enabled = clientCamera;
-              } else {
-                stream.getVideoTracks()[0].enabled = !clientCamera;
-              }
+              stream.getVideoTracks()[0].enabled = chatclass.clientCamera
+                ? myVideoStream.getVideoTracks()[0].enabled
+                : !chatclass.clientCamera;
             }
-            // Show stream in some video/canvas element.
-            //video.srcObject = remoteStream;
-            //video.play();
-            //document.getElementById("myList").appendChild(video);
           });
         },
-        function (err: any) {
+        (err: any) => {
           console.log('Failed to get local stream', err);
         }
       );
     });
   }
+
   mediaCall() {
     var video = document.createElement('video');
     var locaVar = peer;
-    var fname = this.anotherid;
-
+    var fname = this.anotherId;
     var n = <any>navigator;
     n.getUserMedia =
       n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
     n.getUserMedia(
-      { video: { width: 320, height: 320 }, audio: false },
-      function (stream: any) {
+      { video: { width: 320, height: 320 }, audio: true },
+      (stream: any) => {
         var call = locaVar.call(fname, stream);
-        call.on('stream', function (remoteStream: any) {
-          // Show stream in some video/canvas element.
+        call.on('stream', (remoteStream: any) => {
           video.srcObject = remoteStream;
           video.play();
-          document.getElementById('myList')?.appendChild(video);
-          let howmany: any = document.getElementById('myList')?.childElementCount;
-          //console.log(howmany);
+          video.setAttribute('autoplay', '');
+          video.setAttribute('playsinline', '');
+          video.style.width = '100%';
+          video.style.height = 'auto';
+          var myList = document.getElementById('myList');
+          if (myList) {
+            myList.appendChild(video);
+          }
+          let howmany: any =
+            document.getElementById('myList')?.childElementCount;
           document
             .getElementsByTagName('video')
             [howmany - 1].setAttribute('id', fname);
-          //clientID = this.fname;
         });
         call.on('close', () => {
           video.remove();
         });
       },
-      function (err: any) {
+      (err: any) => {
         console.log('Failed to get local stream', err);
       }
     );
   }
+
   muteUnmute() {
-    let enabled = myVideoStream.getAudioTracks()[0].enabled;
-    myVideoStream.getAudioTracks()[0].enabled =
-      !myVideoStream.getAudioTracks()[0].enabled;
-    if (enabled) {
-      document.querySelector('.main__mute_button')!.innerHTML =
-        '<span>Unmute</span>';
+    let audioEnabled = myVideoStream.getAudioTracks()[0].enabled;
+    myVideoStream.getAudioTracks()[0].enabled = !audioEnabled;
+    const muteButton = document.querySelector('.main__mute_button');
+    if (audioEnabled) {
+      muteButton!.innerHTML = '<span>Sesi Aç</span>';
     } else {
-      document.querySelector('.main__mute_button')!.innerHTML =
-        '<span>Mute</span>';
+      muteButton!.innerHTML = '<span>Sesi Kapat</span>';
     }
   }
+
   playStop() {
-    let enabled = myVideoStream.getVideoTracks()[0].enabled;
-    myVideoStream.getVideoTracks()[0].enabled =
-      !myVideoStream.getVideoTracks()[0].enabled;
+    let videoEnabled = myVideoStream.getVideoTracks()[0].enabled;
+    myVideoStream.getVideoTracks()[0].enabled = !videoEnabled;
     this.socket.emit(
       'set-camera',
-      this.mypeerid,
+      this.MyPeerId,
       myVideoStream.getVideoTracks()[0].enabled
     );
-
-    for (var i = 0; i < clientVideoStream.length; i++) {
-      clientVideoStream[i].getVideoTracks()[0].enabled =
-        !clientVideoStream[i].getVideoTracks()[0].enabled;
-      let clientenabled = clientVideoStream[i].getVideoTracks()[0].enabled;
-      // if (clientenabled) {
-      //   clientVideoStream[i].getVideoTracks()[0].enabled = false;
-
-      // } else {
-      //   clientVideoStream[i].getVideoTracks()[0].enabled = true;
-      // }
-      //clientVideoStream[i].getVideoTracks()[0].enabled = !(clientVideoStream[i].getVideoTracks()[0].enabled);
+    for (let clientStream of clientVideoStreams) {
+      clientStream.getVideoTracks()[0].enabled =
+        !clientStream.getVideoTracks()[0].enabled;
     }
-    if (enabled) {
-      document.querySelector('.main__video_button')!.innerHTML =
-        '<span>Play Video</span>';
+    const videoButton = document.querySelector('.main__video_button');
+    if (videoEnabled) {
+      videoButton!.innerHTML = '<span>Videoyu Aç</span>';
     } else {
-      document.querySelector('.main__video_button')!.innerHTML =
-        '<span>Stop Video</span>';
+      videoButton!.innerHTML = '<span>Videoyu Kapat</span>';
     }
   }
+
   async showToast(msg: any) {
     let toast = await this.toastCtrl.create({
       message: msg,
