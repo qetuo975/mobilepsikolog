@@ -114,6 +114,10 @@ export class PsikologHesabiPage implements OnInit {
     this.UserService.getPsikologSeans(this.psikolog.id).subscribe({
       next: (result: any) => {
         this.psikologseanslar = result;
+        if (result.length == 0)
+          {
+            this.presentToast('top', this.psikolog.adsoyad + ' çalışma planı yok.')
+          }
         console.log(result);
       },
       error: (err: any) => {

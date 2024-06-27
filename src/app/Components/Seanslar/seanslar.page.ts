@@ -1,7 +1,7 @@
 import { SeansService } from './../../../Service/seans.service';
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
 import moment from 'moment';
-
 
 @Component({
   selector: 'app-seanslar',
@@ -9,7 +9,7 @@ import moment from 'moment';
   styleUrls: ['seanslar.page.scss'],
 })
 export class SeanslarPage implements OnInit {
-  constructor(private SeansService: SeansService) {}
+  constructor(private SeansService: SeansService, private router: Router) {}
   selectedSegment: string = 'default';
   type: any;
   id: any;
@@ -25,33 +25,32 @@ export class SeanslarPage implements OnInit {
     this.getSeanslar();
   }
 
-  getSeanslar()
-  {
-        if (this.type == 'user') {
-          this.SeansService.getSeansUser(this.id).subscribe({
-            next: (result: any) => {
-              (this.seanslar = result.seans),
-                (this.gecmisseanslar = result.tarihigecmisseans);
-              this.checkSeansDates();
-              console.log(result);
-            },
-            error: (err: any) => {
-              console.log(err);
-            },
-          });
-        } else {
-          this.SeansService.getSeansPsikolog(this.id).subscribe({
-            next: (result: any) => {
-              this.seanslar = result.seans;
-              this.gecmisseanslar = result.tarihigecmisseans;
-              this.checkSeansDates();
-              console.log(result);
-            },
-            error: (err: any) => {
-              console.log(err);
-            },
-          });
-        }
+  getSeanslar() {
+    if (this.type == 'user') {
+      this.SeansService.getSeansUser(this.id).subscribe({
+        next: (result: any) => {
+          (this.seanslar = result.seans),
+            (this.gecmisseanslar = result.tarihigecmisseans);
+          this.checkSeansDates();
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    } else {
+      this.SeansService.getSeansPsikolog(this.id).subscribe({
+        next: (result: any) => {
+          this.seanslar = result.seans;
+          this.gecmisseanslar = result.tarihigecmisseans;
+          this.checkSeansDates();
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
   checkSeansDates() {
@@ -65,17 +64,16 @@ export class SeanslarPage implements OnInit {
         this.pastSeanslar.push(seans);
       }
     });
-    if (this.pastSeanslar)
-      {
-        this.SeansService.deletePastSeans(this.pastSeanslar).subscribe({
-          next: (result: any) => {
-            console.log(result);
-          },
-          error: (err: any) => {
-            console.log(err);
-          }
-        });
-      }
+    if (this.pastSeanslar) {
+      this.SeansService.deletePastSeans(this.pastSeanslar).subscribe({
+        next: (result: any) => {
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
     console.log('Upcoming Seanslar: ', this.upcomingSeanslar);
     console.log('Past Seanslar: ', this.pastSeanslar);
   }
@@ -92,6 +90,19 @@ export class SeanslarPage implements OnInit {
     const seansTarih = this.parseSeansDate(tarih);
     const currentDate = moment();
     return currentDate.isAfter(seansTarih.clone().add(2, 'hours'));
+  }
+
+  navigateChat(seans: any) {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        chatData: {
+          target: seans.user
+            ? { target: seans.user, type: 'User' }
+            : { target: seans.psikolog, type: 'Psikolog' },
+        },
+      },
+    };
+    this.router.navigate(['/chat'], navigationExtras);
   }
 
   parseSeansDate(tarih: string): moment.Moment {

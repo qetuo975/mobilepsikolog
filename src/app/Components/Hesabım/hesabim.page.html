@@ -240,5 +240,14 @@
         </ng-template>
       </ion-popover>
     </ion-item>
+    <ion-item lines="none" *ngIf="!(accountformPsikolog.value.adsoyad && accountformPsikolog.value.resim) && type !== 'user'">
+      <ion-text  style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını ve hesabınızı güncelleyin.</ion-text>
+    </ion-item>
+
+        <ion-item lines="none"
+          *ngIf="!(accountformUser.value.adsoyad && accountformUser.value.resim) && type === 'user'">
+          <ion-text style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını ve hesabınızı
+            güncelleyin.</ion-text>
+        </ion-item>
   </ion-list>
 </ion-content>

@@ -122,6 +122,7 @@ export class HesabimPage implements OnInit {
     adsoyad: new FormControl('', Validators.required),
     yas: new FormControl('', Validators.required),
     cinsiyet: new FormControl('', Validators.required),
+    resim: new FormControl(''),
   });
 
   // User Fonksiyonları
@@ -324,6 +325,7 @@ export class HesabimPage implements OnInit {
     ozellik3: new FormControl('', Validators.required),
     ozellik4: new FormControl('', Validators.required),
     ozellik5: new FormControl('', Validators.required),
+    resim: new FormControl(''),
   });
 
   balanceformPsikolog = new FormGroup({
