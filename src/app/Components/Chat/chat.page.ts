@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 
 declare var Peer: any;
+var peer = new Peer();
 
 @Component({
   selector: 'app-chat',
@@ -16,9 +17,7 @@ export class ChatPage implements OnInit {
   myVideoStream: any = null;
   clientVideoStreams: any[] = [];
 
-  constructor(private socket: Socket, private router: Router) {
-    this.peer = new Peer();
-  }
+  constructor(private socket: Socket, private router: Router) {}
 
   ngOnInit() {
     const state: any = this.router.getCurrentNavigation()?.extras.state;
@@ -32,21 +31,16 @@ export class ChatPage implements OnInit {
       setTimeout(() => {
         this.openCamera();
         this.socket.connect();
-        this.peer.on('open', (id: any) => {
-          this.MyPeerId = id;
-          console.log('Peer ID:', this.MyPeerId); // Peer ID'nin doğru şekilde alındığını kontrol edin
-          this.socket.emit('set-name', {
-            peerId: this.MyPeerId,
-            targetId: this.targetUser.id,
-          });
-          console.log('Set-name emitted'); // Emit işleminin gerçekleştiğini kontrol edin
-          this.socket.emit('set-camera', this.MyPeerId, true);
-          this.socket.emit('list-client');
-        });
+        this.MyPeerId = peer.id
+        console.log(this.MyPeerId);
+        this.socket.emit('set-name', { peerid: this.MyPeerId, target: this.targetUser });
+        this.socket.emit('set-camera', this.MyPeerId, true);
+        this.socket.emit('list-client');
 
         // İstemci Kodu
         this.socket.on('list-client', (data: any) => {
           let users = data.users;
+          console.log(users);
 
           // Target kullanıcının bağlı olup olmadığını kontrol et
           let targetUserConnected = users.some(
