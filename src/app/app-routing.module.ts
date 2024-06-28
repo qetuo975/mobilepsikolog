@@ -27,13 +27,13 @@ const routes: Routes = [
       import('./Components/FilterPsikologlar/filterpsikologlar.module').then(
         (m) => m.FilterPsikologlarModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'chat',
     loadChildren: () =>
-      import('./Components/Chat/chat.module').then(
-        (m) => m.ChatModule
-      ),
+      import('./Components/Chat/chat.module').then((m) => m.ChatModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'bloglar',
@@ -55,6 +55,7 @@ const routes: Routes = [
       import('./Components/PsikologHesabi/psikologhesabi.module').then(
         (m) => m.PsikologHesabiModule
       ),
+    canActivate: [AuthGuard],
   },
 ];
 @NgModule({

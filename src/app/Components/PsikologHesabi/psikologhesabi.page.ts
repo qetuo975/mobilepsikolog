@@ -2,6 +2,7 @@ import { UserService } from './../../../Service/user.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonModal, ToastController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { IonModal, ToastController } from '@ionic/angular';
 })
 export class PsikologHesabiPage implements OnInit {
   @ViewChild('UserSeansModal', { static: false }) UserSeansModal!: IonModal;
+  serverpath: string = environment.serverphotopath;
 
   psikolog: any;
   psikologseanslar: any;
@@ -76,25 +78,23 @@ export class PsikologHesabiPage implements OnInit {
     this.type = localStorage.getItem('type');
     const id = this.route.snapshot.paramMap.get('id');
 
-    if (this.type == 'user')
-      {
-        this.UserService.getUser(Number(localStorage.getItem('id'))).subscribe({
-          next: (result: any) => {
-            if (result.adsoyad == null)
-              {
-                this.presentToast('top', 'Hesap bilgilerinizi güncelleyin.');
-                this.accountblock = true;
-                setTimeout(() => {
-                  this.Router.navigate(['/tabs/hesabim']);
-                }, 2000);
-              }
-            console.log(result);
-          },
-          error: (err: any) => {
-            console.log(err);
+    if (this.type == 'user') {
+      this.UserService.getUser(Number(localStorage.getItem('id'))).subscribe({
+        next: (result: any) => {
+          if (result.adsoyad == null) {
+            this.presentToast('top', 'Hesap bilgilerinizi güncelleyin.');
+            this.accountblock = true;
+            setTimeout(() => {
+              this.Router.navigate(['/tabs/hesabim']);
+            }, 2000);
           }
-        });
-      }
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
 
     if (id) {
       this.UserService.getPsikolog(parseInt(id, 10)).subscribe({
@@ -114,10 +114,12 @@ export class PsikologHesabiPage implements OnInit {
     this.UserService.getPsikologSeans(this.psikolog.id).subscribe({
       next: (result: any) => {
         this.psikologseanslar = result;
-        if (result.length == 0)
-          {
-            this.presentToast('top', this.psikolog.adsoyad + ' çalışma planı yok.')
-          }
+        if (result.length == 0) {
+          this.presentToast(
+            'top',
+            this.psikolog.adsoyad + ' çalışma planı yok.'
+          );
+        }
         console.log(result);
       },
       error: (err: any) => {
@@ -129,5 +131,4 @@ export class PsikologHesabiPage implements OnInit {
   cancel(modal: IonModal) {
     modal.dismiss(null, 'cancel');
   }
-
 }

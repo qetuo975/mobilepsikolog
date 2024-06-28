@@ -7,7 +7,9 @@
   <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
     <div style="border-radius: 5px; display: flex; background-color: #54a0ff; height: 125px; width: 100%;">
       <div style="width: 30%; display: flex; justify-content: center; align-items: center; padding: 5px;">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4j6P_40m6z-_ZbAVkUsKt05BmGX8WUX-2cuY1PMLFng&s"
+        <img *ngIf="!accountformPsikolog.value.resim" src="../../../assets/demoavatar.png"
+          style="width: 80px; height: 80px; border-radius: 50%;" />
+                  <img *ngIf="accountformPsikolog.value.resim" src="{{serverpath}}/{{accountformPsikolog.value.resim}}"
           style="width: 80px; height: 80px; border-radius: 50%;" />
       </div>
       <div *ngIf="type !== 'user'"

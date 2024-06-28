@@ -45,8 +45,11 @@
           <div style="width: 100%; height: 1px; background-color: #707070; margin-top: 5px; margin-bottom: 5px;"></div>
           <div style="width: 100%; height: 50%; display: flex; align-items: center; justify-content: left; gap: 15px;">
 
-            <img style="width: 60px; height: 60px; border-radius: 50%;" alt="Silhouette of a person's head"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4j6P_40m6z-_ZbAVkUsKt05BmGX8WUX-2cuY1PMLFng&s" />
+          <img *ngIf="type === 'user'" style="width: 60px; height: 60px; border-radius: 50%;" alt="Silhouette of a person's head"
+            src="{{serverpath}}/{{seanslar[0]['psikolog'].resim}}" />
+
+                      <img *ngIf="type !== 'user'" style="width: 60px; height: 60px; border-radius: 50%;" alt="Silhouette of a person's head"
+            src="{{serverpath}}/{{seanslar[0]['user'].resim}}" />
 
           <div
             style="width: 100%; height: 100%; display: flex; flex-direction: column; align-content: center; justify-content: center; gap: 10px;">
@@ -198,7 +201,7 @@
       <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
         <div style="width: 20%; height: 100%; display: flex; justify-content: center; align-items: center;">
           <img style="border-radius: 50%; object-fit: cover; width: 60px; height: 60px;"
-            src="https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?t=st=1718029483~exp=1718033083~hmac=66000c73be91ab885c66afd007c6d8b8525732792f80803e8d3ddc8ffba74bb9&w=740"
+            src="{{serverpath}}/{{terapist.resim}}"
             alt="{{terapist.adsoyad}}">
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px; padding: 10px; width: 55%; height: 100%;">

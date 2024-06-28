@@ -9,6 +9,7 @@ import {
 
 import { IonModal, ToastController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-hesabim',
@@ -19,6 +20,7 @@ export class HesabimPage implements OnInit {
   @ViewChild('modal1', { static: false }) modal1!: IonModal;
   @ViewChild('modal2', { static: false }) modal2!: IonModal;
   @ViewChild('modal3', { static: false }) modal3!: IonModal;
+  serverpath: string = environment.serverphotopath;
   type: any;
 
   constructor(
@@ -71,23 +73,42 @@ export class HesabimPage implements OnInit {
 
     const formData = new FormData();
     formData.append('file', imageBlob, fileName);
+    formData.append('type', String(localStorage.getItem('type')));
+    formData.append('id', String(localStorage.getItem('id')));
+
 
     if (this.type != 'user') {
       this.UserService.uploadPhotoPsikolog(formData).subscribe({
         next: (result: any) => {
+          if (result)
+            {
+              this.presentToast('top', 'Fotoğrafınız Başarıyla Güncellendi');
+            } else {
+              this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
+            }
           console.log(result);
         },
         error: (err: any) => {
           console.log(err);
+          this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
         },
       });
     } else {
       this.UserService.uploadPhotoUser(formData).subscribe({
         next: (result: any) => {
           console.log(result);
+                 if (result) {
+                   this.presentToast(
+                     'top',
+                     'Fotoğrafınız Başarıyla Güncellendi'
+                   );
+                 } else {
+                   this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
+                 }
         },
         error: (err: any) => {
           console.log(err);
+          this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
         },
       });
     }

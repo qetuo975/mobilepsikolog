@@ -2,6 +2,7 @@ import { SeansService } from './../../../Service/seans.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import moment from 'moment';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-seanslar',
@@ -17,6 +18,7 @@ export class SeanslarPage implements OnInit {
   gecmisseanslar: any[] = [];
   upcomingSeanslar: any[] = [];
   pastSeanslar: any[] = [];
+  serverpath: string = environment.serverphotopath;
 
   ngOnInit(): void {
     this.id = localStorage.getItem('id');

@@ -13,7 +13,6 @@ var peer = new Peer();
 export class ChatPage implements OnInit {
   MyPeerId: any;
   targetUser: any; // Store the target user
-  peer: any;
   myVideoStream: any = null;
   clientVideoStreams: any[] = [];
 
@@ -31,9 +30,12 @@ export class ChatPage implements OnInit {
       setTimeout(() => {
         this.openCamera();
         this.socket.connect();
-        this.MyPeerId = peer.id
+        this.MyPeerId = peer.id;
         console.log(this.MyPeerId);
-        this.socket.emit('set-name', { peerid: this.MyPeerId, target: this.targetUser });
+        this.socket.emit('set-name', {
+          peerid: this.MyPeerId,
+          target: this.targetUser,
+        });
         this.socket.emit('set-camera', this.MyPeerId, true);
         this.socket.emit('list-client');
 
@@ -57,28 +59,6 @@ export class ChatPage implements OnInit {
         });
       }, 1000);
     }
-  }
-
-  mediaAnswer() {
-    const n = <any>navigator;
-    const chatclass = this;
-    this.peer.on('call', (call: any) => {
-      n.getUserMedia =
-        n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-      n.getUserMedia(
-        { video: { width: 320, height: 320 }, audio: true },
-        (stream: any) => {
-          call.answer(stream);
-          call.on('stream', (remoteStream: any) => {
-            chatclass.clientVideoStreams.push(remoteStream);
-            chatclass.addVideoStream(remoteStream, call.peer);
-          });
-        },
-        (err: any) => {
-          console.log('Failed to get local stream', err);
-        }
-      );
-    });
   }
 
   openCamera() {
@@ -113,7 +93,7 @@ export class ChatPage implements OnInit {
 
   mediaCall() {
     var video = document.createElement('video');
-    var locaVar = this.peer;
+    var locaVar = peer; // Burada `peer` değişkeni global olarak tanımlanmış olmalı
     var fname = this.targetUser.id;
     var n = <any>navigator;
     n.getUserMedia =
@@ -147,6 +127,36 @@ export class ChatPage implements OnInit {
         console.log('Failed to get local stream', err);
       }
     );
+  }
+
+  mediaAnswer() {
+    const n = <any>navigator;
+    const chatclass = this;
+    if (!peer) {
+      console.error('Peer object not initialized.');
+      return;
+    }
+    peer.on('call', (call: any) => {
+      if (!n.getUserMedia) {
+        console.error('getUserMedia is not supported.');
+        return;
+      }
+      n.getUserMedia =
+        n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+      n.getUserMedia(
+        { video: { width: 320, height: 320 }, audio: true },
+        (stream: any) => {
+          call.answer(stream);
+          call.on('stream', (remoteStream: any) => {
+            chatclass.clientVideoStreams.push(remoteStream);
+            chatclass.addVideoStream(remoteStream, call.peer);
+          });
+        },
+        (err: any) => {
+          console.error('Failed to get local stream', err);
+        }
+      );
+    });
   }
 
   muteUnmute() {
