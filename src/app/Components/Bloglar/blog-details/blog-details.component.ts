@@ -9,15 +9,9 @@ import { BlogsService } from 'src/Service/blogs.service';
   styleUrls: ['./blog-details.component.scss'],
 })
 export class BlogDetailsComponent implements OnInit {
-  blog: any = {
-    id: 1,
-    content:
-      'Lorem as de fia cliner, Lorem as de fia cliner, Lorem as de fia cliner, Lorem as de fia cliner',
-    title: 'Depresyon Nedir ve Tedavisi Nasıldır ?',
-    date: '2024-05-26',
-    imageUrl:
-      'https://i.pinimg.com/originals/e8/f5/df/e8f5df8b5ecbaa3c335d0ef29a1537da.png',
-  };
+  blog: any;
+  serverpath: any = 'https://therapydays.com/static';
+
 
   constructor(
     private blogservice: BlogsService,
@@ -30,6 +24,7 @@ export class BlogDetailsComponent implements OnInit {
     if (id) {
       this.blogservice.getBlog(parseInt(id, 10)).subscribe({
         next: (result: any) => {
+          this.blog = result;
           console.log(result);
         },
         error: (err: any) => {

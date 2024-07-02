@@ -2,7 +2,6 @@ import { UserService } from './../../../Service/user.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonModal, ToastController } from '@ionic/angular';
-import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -12,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PsikologHesabiPage implements OnInit {
   @ViewChild('UserSeansModal', { static: false }) UserSeansModal!: IonModal;
-  serverpath: string = environment.serverphotopath;
+  serverpath: string = 'https://therapydays.com/static';
 
   psikolog: any;
   psikologseanslar: any;

@@ -8,10 +8,12 @@ export class BlogsService {
   constructor(private http: HttpClient) {}
 
   getBlogs() {
-    return this.http.get('http://localhost:4000/api/general/blogs').pipe();
+    return this.http.get('https://therapydays.com/api/general/blogs').pipe();
   }
 
   getBlog(id: number) {
-    return this.http.get('http://localhost:4000/api/general/blog/' + id).pipe();
+    return this.http
+      .get('https://therapydays.com/api/general/blog/' + id)
+      .pipe();
   }
 }

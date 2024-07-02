@@ -8,26 +8,27 @@
 </ion-header>
 
 <ion-content>
-
-
-<div style="padding: 16px; text-align: center; line-height: 30px; background-color: white; margin: 15px 0px;">
-  <ion-text mode="ios">
-    {{ blog.title }}
+<ng-container *ngIf="blog"><div style="padding: 16px; text-align: center; line-height: 30px; background-color: white; margin: 15px 0px;">
+  <ion-text>
+    {{ blog.baslik }}
   </ion-text>
 </div>
 
 
-  <ion-img [src]="blog.imageUrl" class="blog-image"></ion-img>
-  <div class="blog-content">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>{{ blog.title }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>{{ blog.content }}</p>
-      </ion-card-content>
-    </ion-card>
-  </div>
+<ion-img [src]="serverpath + '/' + blog.resim" class="blog-image"></ion-img>
+<div class="blog-content">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ blog.baslik }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ blog.icerik }}</p>
+    </ion-card-content>
+  </ion-card>
+</div>
+</ng-container>
+
+
 
 
 </ion-content>

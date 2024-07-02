@@ -18,9 +18,11 @@ export class TestPage implements OnInit {
 
   icerik: string = '';
   baslik: string = '';
+  resim: string = '';
   sonuclar: any[] = [];
   selectedsorular: any[] = [];
   selectedvalues: any[] = [];
+  serverpath: any = 'https://therapydays.com/static';
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -31,6 +33,7 @@ export class TestPage implements OnInit {
           console.log(result);
           this.icerik = result.icerik;
           this.baslik = result.baslik;
+          this.resim = result.resim;
           this.sonuclar = result.sonuclar;
           this.selectedsorular = result.sorular;
         },

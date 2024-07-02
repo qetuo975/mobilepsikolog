@@ -9,7 +9,6 @@ import {
 
 import { IonModal, ToastController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-hesabim',
@@ -20,7 +19,7 @@ export class HesabimPage implements OnInit {
   @ViewChild('modal1', { static: false }) modal1!: IonModal;
   @ViewChild('modal2', { static: false }) modal2!: IonModal;
   @ViewChild('modal3', { static: false }) modal3!: IonModal;
-  serverpath: string = environment.serverphotopath;
+  serverpath: any = 'https://therapydays.com/static';
   type: any;
 
   constructor(
@@ -31,7 +30,7 @@ export class HesabimPage implements OnInit {
   ngOnInit(): void {
     this.type = localStorage.getItem('type');
     if (this.type == 'user') {
-      console.log('User Hesabi');
+      this.setAccountUser();
     } else {
       this.UserService.getKategoriler().subscribe({
         next: (result: any) => {
@@ -61,14 +60,14 @@ export class HesabimPage implements OnInit {
   // Ortak Fonksiyonlar
   // --------------------------------------------
   async uploadPhoto() {
-    const image: Photo = await Camera.getPhoto({
-      resultType: CameraResultType.Uri, // Görüntü URI olarak dönecek
+    const image = await Camera.getPhoto({
+      resultType: CameraResultType.Base64, // Base64 olarak dönecek
       source: CameraSource.Prompt, // Kullanıcıya kamera veya galeriyi seçme seçeneği sunulacak
       quality: 100, // Görüntü kalitesi %100 olacak
     });
 
     const base64Data: any = image.base64String;
-    const fileName: any = `photo.${image.format}`;
+    const fileName: string = `photo.${image.format}`;
     const imageBlob = this.base64ToBlob(base64Data, `image/${image.format}`);
 
     const formData = new FormData();
@@ -76,16 +75,14 @@ export class HesabimPage implements OnInit {
     formData.append('type', String(localStorage.getItem('type')));
     formData.append('id', String(localStorage.getItem('id')));
 
-
-    if (this.type != 'user') {
+    if (this.type !== 'user') {
       this.UserService.uploadPhotoPsikolog(formData).subscribe({
         next: (result: any) => {
-          if (result)
-            {
-              this.presentToast('top', 'Fotoğrafınız Başarıyla Güncellendi');
-            } else {
-              this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
-            }
+          if (result) {
+            this.presentToast('top', 'Fotoğrafınız Başarıyla Güncellendi');
+          } else {
+            this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
+          }
           console.log(result);
         },
         error: (err: any) => {
@@ -97,14 +94,11 @@ export class HesabimPage implements OnInit {
       this.UserService.uploadPhotoUser(formData).subscribe({
         next: (result: any) => {
           console.log(result);
-                 if (result) {
-                   this.presentToast(
-                     'top',
-                     'Fotoğrafınız Başarıyla Güncellendi'
-                   );
-                 } else {
-                   this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
-                 }
+          if (result) {
+            this.presentToast('top', 'Fotoğrafınız Başarıyla Güncellendi');
+          } else {
+            this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -124,14 +118,16 @@ export class HesabimPage implements OnInit {
     await toast.present();
   }
 
-  base64ToBlob(base64Data: string, contentType: string) {
-    const byteCharacters = atob(base64Data);
+  base64ToBlob(base64: string, type: string) {
+    const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
+
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
+
     const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], { type: contentType });
+    return new Blob([byteArray], { type });
   }
 
   cancel(modal: IonModal) {
@@ -219,6 +215,27 @@ export class HesabimPage implements OnInit {
     }
   }
 
+  setAccountUser()
+  {
+    this.UserService.getUser(Number(localStorage.getItem('id'))).subscribe({
+      next: (result: any) => {
+         const usercontrol = result.adsoyad;
+         if (usercontrol)
+          {
+            this.accountformUser.patchValue({
+              adsoyad: result.adsoyad,
+              yas: result.yas,
+              cinsiyet: result.cinsiyet,
+              resim: result.resim
+            });
+          }
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
+  }
+
   setAccountPsikolog() {
     this.UserService.getPsikolog(Number(localStorage.getItem('id'))).subscribe({
       next: (result: any) => {
@@ -233,6 +250,7 @@ export class HesabimPage implements OnInit {
             universite: result.universite,
             bolum: result.bolum,
             cinsiyet: result.cinsiyet,
+            resim: result.resim,
             kategori: result.kategoriler[0].baslik,
             ozellik1: result.ozellikler[0].baslik,
             ozellik2: result.ozellikler[1].baslik,

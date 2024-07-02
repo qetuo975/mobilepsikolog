@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import moment from 'moment';
-import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-anasayfa',
@@ -21,7 +21,7 @@ export class AnasayfaPage implements OnInit {
   psikologlar: any[] = [];
   tests: any[] = [];
   blogs: any[] = [];
-  serverpath: string = environment.serverphotopath;
+  serverpath: any = 'https://therapydays.com/static';
   searchControl: FormControl = new FormControl();
 
   filterPsikologForm = new FormGroup({

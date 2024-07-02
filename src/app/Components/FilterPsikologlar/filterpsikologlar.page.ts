@@ -10,23 +10,20 @@ import { Router } from '@angular/router';
 export class FilterPsikologlarPage implements OnInit {
   psikologlar: any[] = [];
   isLoading: boolean = true;
-
-  constructor(
-    private PsikologService: PsikologService,
-    private router: Router
-  ) {}
+  serverpath: any = 'https://therapydays.com/static';
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-              const state = this.router.getCurrentNavigation()?.extras.state;
+    const state = this.router.getCurrentNavigation()?.extras.state;
 
     setTimeout(() => {
       this.isLoading = false;
 
-          if (state) {
-            this.psikologlar = state['filterData'];
+      if (state) {
+        this.psikologlar = state['filterData'];
 
-            console.log(this.psikologlar);
-          }
-    }, 1500)
+        console.log(this.psikologlar);
+      }
+    }, 1500);
   }
 }

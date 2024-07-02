@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PsikologService {
-  private baseUrl: string = 'http://localhost:4000/api/general';
-  private psikolog: string = 'http://localhost:4000/api/user';
+  private baseUrl: string = 'https://therapydays.com/api/general';
+  private psikolog: string = 'https://therapydays.com/api/user';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,9 @@ export class PsikologService {
   }
 
   getSearch(psikologname: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/getsearch?query=${psikologname}`).pipe();
+    return this.http
+      .get(`${this.baseUrl}/getsearch?query=${psikologname}`)
+      .pipe();
   }
 
   filterpsikolog(formdata: any): Observable<any> {

@@ -1,7 +1,6 @@
 import { PsikologService } from './../../../Service/psikolog.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-psikologlar',
@@ -10,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PsikologlarPage implements OnInit {
   psikologlar: any[] = [];
-  serverpath: string = environment.serverphotopath;
+  serverpath: any = 'https://therapydays.com/static';
 
   constructor(private PsikologService: PsikologService) {}
 

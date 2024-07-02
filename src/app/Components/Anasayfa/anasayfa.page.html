@@ -236,7 +236,7 @@
   <div style="padding: 16px; width: 100%; height: 250px; display: -webkit-inline-box; gap: 10px; overflow: auto; ">
     <div *ngFor="let i of tests"
       style="height: 100%; width: 200px; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
-      <img src="../../../assets/depresyon.png" alt="stres" style="width: 100%; height: 50%; object-fit: contain;">
+      <img src="{{serverpath}}/{{i.resim}}" alt="stres" style="width: 100%; height: 50%; object-fit: contain;">
       <div
         style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding-top: 10px;">
         <h2 style="font-size: 15px;">{{i.baslik}}</h2>

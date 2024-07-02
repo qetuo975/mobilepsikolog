@@ -13,10 +13,9 @@ export const environment = {
     appId: '1:832039197109:web:66eda5e478d71905c6a1fc',
     measurementId: 'G-0HRCTRM1B3',
   },
-  server: '',
-  serverphotopath: ''
 };
 
+export const serverpath = 'https://therapydays.com/static';
 
 /*
  * For easier debugging in development mode, you can import the following file

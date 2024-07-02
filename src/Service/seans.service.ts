@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SeansService {
-  private baseUrl: string = 'http://localhost:4000/api/general';
+  private baseUrl: string = 'https://therapydays.com/api/general';
 
   constructor(private http: HttpClient) {}
 
@@ -23,5 +23,4 @@ export class SeansService {
       seanslar,
     });
   }
-
 }

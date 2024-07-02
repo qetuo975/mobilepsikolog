@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl: string = 'http://localhost:4000/api/user';
-  private general: string = 'http://localhost:4000/api/general';
+  private baseUrl: string = 'https://therapydays.com/api/user';
+  private general: string = 'https://therapydays.com/api/general';
 
   constructor(private http: HttpClient) {}
 
@@ -79,8 +79,6 @@ export class UserService {
       id,
     });
   }
-
-
 
   PsikologSeans(
     userid: number,
