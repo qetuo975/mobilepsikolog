@@ -14,27 +14,27 @@
 
   <h2 style="text-align: center; margin: 30px 0px !important;">En iyi psikologlarımızı seç.</h2>
 
-<div
-  style="border-radius: 5px; display: flex; flex-direction: column; gap: 10px; width: 100%;  overflow-y: auto; overflow-x: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
-  <a routerLink="/psikolog/{{terapist.id}}" *ngFor="let terapist of psikologlar" style="width: 100%; display: flex; flex-direction: column; background-color: #fff; padding: 10px;  color: unset;
+  <div
+    style="border-radius: 5px; display: flex; flex-direction: column; gap: 10px; width: 100%;  overflow-y: auto; overflow-x: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+    <a routerLink="/psikolog/{{terapist.id}}" *ngFor="let terapist of psikologlar" style="width: 100%; display: flex; flex-direction: column; background-color: #fff; padding: 10px;  color: unset;
   font-size: unset !important;
   font-weight: unset !important;
   text-decoration: none !important;">
-    <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-      <div style="width: 20%; height: 100%; display: flex; justify-content: center; align-items: center;">
-        <img style="border-radius: 50%; object-fit: cover; width: 60px; height: 60px;" src="{{serverpath}}/{{terapist.resim}}"
-          alt="{{terapist.adsoyad}}">
+      <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+        <div style="width: 20%; height: 100%; display: flex; justify-content: center; align-items: center;">
+          <img style="border-radius: 50%; object-fit: cover; width: 60px; height: 60px;"
+            src="{{serverpath}}/{{terapist.resim}}" alt="{{terapist.adsoyad}}">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 10px; width: 55%; height: 100%;">
+          <h2>{{terapist.adsoyad}}</h2>
+          <p>{{terapist.kategoriler[0].baslik}}</p>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 25%;">
+          <h2>{{terapist.fiyat}} TL</h2>
+        </div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 10px; padding: 10px; width: 55%; height: 100%;">
-        <h2>{{terapist.adsoyad}}</h2>
-        <p>{{terapist.kategoriler[0].baslik}}</p>
-      </div>
-      <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 25%;">
-        <h2>{{terapist.fiyat}} TL</h2>
-      </div>
-    </div>
-  </a>
-</div>
+    </a>
+  </div>
 
 
 </ion-content>

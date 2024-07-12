@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { api } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SeansService {
-  private baseUrl: string = 'https://therapydays.com/api/general';
+  private baseUrl: string = `${api}/general`;
 
   constructor(private http: HttpClient) {}
 

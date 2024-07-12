@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { api } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl: string = 'https://therapydays.com/api/user';
-  private general: string = 'https://therapydays.com/api/general';
+  private baseUrl: string = `${api}/user`;
+  private general: string = `${api}/general`;
 
   constructor(private http: HttpClient) {}
 
@@ -19,6 +20,10 @@ export class UserService {
   ): Observable<any> {
     const body = { cinsiyet, yas, kategori, fiyat };
     return this.http.post(`${this.baseUrl}/register`, body).pipe();
+  }
+
+  getUserOda(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/odauser/` + id).pipe();
   }
 
   getPsikologs(): Observable<any> {

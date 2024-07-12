@@ -19,6 +19,7 @@ export class PsikologHesabiPage implements OnInit {
   type: any;
   selectedTime: any;
   accountblock: any;
+  freeaccount: boolean = false;
 
   constructor(
     private UserService: UserService,
@@ -74,6 +75,12 @@ export class PsikologHesabiPage implements OnInit {
   }
 
   ngOnInit(): void {
+        const state: any = this.Router.getCurrentNavigation()?.extras.state;
+        if (state.free)
+        {
+          this.freeaccount = true;
+        }
+
     this.type = localStorage.getItem('type');
     const id = this.route.snapshot.paramMap.get('id');
 

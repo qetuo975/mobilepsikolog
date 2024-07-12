@@ -1,3 +1,4 @@
+import { api } from './../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -7,13 +8,14 @@ import { Injectable } from '@angular/core';
 export class BlogsService {
   constructor(private http: HttpClient) {}
 
+
   getBlogs() {
-    return this.http.get('https://therapydays.com/api/general/blogs').pipe();
+    return this.http.get(`${api}/general/blogs`).pipe();
   }
 
   getBlog(id: number) {
     return this.http
-      .get('https://therapydays.com/api/general/blog/' + id)
+      .get(`${api}/general/blog/` + id)
       .pipe();
   }
 }

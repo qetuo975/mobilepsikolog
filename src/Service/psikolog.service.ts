@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { api } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PsikologService {
-  private baseUrl: string = 'https://therapydays.com/api/general';
-  private psikolog: string = 'https://therapydays.com/api/user';
+  private baseUrl: string = `${api}/general`;
+  private psikolog: string = `${api}/user`;
 
   constructor(private http: HttpClient) {}
 
