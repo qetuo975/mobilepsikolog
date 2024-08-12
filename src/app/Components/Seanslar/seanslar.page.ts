@@ -15,9 +15,15 @@ export class SeanslarPage implements OnInit {
   type: any;
   id: any;
   seanslar: any[] = [];
+  randevu: any[] = [];
   gecmisseanslar: any[] = [];
+  gecmisrandevular: any[] = [];
   upcomingSeanslar: any[] = [];
   pastSeanslar: any[] = [];
+
+  upcomingrandevu: any[] = [];
+  pastrandevu: any[] = [];
+
   serverpath: any = 'https://therapydays.com/static';
 
   ngOnInit(): void {
@@ -40,12 +46,36 @@ export class SeanslarPage implements OnInit {
           console.log(err);
         },
       });
+
+      this.SeansService.getRandevuUser(this.id).subscribe({
+        next: (result: any) => {
+          (this.randevu = result.randevu),
+            (this.gecmisrandevular = result.tarihigecmisrandevu);
+          this.checkRandevuDates();
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
     } else {
       this.SeansService.getSeansPsikolog(this.id).subscribe({
         next: (result: any) => {
           this.seanslar = result.seans;
           this.gecmisseanslar = result.tarihigecmisseans;
           this.checkSeansDates();
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+
+      this.SeansService.getRandevuPsikolog(this.id).subscribe({
+        next: (result: any) => {
+          this.randevu = result.randevu;
+          this.gecmisrandevular = result.tarihigecmisrandevu;
+          this.checkRandevuDates();
           console.log(result);
         },
         error: (err: any) => {
@@ -78,6 +108,31 @@ export class SeanslarPage implements OnInit {
     }
     console.log('Upcoming Seanslar: ', this.upcomingSeanslar);
     console.log('Past Seanslar: ', this.pastSeanslar);
+  }
+
+  checkRandevuDates() {
+    this.randevu.forEach((seans) => {
+      seans.isUpcoming = this.isSeansUpcoming(seans.tarih);
+      seans.isPast = this.isSeansPast(seans.tarih);
+
+      if (seans.isUpcoming) {
+        this.upcomingrandevu.push(seans);
+      } else if (seans.isPast) {
+        this.pastrandevu.push(seans);
+      }
+    });
+    if (this.pastrandevu) {
+      this.SeansService.deletePastRandevu(this.pastrandevu).subscribe({
+        next: (result: any) => {
+          console.log(result);
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
+    }
+    console.log('Upcoming Seanslar: ', this.upcomingrandevu);
+    console.log('Past Seanslar: ', this.pastrandevu);
   }
 
   isSeansUpcoming(tarih: string): boolean {

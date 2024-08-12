@@ -22,8 +22,10 @@ export class OdaPage implements OnInit {
       this.UserService.getUserOda(Number(localStorage.getItem('id'))).subscribe(
         {
           next: (result: any) => {
-            this.oda = result;
             console.log(result);
+            if (Array(result).length) {
+              this.oda = result;
+            }
           },
           error: (err: any) => {
             console.log(err);
@@ -31,16 +33,30 @@ export class OdaPage implements OnInit {
         }
       );
     } else {
+      this.UserService.getPsikologOda(
+        Number(localStorage.getItem('id'))
+      ).subscribe({
+        next: (result: any) => {
+          console.log(result);
+                      if (Array(result).length) {
+                        this.oda = result;
+                      }
+        },
+        error: (err: any) => {
+          console.log(err);
+        },
+      });
     }
   }
 
   navigatePsikolog(id: any) {
     this.cancel(this.odamodal);
-        const navigationExtras: NavigationExtras = {
-          state: {
-            free: true
-          },
-        };
+    const navigationExtras: NavigationExtras = {
+      state: {
+        free: true,
+        id: this.oda[0].id
+      },
+    };
     this.router.navigate([`/psikolog/${id}`], navigationExtras);
   }
 

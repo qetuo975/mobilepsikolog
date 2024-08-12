@@ -228,6 +228,7 @@ export class HesabimPage implements OnInit {
               cinsiyet: result.cinsiyet,
               resim: result.resim
             });
+            console.log(this.accountformUser.value)
           }
       },
       error: (err: any) => {

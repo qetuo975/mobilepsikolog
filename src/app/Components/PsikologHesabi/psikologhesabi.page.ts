@@ -18,6 +18,7 @@ export class PsikologHesabiPage implements OnInit {
   selectedSeans: any;
   type: any;
   selectedTime: any;
+  odaid: any;
   accountblock: any;
   freeaccount: boolean = false;
 
@@ -57,7 +58,8 @@ export class PsikologHesabiPage implements OnInit {
         tarih: this.selectedSeans.tarih,
         start: this.selectedSeans.baslangicsaat,
         end: this.selectedSeans.bitissaat,
-      }
+      },
+      this.freeaccount
     ).subscribe({
       next: (result: any) => {
         if (result.result == true) {
@@ -74,12 +76,49 @@ export class PsikologHesabiPage implements OnInit {
     });
   }
 
+  freeseansAdd()
+  {
+        this.UserService.FreePsikologSeans(
+          Number(localStorage.getItem('id')),
+          this.psikolog.id,
+          {
+            tarih: this.selectedSeans.tarih,
+            start: this.selectedSeans.baslangicsaat,
+            end: this.selectedSeans.bitissaat,
+          },
+          this.odaid
+        ).subscribe({
+          next: (result: any) => {
+            console.log(result);
+            if (result.randevu) {
+              this.presentToast(
+                'top',
+                'Seans Alınmıştır.'
+              );
+              this.getPsikologSeanslar();
+            } else {
+              this.presentToast('top', 'Seans alma başarısız.');
+            }
+            console.log(result);
+          },
+          error: (err: any) => {
+            if (
+              err.error.message == 'Haftalık randevu kotası doldu' ||
+              err.error.message == 'Aylık randevu kotası doldu'
+            ) {
+              this.presentToast('top', 'Kotanız doldu.');
+            }
+            console.log(err);
+          },
+        });
+  }
+
   ngOnInit(): void {
-        const state: any = this.Router.getCurrentNavigation()?.extras.state;
-        if (state.free)
-        {
-          this.freeaccount = true;
-        }
+    const state: any = this.Router.getCurrentNavigation()?.extras.state;
+    if (state) {
+      this.freeaccount = true;
+      this.odaid = state.id;
+    }
 
     this.type = localStorage.getItem('type');
     const id = this.route.snapshot.paramMap.get('id');

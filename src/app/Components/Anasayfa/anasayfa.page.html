@@ -15,7 +15,7 @@
 
 
   <div style="padding: 0 16px 16px 16px; text-align: left; line-height: 15px; background-color: transparent;">
-    <h3>Günaydın Arif,</h3>
+    <h3 *ngIf="ad">Günaydın {{ad}}</h3>
     <p>
       En iyi psikologlarımızdan terapi al.
     </p>
@@ -257,7 +257,7 @@
     style="padding: 16px; width: 100%; height: 300px; display: -webkit-inline-box; gap: 10px; overflow: auto; background-color: #c7ecee;">
     <a routerLink="/bloglar/{{blog.id}}" *ngFor="let blog of blogs"
       style="height: 100%; width: 100%; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQwjzG6eLUOpO63SM-Z5zCFe7bfI0QjUt6ztWotLGC0Q&s"
+      <img [src]="serverpath + '/' + blog.resim"
         alt="stres" style="width: 100%; height: 70%; object-fit: cover;">
       <div style="display: flex; flex-direction: column; gap: 10px; justify-content: left; padding: 10px;">
         <h2 style="color: #262626;">{{ blog.baslik }}</h2>

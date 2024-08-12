@@ -4,16 +4,17 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding" [fullscreen]="true">
-  <div *ngIf="oda" style="display: flex; flex-direction: column; gap: 15px;">
+  <ng-container *ngIf="oda">
+  <div style="display: flex; flex-direction: column; gap: 15px;">
     <div
       style="width: 100%; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: auto; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid #54a0ff; border-radius: 5px; padding: 5px;">
       <div style="width: 100%; display: flex; align-items: center; justify-content: flex-start;">
         <div
           style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: baseline; width: 100%; height: 100%;">
-          <p>{{oda.baslik}}</p>
+          <p>{{oda[0].baslik}}</p>
           <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
             <ion-icon name="time-outline" slot="start"></ion-icon>
-            <h4>{{oda.createdAt | date}}</h4>
+            <h4>{{oda[0].createdAt | date}}</h4>
           </div>
         </div>
         <ion-button id="oda" fill="outline">Detay</ion-button>
@@ -24,18 +25,22 @@
           src="../../../assets/bannerreklam.png" />
         <div
           style="width: 100%; height: 100%; display: flex; flex-direction: column; align-content: center; justify-content: center; gap: 10px;">
-          <h4>Katılımcı Sayısı: {{oda.katilimcilar.length}}</h4>
-          <p>Psikolog Sayısı : {{oda.psikologlar.length}}</p>
+          <h4>Katılımcı Sayısı: {{oda[0].katilimcilar.length}}</h4>
+          <p>Psikolog Sayısı : {{oda[0].psikologlar.length}}</p>
         </div>
 
       </div>
 
       <div style="width: 100%; padding: 8px; display: flex; flex-direction: column; gap: 10px; padding-top: 20px;">
-        <h4 style="text-align: center;">{{oda.baslik}}</h4>
-        <p style="font-size: 14px; color: #363636; font-weight: 600 !important;">{{oda.aciklama}}</p>
+        <h4 style="text-align: center;">{{oda[0].baslik}}</h4>
+        <p style="font-size: 14px; color: #363636; font-weight: 600 !important;">{{oda[0].aciklama}}</p>
       </div>
     </div>
   </div>
+
+  </ng-container>
+
+
 </ion-content>
 
 
@@ -66,22 +71,8 @@
 
           <div
             style="width: 100%; display: flex; flex-direction: column; gap: 10px; padding-top: 16px; margin-bottom: 16px;">
-            <h2>{{oda.baslik}}</h2>
-            <p>{{oda.aciklama}}</p>
-            <i>Seninle birlikte olan katılımcılar</i>
-          </div>
-
-          <div *ngFor="let i of oda.katilimcilar "
-            style="width: 100%; margin-bottom: 10px; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: auto; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid #54a0ff; border-radius: 5px; padding: 5px;">
-            <div style="width: 100%;  display: flex; align-items: center; justify-content: left; gap: 15px;">
-              <img style="width: 60px; height: 60px; border-radius: 50%;" alt="Silhouette of a person's head"
-                src="../../../assets/bannerreklam.png" />
-              <div
-                style="width: 100%; height: 100%; display: flex; flex-direction: column; align-content: center; justify-content: center; gap: 10px;">
-                <h4>{{i.adsoyad}}</h4>
-                <p>{{i.email}}</p>
-              </div>
-            </div>
+            <h2>{{oda[0].baslik}}</h2>
+            <p>{{oda[0].aciklama}}</p>
           </div>
         </div>
       </ng-container>
@@ -92,11 +83,11 @@
               style="width: 100%; height: 100%; object-fit: cover;">
           </div>
 
-          <h2 style="text-align: center; margin: 30px 0px !important;">{{oda.baslik}} Psikologları</h2>
+          <h2 style="text-align: center; margin: 30px 0px !important;">{{oda[0].baslik}} Psikologları</h2>
 
           <div
             style="border-radius: 5px; display: flex; flex-direction: column; gap: 10px; width: 100%;  overflow-y: auto; overflow-x: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
-            <a (click)="navigatePsikolog(terapist.id)"  *ngFor="let terapist of oda.psikologlar" style="width: 100%; display: flex; flex-direction: column; background-color: #fff; padding: 10px;  color: unset;
+            <a (click)="navigatePsikolog(terapist.id)"  *ngFor="let terapist of oda[0].psikologlar" style="width: 100%; display: flex; flex-direction: column; background-color: #fff; padding: 10px;  color: unset;
             font-size: unset !important;
             font-weight: unset !important;
             text-decoration: none !important;">

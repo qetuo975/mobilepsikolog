@@ -80,11 +80,15 @@
             </ion-item>
           </ion-list>
 
-    <ion-button [disabled]="!selectedSeans" (click)="seansAdd()" expand="block">
+    <ion-button *ngIf="!odaid" [disabled]="!selectedSeans" (click)="seansAdd()" expand="block">
       <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
       Seans Ekle
     </ion-button>
 
+    <ion-button *ngIf="odaid" [disabled]="!selectedSeans" (click)="freeseansAdd()" expand="block">
+      <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
+      Seans Ekle
+    </ion-button>
 
 
         </ion-content>

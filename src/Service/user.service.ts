@@ -19,11 +19,15 @@ export class UserService {
     fiyat: any
   ): Observable<any> {
     const body = { cinsiyet, yas, kategori, fiyat };
-    return this.http.post(`${this.baseUrl}/register`, body).pipe();
+    return this.http.post(`${this.baseUrl}/filterpsikolog`, body).pipe();
   }
 
   getUserOda(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/odauser/` + id).pipe();
+  }
+
+  getPsikologOda(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/odapsikolog/` + id).pipe();
   }
 
   getPsikologs(): Observable<any> {
@@ -85,15 +89,31 @@ export class UserService {
     });
   }
 
+  FreePsikologSeans(
+    userid: number,
+    psikologid: number,
+    tarih: any,
+    odaid: number
+  ): Observable<any> {
+    return this.http.post(`${this.baseUrl}/freepsikologseans`, {
+      userid,
+      psikologid,
+      tarih,
+      odaid,
+    });
+  }
+
   PsikologSeans(
     userid: number,
     psikologid: number,
-    tarih: any
+    tarih: any,
+    freeaccount: boolean = false
   ): Observable<any> {
     return this.http.post(`${this.baseUrl}/psikologseans`, {
       userid,
       psikologid,
       tarih,
+      freeaccount,
     });
   }
 

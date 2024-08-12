@@ -26,8 +26,8 @@ export class LoginPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-                            localStorage.removeItem('id');
-                            localStorage.removeItem('type');
+    localStorage.removeItem('id');
+    localStorage.removeItem('type');
   }
 
   async presentToast(
@@ -51,11 +51,18 @@ export class LoginPage implements OnInit {
       this.UserService.login(email, password).subscribe({
         next: (response) => {
           console.log('Login successful:', response);
-
-                        localStorage.setItem('id', response.token.user.id);
-                        localStorage.setItem('type', response.token.type);
-          this.presentToast('Giriş başarılı!', 'success', 'top');
-          this.router.navigate(['/']);
+          if (response.message == 'Error') {
+            this.presentToast(
+              'Giriş başarısız. Hesap bilgilerinizi doğru girin.',
+              'danger',
+              'top'
+            );
+          } else {
+            localStorage.setItem('id', response.token.user.id);
+            localStorage.setItem('type', response.token.type);
+            this.presentToast('Giriş başarılı!', 'success', 'top');
+            this.router.navigate(['/']);
+          }
         },
         error: (error) => {
           console.error('Login failed:', error);
@@ -89,7 +96,6 @@ export class LoginPage implements OnInit {
               console.log('Login successful:', response);
               localStorage.setItem('id', response.token.user.id);
               localStorage.setItem('type', response.token.type);
-
 
               this.presentToast('Giriş başarılı!', 'success', 'top');
               this.router.navigate(['/']);

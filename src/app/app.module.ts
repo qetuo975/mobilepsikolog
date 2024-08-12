@@ -24,17 +24,20 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {}};
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp({
-      apiKey: 'AIzaSyA9Yl6lssE1UkdCiH1WALuElKYEYOpwQ7c',
-      authDomain: 'psikologmobile.firebaseapp.com',
-      projectId: 'psikologmobile',
-      storageBucket: 'psikologmobile.appspot.com',
-      messagingSenderId: '832039197109',
-      appId: '1:832039197109:web:66eda5e478d71905c6a1fc',
-      measurementId: 'G-0HRCTRM1B3',
+      apiKey: 'AIzaSyDXJFKNYGbJfPdoy2-_72sAdENZz0d63RQ',
+      authDomain: 'psikologmobile-a9ca7.firebaseapp.com',
+      projectId: 'psikologmobile-a9ca7',
+      storageBucket: 'psikologmobile-a9ca7.appspot.com',
+      messagingSenderId: '313472590646',
+      appId: '1:313472590646:web:af3d43e35f1e8ef36b4997',
+      measurementId: 'G-PYT7EL840H',
     }),
     AngularFireAuthModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AuthGuard],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AuthGuard,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

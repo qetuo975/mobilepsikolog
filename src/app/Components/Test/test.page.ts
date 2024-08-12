@@ -51,25 +51,10 @@ export class TestPage implements OnInit {
       0
     );
 
-    // Son geçilen puanı ve başlığı tutacak değişkenler
-    let sonGecenPuan = 0;
-    let sonGecenBaslik = '';
-
-    // Verileri kontrol et
-    for (let i = 0; i < this.sonuclar.length; i++) {
-      if (toplamPuan > this.sonuclar[i].puan) {
-        sonGecenPuan = this.sonuclar[i].puan;
-        sonGecenBaslik = this.sonuclar[i].baslik;
-      }
-    }
-
-    // Sonucu yazdır
-    if (sonGecenBaslik !== '') {
-      console.log(sonGecenBaslik);
-      this.presentAlert(sonGecenBaslik);
+    if (toplamPuan > this.sonuclar[0].puan) {
+      this.presentAlert('Bir Sorun Var Gibi Görünüyor.');
     } else {
-      console.log('Yeterli veri yok');
-      this.presentAlert('Yeterli veri yok');
+      this.presentAlert('Bir Sorun Yok Gibi Görünüyor.');
     }
   }
 

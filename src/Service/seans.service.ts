@@ -15,6 +15,14 @@ export class SeansService {
     return this.http.get(`${this.baseUrl}/seansuser/${id}`).pipe();
   }
 
+  getRandevuUser(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/randevuuser/${id}`).pipe();
+  }
+
+  getRandevuPsikolog(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/randevupsikolog/${id}`).pipe();
+  }
+
   getSeansPsikolog(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/seanspsikolog/${id}`).pipe();
   }
@@ -22,6 +30,12 @@ export class SeansService {
   deletePastSeans(seanslar: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/deletepastseans`, {
       seanslar,
+    });
+  }
+
+  deletePastRandevu(randevular: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/deletepastrandevu`, {
+      randevular,
     });
   }
 }

@@ -4,7 +4,7 @@ import { SeansService } from './../../../Service/seans.service';
 import { UserService } from './../../../Service/user.service';
 import { TestService } from './../../../Service/test.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal } from '@ionic/angular';
+import { IonModal, IonSearchbar } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -18,6 +18,8 @@ import moment from 'moment';
 })
 export class AnasayfaPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
+  @ViewChild(IonSearchbar, { static: false }) searchbar!: IonSearchbar; // Searchbar'a referans alın
+  private focusTimeout: any;
   psikologlar: any[] = [];
   tests: any[] = [];
   blogs: any[] = [];
@@ -45,6 +47,7 @@ export class AnasayfaPage implements OnInit {
 
   type: any;
   id: any;
+  ad: any;
   seanslar: any[] = [];
   upcomingSeanslar: any[] = [];
 
@@ -145,6 +148,16 @@ export class AnasayfaPage implements OnInit {
   ngOnInit(): void {
     this.id = localStorage.getItem('id');
     this.type = localStorage.getItem('type');
+
+    this.UserService.getUser(this.id).subscribe({
+      next: (result: any) => {
+        console.log(result);
+        this.ad = result.adsoyad;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
 
     this.searchControl.valueChanges
       .pipe(debounceTime(3000), distinctUntilChanged())

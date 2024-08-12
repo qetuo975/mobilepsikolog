@@ -7,10 +7,21 @@
   <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
     <div style="border-radius: 5px; display: flex; background-color: #54a0ff; height: 125px; width: 100%;">
       <div style="width: 30%; display: flex; justify-content: center; align-items: center; padding: 5px;">
-        <img *ngIf="!accountformPsikolog.value.resim" src="../../../assets/demoavatar.png"
-          style="width: 80px; height: 80px; border-radius: 50%;" />
-                  <img *ngIf="accountformPsikolog.value.resim" src="{{serverpath}}/{{accountformPsikolog.value.resim}}"
-          style="width: 80px; height: 80px; border-radius: 50%;" />
+        <ng-container *ngIf="type === 'user'">
+          <img *ngIf="!accountformUser.value.resim" src="../../../assets/demoavatar.png"
+            style="width: 80px; height: 80px; border-radius: 50%;" />
+          <img *ngIf="accountformUser.value.resim" src="{{serverpath}}/{{accountformUser.value.resim}}"
+            style="width: 80px; height: 80px; border-radius: 50%;" />
+
+        </ng-container>
+
+        <ng-container *ngIf="type === 'psikolog'">
+          <img *ngIf="!accountformPsikolog.value.resim" src="../../../assets/demoavatar.png"
+            style="width: 80px; height: 80px; border-radius: 50%;" />
+          <img *ngIf="accountformPsikolog.value.resim" src="{{serverpath}}/{{accountformPsikolog.value.resim}}"
+            style="width: 80px; height: 80px; border-radius: 50%;" />
+        </ng-container>
+
       </div>
       <div *ngIf="type !== 'user'"
         style="width: 70%; display: flex; flex-direction: column; gap: 10px; padding: 10px; justify-content: center;">
@@ -60,10 +71,12 @@
               <ion-input formControlName="bolum" label="Bölüm" label-placement="floating" fill="outline"
                 placeholder="Bölüm Giriniz."></ion-input>
               <br>
-              <ion-select formControlName="kategori" label="Branş Kategorisi" label-placement="floating" fill="outline">
+              <ion-select formControlName="kategori" label="Branş Kategorisi" label-placement="floating" fill="outline"
+                multiple="true">
                 <ion-select-option *ngFor="let kategori of kategoriler"
                   value="{{kategori.baslik}}">{{kategori.baslik}}</ion-select-option>
               </ion-select>
+
               <br>
               <ion-select formControlName="cinsiyet" label="Cinsiyet" label-placement="floating" fill="outline">
                 <ion-select-option value="erkek">Erkek</ion-select-option>
@@ -242,14 +255,15 @@
         </ng-template>
       </ion-popover>
     </ion-item>
-    <ion-item lines="none" *ngIf="!(accountformPsikolog.value.adsoyad && accountformPsikolog.value.resim) && type !== 'user'">
-      <ion-text  style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını ve hesabınızı güncelleyin.</ion-text>
+    <ion-item lines="none"
+      *ngIf="!(accountformPsikolog.value.adsoyad && accountformPsikolog.value.resim) && type !== 'user'">
+      <ion-text style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını, hesabınızı
+        ve ödeme bilgilerinizi güncelleyin.</ion-text>
     </ion-item>
 
-        <ion-item lines="none"
-          *ngIf="!(accountformUser.value.adsoyad && accountformUser.value.resim) && type === 'user'">
-          <ion-text style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını ve hesabınızı
-            güncelleyin.</ion-text>
-        </ion-item>
+    <ion-item lines="none" *ngIf="!(accountformUser.value.adsoyad && accountformUser.value.resim) && type === 'user'">
+      <ion-text style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını ve hesabınızı
+        güncelleyin.</ion-text>
+    </ion-item>
   </ion-list>
 </ion-content>

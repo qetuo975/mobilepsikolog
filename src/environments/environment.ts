@@ -16,8 +16,8 @@ export const environment = {
 };
 
 export const serverpath = 'https://therapydays.com/static';
+//export const api = 'https://therapydays.com/api';
 export const api = 'http://localhost:4000/api';
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

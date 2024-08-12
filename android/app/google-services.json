@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "313472590646",
+    "project_id": "psikologmobile-a9ca7",
+    "storage_bucket": "psikologmobile-a9ca7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313472590646:android:72c19d18dfd439d56b4997",
+        "android_client_info": {
+          "package_name": "therapydays.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBldzkBghjgjctGyTomW6eTmy_BOmv4Vis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
