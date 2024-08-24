@@ -1,9 +1,10 @@
 import { IonicModule } from '@ionic/angular';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HesabimPage} from './hesabim.page';
 import { HesabimRoutingModule } from './hesabim-routing.module';
+
 
 @NgModule({
   imports: [
@@ -11,8 +12,9 @@ import { HesabimRoutingModule } from './hesabim-routing.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HesabimRoutingModule
+    HesabimRoutingModule,
   ],
-  declarations: [HesabimPage]
+  declarations: [HesabimPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HesabimModule {}

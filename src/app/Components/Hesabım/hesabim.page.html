@@ -26,7 +26,11 @@
       <div *ngIf="type !== 'user'"
         style="width: 70%; display: flex; flex-direction: column; gap: 10px; padding: 10px; justify-content: center;">
         <h2>{{writeNamePsikolog()}}</h2>
-        <p>{{writeKategoriPsikolog()}}</p>
+<ng-container *ngIf="psikologkategoriler">
+  <ng-container *ngFor="let kategori of psikologkategoriler">
+    <p>{{kategori.baslik}}</p>
+  </ng-container>
+</ng-container>
       </div>
       <div *ngIf="type === 'user'"
         style="width: 70%; display: flex; flex-direction: column; gap: 10px; padding: 10px; justify-content: center;">
@@ -71,11 +75,16 @@
               <ion-input formControlName="bolum" label="Bölüm" label-placement="floating" fill="outline"
                 placeholder="Bölüm Giriniz."></ion-input>
               <br>
-              <ion-select formControlName="kategori" label="Branş Kategorisi" label-placement="floating" fill="outline"
-                multiple="true">
-                <ion-select-option *ngFor="let kategori of kategoriler"
-                  value="{{kategori.baslik}}">{{kategori.baslik}}</ion-select-option>
-              </ion-select>
+<ion-select formControlName="kategori" label="Branş Kategorisi" label-placement="floating" fill="outline"
+  multiple="true">
+  <ion-select-option *ngFor="let kategori of kategoriler" [value]="kategori.baslik"
+    [selected]="psikologkategoriler.includes(kategori.baslik)">
+    {{kategori.baslik}}
+  </ion-select-option>
+</ion-select>
+
+
+
 
               <br>
               <ion-select formControlName="cinsiyet" label="Cinsiyet" label-placement="floating" fill="outline">

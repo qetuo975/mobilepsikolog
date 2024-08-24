@@ -11,7 +11,7 @@ import { IonModal, ToastController } from '@ionic/angular';
 })
 export class PsikologHesabiPage implements OnInit {
   @ViewChild('UserSeansModal', { static: false }) UserSeansModal!: IonModal;
-  serverpath: string = 'https://therapydays.com/static';
+  serverpath: string = 'https://bahrikement.com/static';
 
   psikolog: any;
   psikologseanslar: any;
@@ -76,41 +76,37 @@ export class PsikologHesabiPage implements OnInit {
     });
   }
 
-  freeseansAdd()
-  {
-        this.UserService.FreePsikologSeans(
-          Number(localStorage.getItem('id')),
-          this.psikolog.id,
-          {
-            tarih: this.selectedSeans.tarih,
-            start: this.selectedSeans.baslangicsaat,
-            end: this.selectedSeans.bitissaat,
-          },
-          this.odaid
-        ).subscribe({
-          next: (result: any) => {
-            console.log(result);
-            if (result.randevu) {
-              this.presentToast(
-                'top',
-                'Seans Alınmıştır.'
-              );
-              this.getPsikologSeanslar();
-            } else {
-              this.presentToast('top', 'Seans alma başarısız.');
-            }
-            console.log(result);
-          },
-          error: (err: any) => {
-            if (
-              err.error.message == 'Haftalık randevu kotası doldu' ||
-              err.error.message == 'Aylık randevu kotası doldu'
-            ) {
-              this.presentToast('top', 'Kotanız doldu.');
-            }
-            console.log(err);
-          },
-        });
+  freeseansAdd() {
+    this.UserService.FreePsikologSeans(
+      Number(localStorage.getItem('id')),
+      this.psikolog.id,
+      {
+        tarih: this.selectedSeans.tarih,
+        start: this.selectedSeans.baslangicsaat,
+        end: this.selectedSeans.bitissaat,
+      },
+      this.odaid
+    ).subscribe({
+      next: (result: any) => {
+        console.log(result);
+        if (result.randevu) {
+          this.presentToast('top', 'Seans Alınmıştır.');
+          this.getPsikologSeanslar();
+        } else {
+          this.presentToast('top', 'Seans alma başarısız.');
+        }
+        console.log(result);
+      },
+      error: (err: any) => {
+        if (
+          err.error.message == 'Haftalık randevu kotası doldu' ||
+          err.error.message == 'Aylık randevu kotası doldu'
+        ) {
+          this.presentToast('top', 'Kotanız doldu.');
+        }
+        console.log(err);
+      },
+    });
   }
 
   ngOnInit(): void {

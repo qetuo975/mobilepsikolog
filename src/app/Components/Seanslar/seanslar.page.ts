@@ -24,7 +24,7 @@ export class SeanslarPage implements OnInit {
   upcomingrandevu: any[] = [];
   pastrandevu: any[] = [];
 
-  serverpath: any = 'https://therapydays.com/static';
+  serverpath: any = 'https://bahrikement.com/static';
 
   ngOnInit(): void {
     this.id = localStorage.getItem('id');

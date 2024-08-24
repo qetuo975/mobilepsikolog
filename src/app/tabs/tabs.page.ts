@@ -14,12 +14,14 @@ export class TabsPage implements OnInit {
 
   ngOnInit(): void {
     this.type = localStorage.getItem('type');
-    if (this.type == 'user') {
+
+    if (this.type === 'user') {
       this.UserService.getUserOda(Number(localStorage.getItem('id'))).subscribe(
         {
           next: (result: any) => {
             console.log(result);
-            if (Array(result).length > 0) {
+            // Eğer result bir dizi ise
+            if (result && result.length > 0) {
               this.visibleoda = true;
             }
           },
@@ -33,8 +35,9 @@ export class TabsPage implements OnInit {
         Number(localStorage.getItem('id'))
       ).subscribe({
         next: (result: any) => {
-                      console.log(result);
-          if (Array(result).length > 0) {
+          console.log(result);
+          // Eğer result bir dizi ise
+          if (result && result.length > 0) {
             this.visibleoda = true;
           }
         },

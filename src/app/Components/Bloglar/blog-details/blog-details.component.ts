@@ -10,8 +10,7 @@ import { BlogsService } from 'src/Service/blogs.service';
 })
 export class BlogDetailsComponent implements OnInit {
   blog: any;
-  serverpath: any = 'https://therapydays.com/static';
-
+  serverpath: any = 'https://bahrikement.com/static';
 
   constructor(
     private blogservice: BlogsService,

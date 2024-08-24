@@ -1,5 +1,5 @@
 import { UserService } from 'src/Service/user.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {
   Camera,
   CameraResultType,
@@ -19,12 +19,13 @@ export class HesabimPage implements OnInit {
   @ViewChild('modal1', { static: false }) modal1!: IonModal;
   @ViewChild('modal2', { static: false }) modal2!: IonModal;
   @ViewChild('modal3', { static: false }) modal3!: IonModal;
-  serverpath: any = 'https://therapydays.com/static';
+  serverpath: any = 'https://bahrikement.com/static';
   type: any;
 
   constructor(
     private UserService: UserService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -215,27 +216,27 @@ export class HesabimPage implements OnInit {
     }
   }
 
-  setAccountUser()
-  {
+  setAccountUser() {
     this.UserService.getUser(Number(localStorage.getItem('id'))).subscribe({
       next: (result: any) => {
-         const usercontrol = result.adsoyad;
-         if (usercontrol)
-          {
-            this.accountformUser.patchValue({
-              adsoyad: result.adsoyad,
-              yas: result.yas,
-              cinsiyet: result.cinsiyet,
-              resim: result.resim
-            });
-            console.log(this.accountformUser.value)
-          }
+        const usercontrol = result.adsoyad;
+        if (usercontrol) {
+          this.accountformUser.patchValue({
+            adsoyad: result.adsoyad,
+            yas: result.yas,
+            cinsiyet: result.cinsiyet,
+            resim: result.resim,
+          });
+          console.log(this.accountformUser.value);
+        }
       },
       error: (err: any) => {
         console.log(err);
-      }
-    })
+      },
+    });
   }
+
+  psikologkategoriler: any[] = [];
 
   setAccountPsikolog() {
     this.UserService.getPsikolog(Number(localStorage.getItem('id'))).subscribe({
@@ -252,13 +253,21 @@ export class HesabimPage implements OnInit {
             bolum: result.bolum,
             cinsiyet: result.cinsiyet,
             resim: result.resim,
-            kategori: result.kategoriler[0].baslik,
+            kategori: result.kategoriler.map((pk: any) => pk.baslik),
             ozellik1: result.ozellikler[0].baslik,
             ozellik2: result.ozellikler[1].baslik,
             ozellik3: result.ozellikler[2].baslik,
             ozellik4: result.ozellikler[3].baslik,
             ozellik5: result.ozellikler[4].baslik,
           });
+
+          this.psikologkategoriler = result.kategoriler.map((pk: any) => pk.baslik);
+
+          // Change detection to update the view
+          this.cdr.detectChanges();
+
+          console.log(this.psikologkategoriler);
+          console.log(this.kategoriler);
         }
       },
       error: (err: any) => {
@@ -267,15 +276,17 @@ export class HesabimPage implements OnInit {
     });
   }
 
+  compareFn(option1: any, option2: any) {
+    return option1 && option2 && option1.baslik === option2.baslik;
+  }
+
+  trackByFn(index: number, kategori: any) {
+    return kategori.baslik; // Veya kategori.id gibi benzersiz bir özellik
+  }
+
   writeNamePsikolog() {
     return this.accountformPsikolog.value.adsoyad
       ? this.accountformPsikolog.value.adsoyad
-      : 'İsminizi Güncelleyin.';
-  }
-
-  writeKategoriPsikolog() {
-    return this.accountformPsikolog.value.kategori
-      ? this.accountformPsikolog.value.kategori
       : 'İsminizi Güncelleyin.';
   }
 

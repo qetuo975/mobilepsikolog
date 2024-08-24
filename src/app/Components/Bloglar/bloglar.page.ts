@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BloglarPage implements OnInit {
   constructor(private BlogsService: BlogsService) {}
-  serverpath: any = 'https://therapydays.com/static';
+  serverpath: any = 'https://bahrikement.com/static';
   ngOnInit(): void {
     this.BlogsService.getBlogs().subscribe({
       next: (result: any) => {

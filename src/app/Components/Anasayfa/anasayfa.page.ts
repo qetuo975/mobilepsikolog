@@ -23,7 +23,7 @@ export class AnasayfaPage implements OnInit {
   psikologlar: any[] = [];
   tests: any[] = [];
   blogs: any[] = [];
-  serverpath: any = 'https://therapydays.com/static';
+  serverpath: any = 'https://bahrikement.com/static';
   searchControl: FormControl = new FormControl();
 
   filterPsikologForm = new FormGroup({
@@ -149,15 +149,29 @@ export class AnasayfaPage implements OnInit {
     this.id = localStorage.getItem('id');
     this.type = localStorage.getItem('type');
 
-    this.UserService.getUser(this.id).subscribe({
-      next: (result: any) => {
-        console.log(result);
+    if (this.type == 'user') {
+          this.UserService.getUser(this.id).subscribe({
+            next: (result: any) => {
+              console.log(result);
+              this.ad = result.adsoyad;
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+    } else {
+    this.UserService.getPsikolog(this.id).subscribe({
+      next: (result) => {
         this.ad = result.adsoyad;
       },
       error: (err) => {
         console.log(err);
       },
     });
+    }
+
+
+
 
     this.searchControl.valueChanges
       .pipe(debounceTime(3000), distinctUntilChanged())

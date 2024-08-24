@@ -22,7 +22,7 @@ export class TestPage implements OnInit {
   sonuclar: any[] = [];
   selectedsorular: any[] = [];
   selectedvalues: any[] = [];
-  serverpath: any = 'https://therapydays.com/static';
+  serverpath: any = 'https://bahrikement.com/static';
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

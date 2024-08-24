@@ -15,8 +15,8 @@ export const environment = {
   },
 };
 
-export const serverpath = 'https://therapydays.com/static';
-export const api = 'https://therapydays.com/api';
+export const serverpath = 'https://bahrikement.com/static';
+export const api = 'https://bahrikement.com/api';
 
 /*
  * For easier debugging in development mode, you can import the following file
