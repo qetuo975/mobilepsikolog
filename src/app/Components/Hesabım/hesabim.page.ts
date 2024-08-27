@@ -9,6 +9,8 @@ import {
 
 import { IonModal, ToastController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import moment from 'moment';
 
 @Component({
   selector: 'app-hesabim',
@@ -25,7 +27,8 @@ export class HesabimPage implements OnInit {
   constructor(
     private UserService: UserService,
     private toastController: ToastController,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +61,14 @@ export class HesabimPage implements OnInit {
     }
   }
 
+  logout()
+  {
+    localStorage.removeItem('id');
+    localStorage.removeItem('type');
+    window.location.reload();
+    this.router.navigateByUrl('/login')
+  }
+
   // Ortak Fonksiyonlar
   // --------------------------------------------
   async uploadPhoto() {
@@ -68,7 +79,8 @@ export class HesabimPage implements OnInit {
     });
 
     const base64Data: any = image.base64String;
-    const fileName: string = `photo.${image.format}`;
+    const fileName: string = Date.now() + '_' + `photo.${image.format}`;
+
     const imageBlob = this.base64ToBlob(base64Data, `image/${image.format}`);
 
     const formData = new FormData();
@@ -300,6 +312,53 @@ export class HesabimPage implements OnInit {
 
   addSeans() {
     if (this.startTime && this.endTime && this.selectedDay) {
+
+      // Bitiş saatinin başlangıç saatinden küçük olup olmadığını kontrol et (moment.js ile)
+      const startTimeMoment = moment(this.startTime, 'HH:mm');
+      const endTimeMoment = moment(this.endTime, 'HH:mm');
+
+      if (endTimeMoment.isBefore(startTimeMoment)) {
+        this.presentToast('top', 'Bitiş saati başlangıç saatinden küçük olamaz.');
+        return;
+      }
+
+      // Çakışmaları kontrol et
+      const overlaps = this.seanslar.some((seans) => {
+        return (
+          (this.startTime >= seans.startTime && this.startTime < seans.endTime) ||
+          (this.endTime > seans.startTime && this.endTime <= seans.endTime) ||
+          (seans.startTime >= this.startTime && seans.endTime <= this.endTime)
+        ) && this.selectedDay === seans.selectedDay;
+      });
+
+      // Eklemek istediğiniz seansın zaten listede olup olmadığını kontrol et (moment.js ile)
+      const alreadyExists = this.seanslar.some((seans) => {
+        const newStartTime = moment(this.startTime, 'HH:mm');
+        const newEndTime = moment(this.endTime, 'HH:mm');
+        const existingStartTime = moment(seans.baslangicsaat, 'HH:mm');
+        const existingEndTime = moment(seans.bitissaat, 'HH:mm');
+
+        return (
+          newStartTime.isSame(existingStartTime) &&
+          newEndTime.isSame(existingEndTime) &&
+          this.selectedDay === seans.tarih
+        );
+      });
+
+      console.log(alreadyExists);
+      console.log(this.seanslar);
+
+      if (overlaps) {
+        this.presentToast('top', 'Seçtiğiniz saat aralığı başka bir seans ile çakışmaktadır.');
+        return;
+      }
+
+      if (alreadyExists) {
+        this.presentToast('top', 'Bu seans zaten eklenmiş.');
+        return;
+      }
+
+      // Seans ekleme
       this.UserService.addSeans(
         this.startTime,
         this.endTime,
@@ -307,7 +366,13 @@ export class HesabimPage implements OnInit {
         localStorage.getItem('id')
       ).subscribe({
         next: (result: any) => {
-          this.seanslar.push(result);
+          // this.seanslar dizisini güncelle
+          this.seanslar = [...this.seanslar, result]; // Yeni seansı ekleyerek güncelleme
+          // veya
+          // this.UserService.getSeanslar().subscribe((seanslar) => {
+          //   this.seanslar = seanslar;
+          // }); // Sunucudan güncel seans listesini alarak güncelleme
+
           console.log(result);
           this.startTime = '';
           this.endTime = '';
@@ -323,6 +388,7 @@ export class HesabimPage implements OnInit {
       this.presentToast('top', 'Gerekli Zaman Ayarlarını Giriniz.');
     }
   }
+
 
   confirmTime() {
     const time = new Date(this.selectedTime).toLocaleTimeString([], {

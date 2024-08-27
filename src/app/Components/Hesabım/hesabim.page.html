@@ -264,12 +264,16 @@
         </ng-template>
       </ion-popover>
     </ion-item>
-    <ion-item lines="none"
-      *ngIf="!(accountformPsikolog.value.adsoyad && accountformPsikolog.value.resim) && type !== 'user'">
-      <ion-text style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını, hesabınızı
-        ve ödeme bilgilerinizi güncelleyin.</ion-text>
-    </ion-item>
 
+    <ion-item (click)="logout()" [button]="true">
+      <ion-icon color="tertiary" slot="start" name="log-out-outline" size="medium"></ion-icon>
+      <ion-label>Çıkış Yap</ion-label>
+    </ion-item>
+    <ion-item lines="none"
+    *ngIf="!(accountformPsikolog.value.adsoyad && accountformPsikolog.value.resim) && type !== 'user'">
+    <ion-text style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını, hesabınızı
+      ve ödeme bilgilerinizi güncelleyin.</ion-text>
+  </ion-item>
     <ion-item lines="none" *ngIf="!(accountformUser.value.adsoyad && accountformUser.value.resim) && type === 'user'">
       <ion-text style="font-size: 13px; color: #5a5353;">Profilinizin yayınlanması için profil fotoğrafını ve hesabınızı
         güncelleyin.</ion-text>
