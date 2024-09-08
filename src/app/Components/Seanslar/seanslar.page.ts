@@ -163,27 +163,24 @@ export class SeanslarPage implements OnInit {
     this.router.navigate(['/chat'], navigationExtras);
   }
 
+
   parseSeansDate(tarih: string): moment.Moment {
     const [dayPart, timePart] = tarih.split('|').map((part) => part.trim());
-    const startTime = timePart.split(':')[0].trim();
-    const dayOfWeek = this.getDayOfWeek(dayPart);
+    const [startHour, startMinute] = timePart.split(':').map(part => part.trim());
 
     console.log('GÜN: ', dayPart);
-    console.log('BAŞLANGIÇ SAATİ: ', startTime);
-    console.log('GÜN NUMARASI: ', dayOfWeek);
+    console.log('BAŞLANGIÇ SAATİ: ', startHour + ":" + startMinute);
 
-    const currentWeek = moment().isoWeek();
-    const currentYear = moment().year();
+    // Şu anki tarihi alıyoruz
+    let currentDate = moment();
 
-    return moment()
-      .isoWeek(currentWeek)
-      .day(dayOfWeek)
-      .set({
-        hour: parseInt(startTime.split(':')[0], 10),
-        minute: parseInt(startTime.split(':')[1], 10),
-        second: 0,
-        millisecond: 0,
-      });
+    // Eğer seans günü Pazar ve gelecek Pazar günü olması gerekiyorsa, gün ve saat bilgisi ile tam tarih oluşturuyoruz
+    return moment().day(dayPart).set({
+      hour: parseInt(startHour, 10),
+      minute: parseInt(startMinute, 10),
+      second: 0,
+      millisecond: 0
+    });
   }
 
   getDayOfWeek(day: string): number {
