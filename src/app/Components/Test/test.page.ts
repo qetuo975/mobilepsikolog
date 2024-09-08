@@ -1,7 +1,7 @@
 
 import { TestService } from './../../../Service/test.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -12,6 +12,7 @@ import { AlertController } from '@ionic/angular';
 export class TestPage implements OnInit {
   constructor(
     private TestService: TestService,
+    private router: Router,
     private route: ActivatedRoute,
     private alertController: AlertController
   ) {}
@@ -53,9 +54,20 @@ export class TestPage implements OnInit {
 
     if (toplamPuan > this.sonuclar[0].puan) {
       this.presentAlert('Bir Sorun Var Gibi Görünüyor.');
+
     } else {
       this.presentAlert('Bir Sorun Yok Gibi Görünüyor.');
     }
+
+    setTimeout(() => {
+      const navigationExtras: NavigationExtras = {
+        state: {
+          puan: true,
+        },
+      };
+      this.router.navigate([`/tabs/psikologlar/`], navigationExtras);
+    }, 3000)
+
   }
 
   async presentAlert(message: string) {

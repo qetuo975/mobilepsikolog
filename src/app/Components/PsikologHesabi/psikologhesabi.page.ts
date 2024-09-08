@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonModal, ToastController } from '@ionic/angular';
 
-
 @Component({
   selector: 'app-psikologhesabi',
   templateUrl: 'psikologhesabi.page.html',
@@ -137,6 +136,19 @@ export class PsikologHesabiPage implements OnInit {
       });
     }
 
+    if (id) {
+      this.loadPsikologData(id);
+    }
+  }
+
+  ionViewWillEnter(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadPsikologData(id); // Sayfa her ziyaret edildiğinde verileri yenile
+    }
+  }
+
+  loadPsikologData(id: string | null): void {
     if (id) {
       this.UserService.getPsikolog(parseInt(id, 10)).subscribe({
         next: (result: any) => {

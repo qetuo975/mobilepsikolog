@@ -18,7 +18,7 @@ import moment from 'moment';
 })
 export class AnasayfaPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
-  @ViewChild(IonSearchbar, { static: false }) searchbar!: IonSearchbar; // Searchbar'a referans alın
+  @ViewChild(IonSearchbar, { static: false }) searchbar!: IonSearchbar;
   private focusTimeout: any;
   psikologlar: any[] = [];
   tests: any[] = [];

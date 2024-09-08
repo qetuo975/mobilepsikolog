@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import moment from 'moment';
 
-
 @Component({
   selector: 'app-seanslar',
   templateUrl: 'seanslar.page.html',
@@ -29,16 +28,18 @@ export class SeanslarPage implements OnInit {
   ngOnInit(): void {
     this.id = localStorage.getItem('id');
     this.type = localStorage.getItem('type');
+  }
 
-    this.getSeanslar();
+  ionViewWillEnter(): void {
+    this.getSeanslar(); // Sayfa her ziyaret edildiğinde verileri yükle
   }
 
   getSeanslar() {
     if (this.type == 'user') {
       this.SeansService.getSeansUser(this.id).subscribe({
         next: (result: any) => {
-          (this.seanslar = result.seans),
-            (this.gecmisseanslar = result.tarihigecmisseans);
+          this.seanslar = result.seans;
+          this.gecmisseanslar = result.tarihigecmisseans;
           this.checkSeansDates();
           console.log(result);
         },
@@ -49,8 +50,8 @@ export class SeanslarPage implements OnInit {
 
       this.SeansService.getRandevuUser(this.id).subscribe({
         next: (result: any) => {
-          (this.randevu = result.randevu),
-            (this.gecmisrandevular = result.tarihigecmisrandevu);
+          this.randevu = result.randevu;
+          this.gecmisrandevular = result.tarihigecmisrandevu;
           this.checkRandevuDates();
           console.log(result);
         },

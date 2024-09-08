@@ -13,11 +13,11 @@
     <div style="border-radius: 5px; display: flex;  height: 125px; width: 100%;">
       <div style="width: 30%; display: flex; justify-content: center; align-items: center; padding: 5px;">
         <ng-container *ngIf="psikolog">
-                  <img *ngIf="!psikolog.resim" src="../../../assets/demoavatar.png"
-                    style="width: 80px; height: 80px; border-radius: 50%;" />
+          <img *ngIf="!psikolog.resim" src="../../../assets/demoavatar.png"
+            style="width: 80px; height: 80px; border-radius: 50%;" />
 
-                                      <img *ngIf="psikolog.resim" src="{{serverpath}}/{{psikolog.resim}}"
-                                        style="width: 80px; height: 80px; border-radius: 50%;" />
+          <img *ngIf="psikolog.resim" src="{{serverpath}}/{{psikolog.resim}}"
+            style="width: 80px; height: 80px; border-radius: 50%;" />
         </ng-container>
 
       </div>
@@ -26,19 +26,19 @@
         <h2 *ngIf="psikolog">{{psikolog.adsoyad}}</h2>
 
 
-                <ng-container *ngIf="psikolog">
-                  <ng-container *ngFor="let i of psikolog.kategoriler">
-                      <p>{{i.baslik}}</p>
-                  </ng-container>
-                </ng-container>
+        <ng-container *ngIf="psikolog">
+          <ng-container *ngFor="let i of psikolog.kategoriler">
+            <p>{{i.baslik}}</p>
+          </ng-container>
+        </ng-container>
 
       </div>
     </div>
     <div style="width: 100%; padding-left: 16px; padding-right: 16px; padding-bottom: 16px;">
-    <ion-button [disabled]="accountblock" id="UserSeansModal" *ngIf="type === 'user'" expand="block">
-      <ion-icon name="color-wand-outline" slot="start" size="medium"></ion-icon>
-      Görüşme Ayarla
-    </ion-button>
+      <ion-button [disabled]="accountblock" id="UserSeansModal" *ngIf="type === 'user'" expand="block">
+        <ion-icon name="color-wand-outline" slot="start" size="medium"></ion-icon>
+        Görüşme Ayarla
+      </ion-button>
     </div>
 
   </div>
@@ -66,38 +66,38 @@
 </ion-content>
 
 
-    <ion-modal trigger="UserSeansModal" #UserSeansModal>
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button (click)="cancel(UserSeansModal)" [strong]="true">İptal</ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-          <ion-list *ngIf="psikologseanslar.length > 0" style="margin-bottom: 30px;">
-            <ion-item button="true" (click)="selectSeans(seans)" *ngFor="let seans of psikologseanslar"
-              [class.selected]="selectedSeans === seans">
-              <ion-label>
-                {{seans.tarih}}: {{seans.baslangicsaat}} - {{seans.bitissaat}}
-              </ion-label>
-              <b *ngIf="seans.dolu === false" style="color: #2ecc71;">Boş</b>
-              <b *ngIf="seans.dolu === true" style="color: #c0392b;">Dolu</b>
-            </ion-item>
-          </ion-list>
+<ion-modal trigger="UserSeansModal" #UserSeansModal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel(UserSeansModal)" [strong]="true">İptal</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list *ngIf="psikologseanslar.length > 0" style="margin-bottom: 30px;">
+        <ion-item button="true" (click)="selectSeans(seans)" *ngFor="let seans of psikologseanslar"
+          [class.selected]="selectedSeans === seans">
+          <ion-label>
+            {{seans.tarih}}: {{seans.baslangicsaat}} - {{seans.bitissaat}}
+          </ion-label>
+          <b *ngIf="seans.dolu === false" style="color: #2ecc71;">Boş</b>
+          <b *ngIf="seans.dolu === true" style="color: #c0392b;">Dolu</b>
+        </ion-item>
+      </ion-list>
 
-    <ion-button *ngIf="!odaid" [disabled]="!selectedSeans" (click)="seansAdd()" expand="block">
-      <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
-      Seans Ekle
-    </ion-button>
+      <ion-button *ngIf="!odaid" [disabled]="!selectedSeans" (click)="seansAdd()" expand="block">
+        <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
+        Seans Ekle
+      </ion-button>
 
-    <ion-button *ngIf="odaid" [disabled]="!selectedSeans" (click)="freeseansAdd()" expand="block">
-      <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
-      Seans Ekle
-    </ion-button>
+      <ion-button *ngIf="odaid" [disabled]="!selectedSeans" (click)="freeseansAdd()" expand="block">
+        <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
+        Seans Ekle
+      </ion-button>
 
 
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+    </ion-content>
+  </ng-template>
+</ion-modal>

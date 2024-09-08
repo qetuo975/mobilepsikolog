@@ -16,6 +16,10 @@ export class PsikologService {
     return this.http.get(`${this.baseUrl}/psikologsall`).pipe();
   }
 
+  getPsikologsPuan(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/psikologsallpuan`).pipe();
+  }
+
   getKategori(): Observable<any> {
     return this.http.get(`${this.baseUrl}/psikologkategori`).pipe();
   }

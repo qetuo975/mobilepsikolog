@@ -31,7 +31,13 @@ export class HesabimPage implements OnInit {
     private router: Router
   ) {}
 
+  selectedTime!: string;
+
   ngOnInit(): void {
+    const now = new Date();
+    this.selectedTime = now.toISOString().slice(0, 16); // Sadece tarih ve saat kısmını alıyoruz
+
+
     this.type = localStorage.getItem('type');
     if (this.type == 'user') {
       this.setAccountUser();
@@ -92,6 +98,7 @@ export class HesabimPage implements OnInit {
       this.UserService.uploadPhotoPsikolog(formData).subscribe({
         next: (result: any) => {
           if (result) {
+            this.setAccountPsikolog();
             this.presentToast('top', 'Fotoğrafınız Başarıyla Güncellendi');
           } else {
             this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
@@ -108,6 +115,7 @@ export class HesabimPage implements OnInit {
         next: (result: any) => {
           console.log(result);
           if (result) {
+            this.setAccountUser();
             this.presentToast('top', 'Fotoğrafınız Başarıyla Güncellendi');
           } else {
             this.presentToast('top', 'Fotoğrafınız Güncellenemedi.');
@@ -322,6 +330,16 @@ export class HesabimPage implements OnInit {
         return;
       }
 
+      // Başlangıç ve bitiş saati arasındaki farkı hesapla
+      const duration = moment.duration(endTimeMoment.diff(startTimeMoment));
+      const minutes = duration.asMinutes();
+
+      // Eğer fark 30 dakikadan az ise hata mesajı göster
+      if (minutes < 30) {
+        this.presentToast('top', 'Başlangıç ve bitiş saati arasında en az 30 dakika olmalıdır.');
+        return;
+      }
+
       // Çakışmaları kontrol et
       const overlaps = this.seanslar.some((seans) => {
         return (
@@ -358,6 +376,11 @@ export class HesabimPage implements OnInit {
         return;
       }
 
+      if (this.startTime == 'Invalid Date' || this.endTime == 'Invalid Date')
+      {
+        this.presentToast('top', 'Lütfen başlanıç ve bitiş saati seçiniz.');
+        return
+      }
       // Seans ekleme
       this.UserService.addSeans(
         this.startTime,
@@ -424,7 +447,6 @@ export class HesabimPage implements OnInit {
   endTime!: string;
   selectedDay!: string;
   isPopoverOpen: boolean = false;
-  selectedTime!: string;
   timeType!: string;
   seanslar: any[] = [];
   balance: number = 0;
