@@ -1,49 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-
-h2 {
-  font-family: Inter !important;
-  font-weight: 600 !important;
-  margin: 0 !important;
-  font-size: 18px;
-  color: #fff;
-}
-
-p {
-  font-family: Inter !important;
-  font-weight: 500 !important;
-  font-size: 14px;
-  color: #fff;
-  margin: 0 !important;
-}
-
-ion-col {
+.video-container {
+  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  text-align: center;
-
-  // Bu stil, içeriğin ortalamanın dışına taşmasını önler
-    overflow: hidden;
-    white-space: nowrap;
+  height: 60vh;
+  background-color: #000;
+    border-radius: 8px;
 }
 
-ion-label {
-    font-family: Inter !important;
-      font-weight: 500 !important;
-      font-size: 14px;
+.remote-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-ion-item {
-  margin-bottom: 15px !important;
+.local-video {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid white;
+  border-radius: 8px;
 }
 
-ion-button {
-      font-family: Inter !important;
-        font-weight: 500 !important;
-        font-size: 14px;
-}
-
-.update-button {
-  --background: #54a0ff;
+.controls {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

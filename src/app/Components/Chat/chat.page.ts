@@ -1,9 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Socket } from 'ngx-socket-io';
-
-declare var Peer: any;
-var peer = new Peer();
+import Peer from 'peerjs';
 
 @Component({
   selector: 'app-chat',
@@ -11,196 +9,182 @@ var peer = new Peer();
   styleUrls: ['chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  MyPeerId: any;
-  targetUser: any; // Store the target user
-  myVideoStream: any = null;
-  clientVideoStreams: any[] = [];
+  peer!: Peer;
+  localStream!: MediaStream;
+  targetPeerId!: string; // Hedef kullanıcının PeerJS ID'si
+  isCallStarted: boolean = false; // Görüşme başlatıldı mı?
+  id: any;
 
-  constructor(private socket: Socket, private router: Router) {}
+  targetid: any;
+  type: any;
+
+  // Kamera ve mikrofon kontrol durumları
+  isMicEnabled: boolean = true;
+  isCamEnabled: boolean = true;
+  currentCall: any; // Aktif aramayı saklamak için
+
+  constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     const state: any = this.router.getCurrentNavigation()?.extras.state;
-    console.log(state);
+    this.targetid = state.chatData.target.target.id;
+    this.type = state.chatData.target.type;
 
-    if (state && state.chatData && state.chatData.target) {
-      this.targetUser = state.chatData.target;
+    console.log(this.type, this.targetid);
 
-      console.log('Target User:', this.targetUser);
+    this.id = Number(localStorage.getItem('id'));
+    this.peer = new Peer();
 
-      setTimeout(() => {
-        this.openCamera();
-        this.socket.connect();
-        this.MyPeerId = peer.id;
-        console.log(this.MyPeerId);
-        this.socket.emit('set-name', {
-          peerid: this.MyPeerId,
-          target: this.targetUser,
+    // PeerJS ID'si alındığında backend'e kaydetme
+    this.peer.on('open', (peerId) => {
+      console.log('PeerJS ID:', peerId);
+
+      // PeerJS ID'sini backend'e kaydet
+      this.registerPeerId(this.id, peerId)
+        .then(() => {
+          console.log('Peer ID başarıyla kaydedildi.');
+        })
+        .catch((err) => {
+          console.error('Peer ID kaydedilirken hata oluştu:', err);
         });
-        this.socket.emit('set-camera', this.MyPeerId, true);
-        this.socket.emit('list-client');
+    });
 
-        // İstemci Kodu
-        this.socket.on('list-client', (data: any) => {
-          let users = data.users;
-          console.log(users);
-
-          // Target kullanıcının bağlı olup olmadığını kontrol et
-          let targetUserConnected = users.some(
-            (user: any) => user.targetId === this.targetUser.id
-          );
-
-          if (targetUserConnected) {
-            console.log('Hedef kullanıcı bağlı, medya çağrısı başlatılıyor...');
-            this.mediaCall();
-            this.mediaAnswer();
-          } else {
-            console.log('Hedef kullanıcı bağlı değil.');
-          }
-        });
-      }, 1000);
-    }
-  }
-
-  openCamera() {
-    const n = <any>navigator;
-    n.getUserMedia =
-      n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-    n.getUserMedia(
-      {
-        video: { width: 1000, height: 320 },
-        audio: true,
-      },
-      (stream: any) => {
-        var video = document.createElement('video');
-        video.srcObject = stream;
-        video.setAttribute('autoplay', '');
-        video.setAttribute('playsinline', '');
-        video.style.width = '100%';
-        video.style.height = 'auto';
-        var myList = document.getElementById('myList');
-        if (myList) {
-          myList.appendChild(video);
-        }
-        var myID = 'myVideo';
-        video.setAttribute('id', myID);
-        this.myVideoStream = stream;
-      },
-      (err: any) => {
-        console.error('Failed to get local stream', err);
-      }
-    );
-  }
-
-  mediaCall() {
-    var video = document.createElement('video');
-    var locaVar = peer; // Burada `peer` değişkeni global olarak tanımlanmış olmalı
-    var fname = this.targetUser.id;
-    var n = <any>navigator;
-    n.getUserMedia =
-      n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-    n.getUserMedia(
-      { video: { width: 320, height: 320 }, audio: true },
-      (stream: any) => {
-        var call = locaVar.call(fname, stream);
-        call.on('stream', (remoteStream: any) => {
-          video.srcObject = remoteStream;
-          video.play();
-          video.setAttribute('autoplay', '');
-          video.setAttribute('playsinline', '');
-          video.style.width = '100%';
-          video.style.height = 'auto';
-          var myList = document.getElementById('myList');
-          if (myList) {
-            myList.appendChild(video);
-          }
-          let howmany: any =
-            document.getElementById('myList')?.childElementCount;
-          document
-            .getElementsByTagName('video')
-            [howmany - 1].setAttribute('id', fname);
-        });
-        call.on('close', () => {
-          video.remove();
-        });
-      },
-      (err: any) => {
-        console.log('Failed to get local stream', err);
-      }
-    );
-  }
-
-  mediaAnswer() {
-    const n = <any>navigator;
-    const chatclass = this;
-    if (!peer) {
-      console.error('Peer object not initialized.');
-      return;
-    }
-    peer.on('call', (call: any) => {
-      if (!n.getUserMedia) {
-        console.error('getUserMedia is not supported.');
-        return;
-      }
-      n.getUserMedia =
-        n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-      n.getUserMedia(
-        { video: { width: 320, height: 320 }, audio: true },
-        (stream: any) => {
-          call.answer(stream);
-          call.on('stream', (remoteStream: any) => {
-            chatclass.clientVideoStreams.push(remoteStream);
-            chatclass.addVideoStream(remoteStream, call.peer);
+    // Gelen aramaları kabul etme
+    this.peer.on('call', (call) => {
+      this.currentCall = call; // Aktif aramayı sakla
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          this.localStream = stream;
+          this.displayLocalStream();
+          call.answer(stream); // Aramayı kabul et
+          call.on('stream', (remoteStream) => {
+            this.playRemoteStream(remoteStream); // Karşı tarafın videosunu oynat
           });
-        },
-        (err: any) => {
-          console.error('Failed to get local stream', err);
-        }
-      );
+        })
+        .catch((err) => {
+          console.error('Media Error:', err);
+        });
     });
   }
 
-  muteUnmute() {
-    let audioEnabled = this.myVideoStream.getAudioTracks()[0].enabled;
-    this.myVideoStream.getAudioTracks()[0].enabled = !audioEnabled;
-    const muteButton = document.querySelector('.main__mute_button');
-    if (audioEnabled) {
-      muteButton!.innerHTML = '<span>Sesi Aç</span>';
-    } else {
-      muteButton!.innerHTML = '<span>Sesi Kapat</span>';
+  // Kendi videosunu oynatma
+  displayLocalStream() {
+    const localVideoElement = document.querySelector(
+      '#local-video'
+    ) as HTMLVideoElement | null;
+    if (localVideoElement) {
+      localVideoElement.srcObject = this.localStream;
+      localVideoElement.play();
     }
   }
 
-  playStop() {
-    let videoEnabled = this.myVideoStream.getVideoTracks()[0].enabled;
-    this.myVideoStream.getVideoTracks()[0].enabled = !videoEnabled;
-    this.socket.emit(
-      'set-camera',
-      this.MyPeerId,
-      this.myVideoStream.getVideoTracks()[0].enabled
-    );
-    for (let clientStream of this.clientVideoStreams) {
-      clientStream.getVideoTracks()[0].enabled =
-        !clientStream.getVideoTracks()[0].enabled;
+  // Görüşmeyi sonlandır
+  endCall() {
+    if (this.currentCall) {
+      this.currentCall.close(); // PeerJS bağlantısını sonlandır
     }
-    const videoButton = document.querySelector('.main__video_button');
-    if (videoEnabled) {
-      videoButton!.innerHTML = '<span>Videoyu Aç</span>';
+
+    // Eğer bir medya akışı varsa onu durdur
+    if (this.localStream) {
+      this.localStream.getTracks().forEach((track) => track.stop());
+    }
+
+    // Anasayfaya yönlendir
+    this.router.navigate(['/tabs/anasayfa']);
+  }
+
+  // Backend'e PeerJS ID kaydetme
+  registerPeerId(userId: string | number, peerId: string) {
+    return this.http
+      .post('http://therapydays.com:9000/register', {
+        userId: userId,
+        peerId: peerId,
+      })
+      .toPromise();
+  }
+
+  // Başka bir kullanıcının PeerJS ID'sini almak için
+  getPeerId(targetUserId: string | number): Promise<string> {
+    return this.http
+      .get(`http://therapydays.com:9000/peer-id/${targetUserId}`)
+      .toPromise()
+      .then((response: any) => response.peerId)
+      .catch((error) => {
+        console.error("Kullanıcının PeerJS ID'si bulunamadı", error);
+        throw error;
+      });
+  }
+
+  // Görüntülü arama başlatma
+  startVideoCall() {
+    // Kullanıcı tipi kontrolü (user/psikolog)
+    if (this.type === 'Psikolog') {
+      console.log('Psikolog ile görüşme başlatılıyor.');
+    } else if (this.type === 'User') {
+      console.log('Kullanıcı ile görüşme başlatılıyor.');
     } else {
-      videoButton!.innerHTML = '<span>Videoyu Kapat</span>';
+      console.error('Bilinmeyen kullanıcı tipi:', this.type);
+      return;
+    }
+
+    // Hedef kullanıcının PeerJS ID'sini al ve arama başlat
+    this.getPeerId(this.targetid)
+      .then((targetPeerId) => {
+        // PeerJS ile görüntülü arama başlat
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: true })
+          .then((stream) => {
+            this.localStream = stream;
+            this.displayLocalStream(); // Kendi videonu ekrana getir
+            const call = this.peer.call(targetPeerId, stream); // Hedef PeerJS ID'ye arama yap
+            this.isCallStarted = true; // Görüşme başlatıldı, butonu gizle
+
+            call.on('stream', (remoteStream) => {
+              this.playRemoteStream(remoteStream); // Karşı tarafın videosunu ekrana getir
+            });
+          })
+          .catch((err) => {
+            console.error('Media Error:', err);
+          });
+      })
+      .catch((err) => {
+        console.error('PeerJS ID alınamadı:', err);
+      });
+  }
+
+  // Mikrofonu aç/kapat
+  toggleMicrophone() {
+    if (this.localStream) {
+      this.localStream.getAudioTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+      this.isMicEnabled = !this.isMicEnabled;
+      console.log(`Mikrofon ${this.isMicEnabled ? 'açık' : 'kapalı'}.`);
     }
   }
 
-  addVideoStream(stream: any, id: any) {
-    var video = document.createElement('video');
-    video.srcObject = stream;
-    video.setAttribute('autoplay', '');
-    video.setAttribute('playsinline', '');
-    video.style.width = '100%';
-    video.style.height = 'auto';
-    var myList = document.getElementById('myList');
-    if (myList) {
-      myList.appendChild(video);
+  // Kamerayı aç/kapat
+  toggleCamera() {
+    if (this.localStream) {
+      this.localStream.getVideoTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+      this.isCamEnabled = !this.isCamEnabled;
+      console.log(`Kamera ${this.isCamEnabled ? 'açık' : 'kapalı'}.`);
     }
-    video.setAttribute('id', id);
+  }
+
+  // Gelen stream'i video elementinde oynatma
+  playRemoteStream(remoteStream: MediaStream) {
+    const remoteVideoElement = document.querySelector(
+      '#remote-video'
+    ) as HTMLVideoElement | null;
+    if (remoteVideoElement) {
+      remoteVideoElement.srcObject = remoteStream;
+      remoteVideoElement.play();
+    } else {
+      console.error('Remote video element not found!');
+    }
   }
 }

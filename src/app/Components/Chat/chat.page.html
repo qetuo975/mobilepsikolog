@@ -1,23 +1,39 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
+    <ion-title class="ion-text-center">
       Sohbet
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding" [fullscreen]="true">
-
-  <div id="myList">
+  <div class="video-container">
+    <video id="remote-video" autoplay playsinline class="remote-video"></video>
+    <video id="local-video" autoplay muted playsinline class="local-video"></video>
   </div>
 
-  <!-- <h1>My ID:<br>{{mypeerid}}</h1> -->
+  <div class="controls">
+    <!-- Görüşmeyi başlatma butonu -->
+    <ion-button *ngIf="!isCallStarted" expand="block" color="success" (click)="startVideoCall()">
+      <ion-icon name="call-outline" color="light" slot="start"></ion-icon>
+      <b style="color: white;">Görüşmeyi Başlat</b>
+    </ion-button>
 
-  <!-- <ion-input [(ngModel)]="anotherid" style="border: solid greenyellow;" type="text" placeholder="Peer ID"></ion-input> -->
-  <ion-button (click)="playStop()" expand="block" fill="outline" shape="round" class="main__video_button">
-    <span>Stop Video</span>
-  </ion-button>
-  <ion-button (click)="muteUnmute()" expand="block" fill="outline" shape="round" class="main__mute_button">
-    <span>Mute Audio</span>
-  </ion-button>
+    <!-- Mikrofon ve Kamera aç/kapat butonları -->
+    <ion-button expand="block" fill="outline" color="primary" (click)="toggleMicrophone()">
+      <ion-icon [name]="isMicEnabled ? 'mic-off-outline' : 'mic-outline'" slot="start"></ion-icon>
+      {{ isMicEnabled ? 'Mikrofonu Kapat' : 'Mikrofonu Aç' }}
+    </ion-button>
+
+    <ion-button expand="block" fill="outline" color="primary" (click)="toggleCamera()">
+      <ion-icon [name]="isCamEnabled ? 'videocam-off-outline' : 'videocam-outline'" slot="start"></ion-icon>
+      {{ isCamEnabled ? 'Kamerayı Kapat' : 'Kamerayı Aç' }}
+    </ion-button>
+
+    <!-- Görüşmeyi sonlandırma butonu -->
+    <ion-button expand="block" color="danger" (click)="endCall()">
+      <ion-icon name="call-outline" slot="start"></ion-icon>
+      <b style="color: white;">Görüşmeyi Sonlandır</b>
+    </ion-button>
+  </div>
 </ion-content>
