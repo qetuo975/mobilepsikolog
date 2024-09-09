@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Camera } from '@capacitor/camera';
+
+
+
 import Peer from 'peerjs';
 
 @Component({
@@ -25,7 +29,21 @@ export class ChatPage implements OnInit {
 
   constructor(private router: Router, private http: HttpClient) {}
 
+  async checkCameraPermission() {
+    const permissionStatus = await Camera.checkPermissions();
+
+    if (permissionStatus.camera !== 'granted') {
+      // Request permission if not granted
+      const requestStatus = await Camera.requestPermissions();
+      console.log('Permission requested:', requestStatus);
+    } else {
+      console.log('Camera permission is already granted');
+    }
+  }
+
   ngOnInit() {
+    this.checkCameraPermission();
+
     const state: any = this.router.getCurrentNavigation()?.extras.state;
     this.targetid = state.chatData.target.target.id;
     this.type = state.chatData.target.type;
