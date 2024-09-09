@@ -13,7 +13,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './Guards/auth.guard';
 
-const config: SocketIoConfig = { url: 'http://therapydays.com:3000', options: {}};
+const config: SocketIoConfig = { url: 'http://therapydays.com:5000', options: {}};
 
 @NgModule({
   declarations: [AppComponent],

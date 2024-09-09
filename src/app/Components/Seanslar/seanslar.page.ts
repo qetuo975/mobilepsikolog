@@ -87,7 +87,11 @@ export class SeanslarPage implements OnInit {
   }
 
   checkSeansDates() {
+    this.upcomingSeanslar = []; // Bu diziyi sıfırlayalım ki her seferinde tekrar kontrol edilsin
+    this.pastSeanslar = []; // Aynı şekilde geçmiş seanslar da sıfırlanmalı
+
     this.seanslar.forEach((seans) => {
+      console.log('Seans:', seans);
       seans.isUpcoming = this.isSeansUpcoming(seans.tarih);
       seans.isPast = this.isSeansPast(seans.tarih);
 
@@ -137,17 +141,34 @@ export class SeanslarPage implements OnInit {
   }
 
   isSeansUpcoming(tarih: string): boolean {
-    const seansTarih = this.parseSeansDate(tarih);
+    const seansTarih = this.parseSeansDate(tarih, 'start');
+    const seansBitis = this.parseSeansDate(tarih, 'end');
     const currentDate = moment();
-    const seansBitis = seansTarih.clone().add(2, 'hours'); // Seans bitiş saati, seans süresi 2 saat olduğunu varsaydım
 
-    return currentDate.isBetween(seansTarih, seansBitis);
+    console.log(
+      'Seans Başlangıç:',
+      seansTarih.format(),
+      'Seans Bitiş:',
+      seansBitis.format(),
+      'Şu Anki Tarih:',
+      currentDate.format()
+    );
+
+    return currentDate.isBetween(seansTarih, seansBitis, null, '[)');
   }
 
   isSeansPast(tarih: string): boolean {
-    const seansTarih = this.parseSeansDate(tarih);
+    const seansBitis = this.parseSeansDate(tarih, 'end');
     const currentDate = moment();
-    return currentDate.isAfter(seansTarih.clone().add(2, 'hours'));
+
+    console.log(
+      'Seans Bitiş:',
+      seansBitis.format(),
+      'Şu Anki Tarih:',
+      currentDate.format()
+    );
+
+    return currentDate.isAfter(seansBitis);
   }
 
   navigateChat(seans: any) {
@@ -163,24 +184,59 @@ export class SeanslarPage implements OnInit {
     this.router.navigate(['/chat'], navigationExtras);
   }
 
+  parseSeansDate(tarih: string, type: 'start' | 'end'): moment.Moment {
+    console.log(tarih, type); // Gelen tarih ve type'ı kontrol etmek için
+    if (!tarih) {
+      console.error('Tarih değeri eksik veya undefined:', tarih);
+      return moment.invalid(); // Geçersiz tarih döndür
+    }
 
-  parseSeansDate(tarih: string): moment.Moment {
-    const [dayPart, timePart] = tarih.split('|').map((part) => part.trim());
-    const [startHour, startMinute] = timePart.split(':').map(part => part.trim());
+    const parts = tarih.split('|');
+    if (parts.length !== 2) {
+      console.error("Tarih formatı hatalı, '|' eksik:", tarih);
+      return moment.invalid(); // Hatalı tarih döndür
+    }
 
-    console.log('GÜN: ', dayPart);
-    console.log('BAŞLANGIÇ SAATİ: ', startHour + ":" + startMinute);
+    const [dayPart, timePart] = parts.map((part) => part.trim());
 
-    // Şu anki tarihi alıyoruz
-    let currentDate = moment();
+    // Günü doğru hesapla: Gün bugünden küçükse, bu hafta içindeyiz, aksi takdirde gelecek hafta
+    const currentDay = moment().isoWeekday();
+    const dayIndex = this.getDayOfWeek(dayPart); // Pazartesi=1, Salı=2, ...
 
-    // Eğer seans günü Pazar ve gelecek Pazar günü olması gerekiyorsa, gün ve saat bilgisi ile tam tarih oluşturuyoruz
-    return moment().day(dayPart).set({
-      hour: parseInt(startHour, 10),
-      minute: parseInt(startMinute, 10),
-      second: 0,
-      millisecond: 0
-    });
+    let seansDate = moment();
+
+    // Eğer seans günü bugünden küçükse, bu hafta içinde kalırız, aksi takdirde bir sonraki haftaya geçeriz
+    if (dayIndex >= currentDay) {
+      seansDate = seansDate.isoWeekday(dayIndex); // Aynı hafta içinde ayarla
+    } else {
+      seansDate = seansDate.add(1, 'weeks').isoWeekday(dayIndex); // Bir sonraki haftaya ayarla
+    }
+
+    // Saat temizleme işlemleri
+    const times = timePart.match(/(\d{1,2}:\d{2})/g); // Sadece saat formatındaki kısımları çek
+    if (!times || times.length !== 2) {
+      console.error('Saat formatı doğru değil:', timePart);
+      return moment.invalid(); // Hatalı saat aralığı döndür
+    }
+
+    const [startTime, endTime] = times;
+
+    // Başlangıç saati işlemi
+    if (type === 'start') {
+      const [startHour, startMinute] = startTime.split(':');
+      return seansDate.set({
+        hour: parseInt(startHour, 10),
+        minute: parseInt(startMinute, 10),
+      });
+    }
+    // Bitiş saati işlemi
+    else {
+      const [endHour, endMinute] = endTime.split(':');
+      return seansDate.set({
+        hour: parseInt(endHour, 10),
+        minute: parseInt(endMinute, 10),
+      });
+    }
   }
 
   getDayOfWeek(day: string): number {
