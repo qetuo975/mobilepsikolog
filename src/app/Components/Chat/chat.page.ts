@@ -115,7 +115,7 @@ export class ChatPage implements OnInit {
   // Backend'e PeerJS ID kaydetme
   registerPeerId(userId: string | number, peerId: string) {
     return this.http
-      .post('http://therapydays.com:9000/register', {
+      .post('http://bahrikement.com:9000/register', {
         userId: userId,
         peerId: peerId,
       })
@@ -125,7 +125,7 @@ export class ChatPage implements OnInit {
   // Başka bir kullanıcının PeerJS ID'sini almak için
   getPeerId(targetUserId: string | number): Promise<string> {
     return this.http
-      .get(`http://therapydays.com:9000/peer-id/${targetUserId}`)
+      .get(`http://bahrikement.com:9000/peer-id/${targetUserId}`)
       .toPromise()
       .then((response: any) => response.peerId)
       .catch((error) => {
