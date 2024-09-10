@@ -11,10 +11,15 @@ import { NavigationExtras, Router } from '@angular/router';
 export class OdaPage implements OnInit {
   @ViewChild('odamodal', { static: false }) odamodal!: IonModal;
   selectedSegment: string = 'oda';
+  serverpath: any = 'https://bahrikement.com/static';
   type: any;
   oda: any;
 
   constructor(private UserService: UserService, private router: Router) {}
+
+  openModal() {
+    this.odamodal.present();
+  }
 
   ngOnInit(): void {
     this.type = localStorage.getItem('type');

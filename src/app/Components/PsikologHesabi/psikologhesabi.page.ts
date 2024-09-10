@@ -110,6 +110,7 @@ export class PsikologHesabiPage implements OnInit {
 
   ngOnInit(): void {
     const state: any = this.Router.getCurrentNavigation()?.extras.state;
+    console.log(state);
     if (state) {
       this.freeaccount = true;
       this.odaid = state.id;
