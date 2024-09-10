@@ -6,6 +6,7 @@ import { Camera } from '@capacitor/camera';
 
 
 import Peer from 'peerjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -58,13 +59,14 @@ export class ChatPage implements OnInit {
       console.log('PeerJS ID:', peerId);
 
       // PeerJS ID'sini backend'e kaydet
-      this.registerPeerId(this.id, peerId)
-        .then(() => {
-          console.log('Peer ID başarıyla kaydedildi.');
-        })
-        .catch((err) => {
-          console.error('Peer ID kaydedilirken hata oluştu:', err);
-        });
+      this.registerPeerId(this.id, peerId).subscribe({
+        next: (res: any) => {
+          console.log('Peer ID başarıyla kaydedildi.', res);
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      })
     });
 
     // Gelen aramaları kabul etme
@@ -119,19 +121,12 @@ export class ChatPage implements OnInit {
         userId: userId,
         peerId: peerId,
       })
-      .toPromise();
+      .pipe()
   }
 
   // Başka bir kullanıcının PeerJS ID'sini almak için
-  getPeerId(targetUserId: string | number): Promise<string> {
-    return this.http
-      .get(`http://bahrikement.com:9000/peer-id/${targetUserId}`)
-      .toPromise()
-      .then((response: any) => response.peerId)
-      .catch((error) => {
-        console.error("Kullanıcının PeerJS ID'si bulunamadı", error);
-        throw error;
-      });
+  getPeerId(targetUserId: string | number): Observable<any> {
+    return this.http.get(`http://bahrikement.com:9000/peer-id/${targetUserId}`).pipe();
   }
 
   // Görüntülü arama başlatma
@@ -146,29 +141,28 @@ export class ChatPage implements OnInit {
       return;
     }
 
-    // Hedef kullanıcının PeerJS ID'sini al ve arama başlat
-    this.getPeerId(this.targetid)
-      .then((targetPeerId) => {
-        // PeerJS ile görüntülü arama başlat
+    this.getPeerId(this.targetid).subscribe({
+      next: (res: any) => {
         navigator.mediaDevices
-          .getUserMedia({ video: true, audio: true })
-          .then((stream) => {
-            this.localStream = stream;
-            this.displayLocalStream(); // Kendi videonu ekrana getir
-            const call = this.peer.call(targetPeerId, stream); // Hedef PeerJS ID'ye arama yap
-            this.isCallStarted = true; // Görüşme başlatıldı, butonu gizle
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          this.localStream = stream;
+          this.displayLocalStream(); // Kendi videonu ekrana getir
+          const call = this.peer.call(res.peerId, stream); // Hedef PeerJS ID'ye arama yap
+          this.isCallStarted = true; // Görüşme başlatıldı, butonu gizle
 
-            call.on('stream', (remoteStream) => {
-              this.playRemoteStream(remoteStream); // Karşı tarafın videosunu ekrana getir
-            });
-          })
-          .catch((err) => {
-            console.error('Media Error:', err);
+          call.on('stream', (remoteStream) => {
+            this.playRemoteStream(remoteStream); // Karşı tarafın videosunu ekrana getir
           });
-      })
-      .catch((err) => {
+        })
+        .catch((err) => {
+          console.error('Media Error:', err);
+        });
+      },
+      error: (err: any) => {
         console.error('PeerJS ID alınamadı:', err);
-      });
+      }
+    })
   }
 
   // Mikrofonu aç/kapat
