@@ -1,3 +1,4 @@
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BlogsService } from './../../../Service/blogs.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['bloglar.page.scss'],
 })
 export class BloglarPage implements OnInit {
-  constructor(private BlogsService: BlogsService) {}
+  constructor(private BlogsService: BlogsService, private sanitizer: DomSanitizer) {}
   serverpath: any = 'https://bahrikement.com/static';
   ngOnInit(): void {
     this.BlogsService.getBlogs().subscribe({
@@ -22,4 +23,8 @@ export class BloglarPage implements OnInit {
   }
 
   blogs: any[] = [];
+
+  stripHtmlTags(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  }
 }

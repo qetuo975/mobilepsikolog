@@ -26,8 +26,7 @@
           <ion-card-subtitle>{{ blog.createdAt }}</ion-card-subtitle>
 
         </ion-card-header>
-        <ion-card-content>
-          {{ blog.icerik }}
+        <ion-card-content [innerHTML]="stripHtmlTags(blog.icerik)">
         </ion-card-content>
       </ion-card>
     </ion-col>

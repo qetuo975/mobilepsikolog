@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BlogsService } from 'src/Service/blogs.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-blog-details',
@@ -14,8 +16,15 @@ export class BlogDetailsComponent implements OnInit {
 
   constructor(
     private blogservice: BlogsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) {}
+
+  stripHtmlTags(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  }
+
+
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

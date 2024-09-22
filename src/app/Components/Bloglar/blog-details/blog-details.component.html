@@ -22,7 +22,7 @@
       <ion-card-title>{{ blog.baslik }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>{{ blog.icerik }}</p>
+      <p [innerHTML]="stripHtmlTags(blog.icerik)"></p>
     </ion-card-content>
   </ion-card>
 </div>
