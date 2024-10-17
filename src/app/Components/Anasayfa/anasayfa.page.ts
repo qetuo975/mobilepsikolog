@@ -25,7 +25,8 @@ export class AnasayfaPage implements OnInit {
   blogs: any[] = [];
   serverpath: any = 'https://api.therapydays.com/static';
   searchControl: FormControl = new FormControl();
-  banners: any
+  banners: any;
+  arkaplan: any;
 
   filterPsikologForm = new FormGroup({
     cinsiyet: new FormControl('', Validators.required),
@@ -153,6 +154,16 @@ export class AnasayfaPage implements OnInit {
     this.BlogsService.getBanners().subscribe({
       next: (res: any) => {
         this.banners = res.Data;
+        console.log(res);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+
+    this.BlogsService.getArkaplan().subscribe({
+      next: (res: any) => {
+        this.arkaplan = res.Data;
         console.log(res);
       },
       error: (err: any) => {

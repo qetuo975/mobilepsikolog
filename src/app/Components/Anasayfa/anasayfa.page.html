@@ -2,7 +2,7 @@
   <ion-header [translucent]="true" id="header">
     <ion-toolbar class="transparent-toolbar">
       <ion-title>
-        <img src="https://terappin.com/images/minifies/terappin-logo-small.webp" alt="Logo"
+        <img *ngIf="arkaplan" [src]="serverpath + '/' + arkaplan.logo" alt="Logo"
           style="height: 40px; vertical-align: middle;">
       </ion-title>
     </ion-toolbar>
