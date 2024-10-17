@@ -9,6 +9,16 @@ export class BlogsService {
   constructor(private http: HttpClient) {}
 
 
+  getArkaplan()
+  {
+    return this.http.get(`${api}/general/arkaplan`).pipe();
+  }
+
+  getBanners()
+  {
+    return this.http.get(`${api}/general/banner`).pipe();
+  }
+
   getBlogs() {
     return this.http.get(`${api}/general/blogs`).pipe();
   }

@@ -3,11 +3,11 @@
   <div class="login-container">
     <ion-card>
       <div class="logo-container">
-        <img src="https://seeklogo.com/images/C/capacitor-logo-DF3634DD70-seeklogo.com.png" alt="Logo" class="logo">
+        <ion-img *ngIf="arkaplan" [src]="serverpath + '/' + arkaplan.loginlogo" alt="{{ arkaplan.loginlogo }}" class="logo" />
       </div>
       <ion-card-header>
-        <p style="font-size: 14px; font-weight: 500;">Kendinizi iyi hissetme yolculuğunuzda .... yanınızda !
-        .... kayıt olarak en alanında tecrübeli psikologlarımıza ulaşabilirsiniz.
+        <p style="font-size: 14px; font-weight: 500;">Kendinizi iyi hissetme yolculuğunuzda Therapydays yanınızda !
+        Therapydays kayıt olarak en alanında tecrübeli psikologlarımıza ulaşabilirsiniz.
 
         </p>
 

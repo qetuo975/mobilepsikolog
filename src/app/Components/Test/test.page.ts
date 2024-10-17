@@ -1,6 +1,7 @@
 
 import { TestService } from './../../../Service/test.service';
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
@@ -14,7 +15,8 @@ export class TestPage implements OnInit {
     private TestService: TestService,
     private router: Router,
     private route: ActivatedRoute,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private sanitizer: DomSanitizer
   ) {}
 
   icerik: string = '';
@@ -23,7 +25,11 @@ export class TestPage implements OnInit {
   sonuclar: any[] = [];
   selectedsorular: any[] = [];
   selectedvalues: any[] = [];
-  serverpath: any = 'https://bahrikement.com/static';
+  serverpath: any = 'https://api.therapydays.com/static';
+
+  stripHtmlTags(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

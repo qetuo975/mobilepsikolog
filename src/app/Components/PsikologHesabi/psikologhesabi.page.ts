@@ -10,7 +10,7 @@ import { IonModal, ToastController } from '@ionic/angular';
 })
 export class PsikologHesabiPage implements OnInit {
   @ViewChild('UserSeansModal', { static: false }) UserSeansModal!: IonModal;
-  serverpath: string = 'https://bahrikement.com/static';
+  serverpath: any = 'https://api.therapydays.com/static';
 
   psikolog: any;
   psikologseanslar: any;

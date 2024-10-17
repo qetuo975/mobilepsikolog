@@ -11,7 +11,7 @@ import { NavigationExtras, Router } from '@angular/router';
 export class OdaPage implements OnInit {
   @ViewChild('odamodal', { static: false }) odamodal!: IonModal;
   selectedSegment: string = 'oda';
-  serverpath: any = 'https://bahrikement.com/static';
+  serverpath: any = 'https://api.therapydays.com/static';
   type: any;
   oda: any;
 

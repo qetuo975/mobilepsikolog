@@ -22,7 +22,7 @@
 
     <div style="width: 100%; display: flex; flex-direction: column; gap: 10px">
       <h2>{{baslik}}</h2>
-      <p>{{icerik}}</p>
+      <p [innerHTML]="stripHtmlTags(icerik)"></p>
       <i>Son iki hafta içinde yaşadıklarınızı değerlendirerek aşağıdaki seçeneklerde size uygun olanı seçiniz.</i>
     </div>
   </div>

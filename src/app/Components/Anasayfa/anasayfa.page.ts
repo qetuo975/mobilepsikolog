@@ -19,12 +19,13 @@ import moment from 'moment';
 export class AnasayfaPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
   @ViewChild(IonSearchbar, { static: false }) searchbar!: IonSearchbar;
-  private focusTimeout: any;
+
   psikologlar: any[] = [];
   tests: any[] = [];
   blogs: any[] = [];
-  serverpath: any = 'https://bahrikement.com/static';
+  serverpath: any = 'https://api.therapydays.com/static';
   searchControl: FormControl = new FormControl();
+  banners: any
 
   filterPsikologForm = new FormGroup({
     cinsiyet: new FormControl('', Validators.required),
@@ -148,6 +149,16 @@ export class AnasayfaPage implements OnInit {
   ngOnInit(): void {
     this.id = localStorage.getItem('id');
     this.type = localStorage.getItem('type');
+
+    this.BlogsService.getBanners().subscribe({
+      next: (res: any) => {
+        this.banners = res.Data;
+        console.log(res);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
 
     if (this.type == 'user') {
           this.UserService.getUser(this.id).subscribe({

@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PsikologlarPage implements OnInit {
   psikologlar: any[] = [];
-  serverpath: any = 'https://bahrikement.com/static';
+  serverpath: any = 'https://api.therapydays.com/static';
   puanfilter: boolean = false;
 
   constructor(private PsikologService: PsikologService, private router: Router) {

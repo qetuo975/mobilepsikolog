@@ -12,7 +12,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class BlogDetailsComponent implements OnInit {
   blog: any;
-  serverpath: any = 'https://bahrikement.com/static';
+  serverpath: any = 'https://api.therapydays.com/static';
 
   constructor(
     private blogservice: BlogsService,

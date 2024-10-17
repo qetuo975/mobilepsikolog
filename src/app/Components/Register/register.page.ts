@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { BlogsService } from 'src/Service/blogs.service';
 import { GoogleAuthServiceService } from 'src/Service/google-auth-service.service';
 import { UserService } from 'src/Service/user.service'; // UserService'i ekleyin
 
@@ -17,16 +18,29 @@ export class RegisterPage implements OnInit {
     password: ['', Validators.required], // Şifre alanı
     isPsikolog: [false, Validators.required]
   });
+  serverpath: any = 'https://api.therapydays.com/static';
+  arkaplan: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private toastController: ToastController,
     private GoogleAuthService: GoogleAuthServiceService,
     private router: Router,
-    private userService: UserService // UserService'i enjekte edin
+    private userService: UserService, // UserService'i enjekte edin
+    private BlogsService: BlogsService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.BlogsService.getArkaplan().subscribe({
+      next: (res: any) => {
+        this.arkaplan = res.Data;
+        console.log(res);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+  }
 
   async presentToast(
     message: string,

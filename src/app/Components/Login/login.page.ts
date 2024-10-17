@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { BlogsService } from 'src/Service/blogs.service';
 import { GoogleAuthServiceService } from 'src/Service/google-auth-service.service';
 
 @Component({
@@ -12,22 +13,35 @@ import { GoogleAuthServiceService } from 'src/Service/google-auth-service.servic
   styleUrls: ['login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  arkaplan: any;
   loginForm: FormGroup = this.formBuilder.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
+  serverpath: any = 'https://api.therapydays.com/static';
 
   constructor(
     private formBuilder: FormBuilder,
     private toastController: ToastController,
     private GoogleAuthService: GoogleAuthServiceService,
     private router: Router,
-    private UserService: UserService
+    private UserService: UserService,
+    private BlogsService: BlogsService
   ) {}
 
   ngOnInit(): void {
     localStorage.removeItem('id');
     localStorage.removeItem('type');
+
+    this.BlogsService.getArkaplan().subscribe({
+      next: (res: any) => {
+        this.arkaplan = res.Data;
+        console.log(res);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
   }
 
   async presentToast(

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class FilterPsikologlarPage implements OnInit {
   psikologlar: any[] = [];
   isLoading: boolean = true;
-  serverpath: any = 'https://bahrikement.com/static';
+  serverpath: any = 'https://api.therapydays.com/static';
   constructor(private router: Router) {}
 
   ngOnInit(): void {
