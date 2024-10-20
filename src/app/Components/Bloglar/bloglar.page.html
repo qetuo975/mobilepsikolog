@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Bloglar</ion-title>
+    <ion-title style="text-align: center; margin-right: 40px;">Bloglar</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
@@ -22,11 +22,9 @@
       <ion-card routerLink="/bloglar/{{blog.id}}" class="blog-card">
         <ion-img [src]="serverpath + '/' + blog.resim" alt="{{ blog.baslik }}" class="blog-image" />
         <ion-card-header>
-          <ion-card-title>{{ blog.baslik }}</ion-card-title>
-          <ion-card-subtitle>{{ blog.createdAt }}</ion-card-subtitle>
-
+          <ion-card-title style="text-align: center; margin-top: 15px;">{{ blog.baslik }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content [innerHTML]="stripHtmlTags(blog.icerik)">
+        <ion-card-content [innerHTML]="stripHtmlTags(blog.aciklama)">
         </ion-card-content>
       </ion-card>
     </ion-col>

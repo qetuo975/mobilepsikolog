@@ -65,6 +65,18 @@ export class AnasayfaPage implements OnInit {
     private router: Router
   ) {}
 
+  insertPuan(id: number)
+  {
+    this.UserService.insertPuan(this.type, this.id, id).subscribe({
+      next: (res: any) => {
+        console.log(res);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
+  }
+
   getSeanslar() {
     if (this.type == 'user') {
       this.SeansService.getSeansUser(this.id).subscribe({
@@ -259,6 +271,7 @@ export class AnasayfaPage implements OnInit {
       },
     });
   }
+
 
   filterPsikolog() {
     this.PsikologService.filterpsikolog(

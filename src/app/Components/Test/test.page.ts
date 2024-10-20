@@ -58,23 +58,29 @@ export class TestPage implements OnInit {
       0
     );
 
-    if (toplamPuan > this.sonuclar[0].puan) {
-      this.presentAlert('Bir Sorun Var Gibi Görünüyor.');
+    console.log(this.sonuclar);
 
+    // Her sonucun puanı ile kontrol et
+    const uygunSonuc = this.sonuclar.find(sonuc => toplamPuan <= sonuc.puan);
+    console.log(uygunSonuc);
+    console.log(toplamPuan);
+
+    if (uygunSonuc) {
+      this.presentAlert(uygunSonuc.baslik);
     } else {
-      this.presentAlert('Bir Sorun Yok Gibi Görünüyor.');
+      this.presentAlert('Bir sorun yok gibi görünüyor.');
     }
 
     setTimeout(() => {
       const navigationExtras: NavigationExtras = {
         state: {
-          puan: true,
+          puan: uygunSonuc ? true : false,
         },
       };
       this.router.navigate([`/tabs/psikologlar/`], navigationExtras);
-    }, 3000)
-
+    }, 3000);
   }
+
 
   async presentAlert(message: string) {
     const alert = await this.alertController.create({

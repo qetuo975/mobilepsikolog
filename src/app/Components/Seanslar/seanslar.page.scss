@@ -6,10 +6,17 @@ p {
   color: #707070;
   margin: 0 !important;
 }
-h4,
-h2 {
+
+h2, h4 {
   font-family: Inter !important;
   font-weight: 600 !important;
   margin: 0 !important;
   font-size: 16px;
+}
+
+
+ion-segment-button {
+  --color: #262626;
+
+  --color-checked: rgba(0, 146, 129, 1);
 }

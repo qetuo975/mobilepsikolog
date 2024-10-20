@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BloglarPage} from './bloglar.page';
 import { BloglarRoutingModule } from './bloglar-routing.module';
 import { BlogDetailsComponent } from './blog-details/blog-details.component';
+import { TruncatePipe } from 'src/app/Pipe/truncate.pipe';
 
 
 @NgModule({
@@ -14,6 +15,6 @@ import { BlogDetailsComponent } from './blog-details/blog-details.component';
     FormsModule,
     BloglarRoutingModule
   ],
-  declarations: [BloglarPage, BlogDetailsComponent]
+  declarations: [BloglarPage, BlogDetailsComponent, TruncatePipe]
 })
 export class BloglarModule {}

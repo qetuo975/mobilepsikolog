@@ -1,8 +1,9 @@
 ion-label {
 
-      font-size: 14px;
+  font-size: 14px;
 
 }
+
 .transparent-tab-bar {
   --background: #fff;
   /* Yapıldı: Arka planı tamamen şeffaf yap */
@@ -10,12 +11,13 @@ ion-label {
   /* Kenarlık yok */
   --color: rgba(43, 40, 40, 0.8);
   /* Tab etiketleri ve ikonları için hafif şeffaf beyaz renk */
-  --color-selected: deepskyblue;
+  --color-selected: rgba(0, 146, 129, 1);
   /* Seçili tabın vurgu rengi */
   position: absolute;
   width: 100%;
   bottom: 0;
   box-shadow: none;
+  border-top: 3px solid rgba(0, 146, 129, 1);
   /* Gölge yok */
 }
 
@@ -37,4 +39,3 @@ ion-label {
   font-weight: normal;
   /* Normal font ağırlığı */
 }
-

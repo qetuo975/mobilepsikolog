@@ -4,20 +4,21 @@ p {
   font-family: Inter !important;
   font-weight: 500 !important;
   font-style: normal;
+  font-size: 14px;
+  color: #262626 !important;
+  margin: 0 !important;
+  line-height: 20px;
+  margin-top: 15px !important;
+}
+
+i {
+  font-family: Inter !important;
+  font-weight: 700 !important;
+  font-style: italic;
   font-size: 13px;
   color: #262626;
   margin: 0 !important;
   line-height: 20px;
-}
-
-i {
-    font-family: Inter !important;
-      font-weight: 700 !important;
-      font-style: italic;
-      font-size: 13px;
-      color: #262626;
-      margin: 0 !important;
-      line-height: 20px;
 }
 
 h2 {
@@ -25,6 +26,8 @@ h2 {
   font-weight: 500 !important;
   font-size: 17px;
   font-style: normal;
+  margin-top: 15px !important;
+  color: rgba(0, 146, 129, 1) !important;
 }
 
 h5 {
@@ -32,12 +35,17 @@ h5 {
   font-weight: 500 !important;
   font-size: 15px;
   font-style: normal;
-
+  margin-top: 15px;
 }
 
 ion-button {
-    font-family: Inter !important;
-      font-weight: 500 !important;
-      font-size: 15px;
-      font-style: normal;
+  font-family: Inter !important;
+  font-weight: 500 !important;
+  font-size: 15px;
+  font-style: normal;
+  color: rgba(0, 146, 129, 1);
+}
+
+ion-radio {
+  --color-checked: rgba(0, 146, 129, 1);
 }

@@ -1,6 +1,6 @@
-
 <ion-content [fullscreen]="true">
   <div class="login-container">
+
     <ion-card>
       <div class="logo-container">
         <ion-img *ngIf="arkaplan" [src]="serverpath + '/' + arkaplan.loginlogo" alt="{{ arkaplan.loginlogo }}" class="logo" />
@@ -8,7 +8,6 @@
       <ion-card-header>
         <p style="font-size: 12px; font-weight: 500;">Kendinizi iyi hissetme yolculuğunuzda Therapydays yanınızda !</p>
         <ion-card-title class="ion-text-center">Hoş Geldiniz</ion-card-title>
-
       </ion-card-header>
       <ion-card-content>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -29,9 +28,9 @@
         <div class="register-container">
           <p>Hesabın yok mu? <a routerLink="/register">Kayıt ol</a></p>
         </div>
-                <div class="register-container">
-                  <p><a href="https://therapydays.com/gizlilik-sozlesmesi">Gizlilik Sözleşmesi</a></p>
-                </div>
+        <div class="register-container">
+          <p><a href="https://therapydays.com/gizlilik-sozlesmesi">Gizlilik Sözleşmesi</a></p>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

@@ -37,22 +37,94 @@
 // @import "@ionic/angular/css/palettes/dark.system.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
+:root {
+  --ion-color-custom: rgba(0, 146, 129, 1);  // Your custom color
+  --ion-color-custom-select: rgba(0, 146, 129, 1);; /* Özel renk */
+  --ion-color-custom-select-contrast: rgba(0, 146, 129, 1);; /* Seçili itemin kontrast rengi */
+}
+
+
+button {
+  font-family: Inter !important;
+  font-weight: 500 !important;
+  border: 2px solid rgba(0, 146, 129, 1);
+  background-color: unset;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+
+a {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: Inter !important;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 20px;
+  font-family: Inter !important;
+  color: rgba(rgba(14, 13, 57, 1), 1);
+  margin-bottom: 10px !important;
+}
+
+h4, h5, h2 {
+  font-family: Inter !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  font-size: 16px;
+}
+
+p {
+  font-family: Inter !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+}
+
+
+.panel {
+  display: flex;
+  border-bottom: 2px solid rgba(0, 146, 129, 1);
+  justify-content: space-between;
+  padding: 8px 12px;
+  align-items: center;
+  background-color: #fff;
+  margin: 15px 0px;
+  margin-top: 20px !important;
+}
+
 * {
   box-sizing: border-box;
 }
+
+:host ion-icon {
+  color: rgba(0, 146, 129, 1);
+  font-size: 1.5rem !important;
+}
+
+ion-card-content {
+  font-family: Inter !important;
+  font-weight: 600 !important;
+  font-size: 14px;
+  color: #252424;
+}
+
+
 
 ion-text, ion-label, ion-card-title, b, p {
   font-family: Inter !important;
   font-weight: 700 !important;
 }
 
-
-ion-content {
-  --background: none !important;
-  background-image: url('https://i.pinimg.com/originals/ad/66/44/ad6644b0dd2f369f5d46cb0aecc90818.jpg') !important;
-  background-size: cover !important;
-  background-position: center !important;
+.yesil {
+  color: rgba(0, 146, 129, 1);
 }
+
+.gri {
+  color: rgba(69, 69, 103, 1);
+}
+
 
 ion-card-content {
   text-align: center;
@@ -62,11 +134,7 @@ ion-header {
   --background: transparent;
 }
 
-.transparent-toolbar {
-  --background: rgba(255, 255, 255, 0.5);
-  --backdrop-filter: blur(10px);
-  --border-color: transparent;
-}
+
 
 
 
@@ -105,3 +173,7 @@ ion-header {
 .blue {
   color: #54a0ff;
 }
+
+
+
+

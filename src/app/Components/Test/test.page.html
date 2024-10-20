@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{baslik}}</ion-title>
+    <ion-title style="text-align: center; margin-right: 40px;">{{baslik}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
@@ -22,7 +22,7 @@
 
     <div style="width: 100%; display: flex; flex-direction: column; gap: 10px">
       <h2>{{baslik}}</h2>
-      <p [innerHTML]="stripHtmlTags(icerik)"></p>
+      <p class="custom-p" [innerHTML]="stripHtmlTags(icerik)"></p>
       <i>Son iki hafta içinde yaşadıklarınızı değerlendirerek aşağıdaki seçeneklerde size uygun olanı seçiniz.</i>
     </div>
   </div>
@@ -31,7 +31,7 @@
   <form (ngSubmit)="onSubmit()" style="width: 100%; padding: 8px; display: flex; flex-direction: column; gap: 15px;">
       <div style="
         width: 100%;
-        padding: 0px 10px 10px 10px;
+        padding: 10px 10px 10px 10px;
         border-radius: 5px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         display: flex;

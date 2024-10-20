@@ -2,122 +2,180 @@
 
 .transparent-toolbar {
   --border-color: transparent;
+  text-align: center;
 }
 
 
-ion-searchbar {
-  --background: #f5f6fa;
-  --icon-color: #5758BB !important;
-  --clear-button-color: #5758BB !important;
-  --cancel-button-color: #5758BB !important;
-  --border-radius: 5px !important;
-  --box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  --transition: all 0.3s ease-in-out;
-}
-
-ion-searchbar:hover {
-  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-ion-searchbar:focus-within {
-  --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-::ng-deep ion-searchbar div input:focus {
-  border: 2px solid #5758BB !important;
-}
-
-:host ion-icon {
-  color: #5758BB;
-  font-size: 1.5rem !important;
-}
-
-h3, a {
-  font-family: Inter !important;
-  font-weight: 600 !important;
-
-}
-
-h5 {
-    font-family: Inter !important;
-      font-weight: 600 !important;
-      font-size: 16px;
-}
-
-ion-radio, div {
-      font-family: Inter !important;
-        font-weight: 500 !important;
-        font-size: 14px;
-}
-
-h4,
-h2 {
-  font-family: Inter !important;
-  font-weight: 600 !important;
-  margin: 0 !important;
-  font-size: 16px;
-}
-
-p {
-  font-family: Inter !important;
-  font-weight: 500 !important;
-  color: #707070;
-  margin: 0 !important;
-}
-
-
-
-img {
-  object-fit: contain;
-}
-
-button {
-    font-family: Inter !important;
-      font-weight: 500 !important;
-      border: 2px solid #54a0ff;
-      background-color: unset;
-      color: #54a0ff;
-      padding: 10px;
-      border-radius: 10px;
-}
-
-.blog-card {
-  margin: 10px 0;
-}
-
-.blog-image {
+.doctor-card {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
 }
 
-ion-card-header {
-  padding-top: 0;
+.doctor-info {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-ion-grid {
-  margin-bottom: 50px !important;
+.doctor-info img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }
 
-ion-card-title {
-  margin-top: 8px;
-  font-size: 17px;
+.doctor-details {
+  display: flex;
+  flex-direction: column;
 }
 
-ion-card-subtitle {
-  color: #8c8c8c;
-  font-size: 0.875em;
+.doctor-details h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }
 
-ion-card-content {
-  padding-top: 0;
-}
-
-a {
-  color: #8c8c8c;
+.doctor-details p {
+  margin: 5px 0;
   font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
+  color: #666;
 }
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #f39c12;
+  margin-top: 10px;
+}
+
+.time {
+  color: #2ecc71;
+  font-size: 12px;
+}
+
+.appointment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.appointment button {
+  padding: 10px 15px;
+  border: 2px solid rgba(0, 146, 129, 1);
+  background-color: white;
+  border-radius: 5px;
+  color: rgba(0, 146, 129, 1);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.appointment button:hover {
+  background-color: #00a0e4;
+  color: white;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.heart-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 18px;
+  color: rgba(0, 146, 129, 1);
+  cursor: pointer;
+}
+
+
+
+
+
+
+ion-icon {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #e6f4f2;
+}
+
+
+
+ion-searchbar {
+  --icon-color: rgba(0, 146, 129, 1) !important;
+  --clear-button-color: rgba(0, 146, 129, 1) !important;
+  --cancel-button-color: rgba(0, 146, 129, 1) !important;
+  --border-radius: 5px !important;
+  --box-shadow: 0px 0px 0px 1.5px rgba(0, 146, 129, 1);
+  --transition: all 0.3s ease-in-out;
+  --color: #262626;
+  color: rgba(0, 146, 129, 1) !important;
+}
+
+.transparent-toolbar {
+  --background: #fff;
+  --backdrop-filter: blur(10px);
+  --border-color: transparent;
+}
+
+ion-button {
+  color: rgba(0, 146, 129, 1);
+  font-family: Inter !important;
+  font-weight: 600 !important;
+  font-size: 14px;
+}
+
+ion-range {
+  --pin-color: rgba(0, 146, 129, 1);
+  --pin-background: rgba(0, 146, 129, 1);
+  --bar-background: rgba(0, 146, 129, 1);
+  --bar-background-active: rgba(0, 146, 129, 1);
+  --knob-background: rgba(0, 146, 129, 1);
+  --knob-box-shadow: rgba(0, 146, 129, 1);
+}
+
+ion-radio {
+  --color-checked: rgba(0, 146, 129, 1);
+}
+
+
+
+ion-radio,
+div {
+  font-family: Inter !important;
+  font-weight: 500 !important;
+  font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
 

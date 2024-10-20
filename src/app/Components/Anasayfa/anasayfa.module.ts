@@ -5,9 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AnasayfaPage } from './anasayfa.page';
 
 import { AnasayfaPageRoutingModule } from './anasayfa-routing.module';
+import { TruncatePipe } from 'src/app/Pipe/truncate.pipe';
 
 @NgModule({
   imports: [IonicModule, ReactiveFormsModule, CommonModule, FormsModule, AnasayfaPageRoutingModule],
-  declarations: [AnasayfaPage],
+  declarations: [AnasayfaPage, TruncatePipe],
 })
 export class AnasayfaModule {}

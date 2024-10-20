@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button style="color: rgba(0, 146, 129, 1);"></ion-back-button>
     </ion-buttons>
-    <ion-title>Psikologlar</ion-title>
+    <ion-title style="text-align: center; margin-right: 40px;">Psikologlar</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding" [fullscreen]="true">
@@ -14,7 +14,7 @@
 
   <h2 style="text-align: center; margin: 30px 0px !important;">En iyi psikologlarımızı seç.</h2>
 
-<div
+  <!-- <div
   style="border-radius: 5px; display: flex; flex-direction: column; gap: 10px; width: 100%;  overflow-y: auto; overflow-x: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
   <a routerLink="/psikolog/{{terapist.id}}" *ngFor="let terapist of psikologlar" style="width: 100%; display: flex; flex-direction: column; background-color: #fff; padding: 10px;  color: unset;
   font-size: unset !important;
@@ -34,8 +34,33 @@
       </div>
     </div>
   </a>
+</div> -->
+
+<div style="width: 100%; padding: 16px; max-height: 500px; overflow-y: auto;">
+  <div class="doctor-card" *ngFor="let terapist of psikologlar">
+    <ion-icon (click)="insertPuan(terapist.id)" class="heart-icon" name="heart-outline"></ion-icon>
+    <div class="doctor-info">
+        <img src="{{serverpath}}/{{terapist.resim}}" alt="Doctor Image">
+        <div class="doctor-details">
+            <h3>{{terapist.adsoyad}}</h3>
+            <p>{{terapist.kategoriler[0].baslik}}</p>
+            <div class="rating">
+                <span>★ {{terapist.puan}}</span>
+                <span>•</span>
+                <span *ngIf="terapist.psikologseans.length; else NoTime" class="time">{{terapist.psikologseans[0].baslangicsaat + '-' + terapist.psikologseans[0].bitissaat}}</span>
+                <ng-template #NoTime>
+                  <span style="color: red;"> Dolu </span>
+                </ng-template>
+              </div>
+        </div>
+    </div>
+    <div class="appointment">
+        <button routerLink="/psikolog/{{terapist.id}}">Görüntüle</button>
+        <span class="price">{{terapist.fiyat}} ₺</span>
+    </div>
 </div>
 
+</div>
 
 </ion-content>
-    <ion-loading [isOpen]="isLoading" message="Psikologlar Aranıyor."></ion-loading>
+<ion-loading [isOpen]="isLoading" message="Psikologlar Aranıyor."></ion-loading>

@@ -12,6 +12,14 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  insertPuan(
+    type: any,
+    currentid: any,
+    psikologid: any,
+  ): Observable<any> {
+    const body = { type, currentid, psikologid };
+    return this.http.post(`${this.baseUrl}/insertpuan`, body).pipe();
+  }
 
   getFilterPsikolog(
     cinsiyet: any,

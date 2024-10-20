@@ -5,6 +5,7 @@ h2 {
   font-family: Inter !important;
   font-weight: 600 !important;
   margin: 0 !important;
+  padding-left: 15px;
   font-size: 18px;
   color: #fff;
 }
@@ -15,6 +16,53 @@ p {
   font-size: 14px;
   color: #fff;
   margin: 0 !important;
+}
+
+ion-icon, ion-note, ion-button {
+  color: rgba(0, 146, 129, 1);
+}
+
+ion-note {
+  margin-top: 15px;
+}
+
+ion-input {
+  --highlight-color-focused: rgba(0, 146, 129, 1);
+}
+
+ion-text {
+  font-size: 15px !important;
+}
+
+ion-button {
+  font-family: Inter !important;
+  font-weight: 600 !important;
+  font-size: 14px;
+  --border-color: rgba(0, 146, 129, 1);
+}
+
+ion-radio {
+  --color-checked: rgba(0, 146, 129, 1);
+}
+
+ion-datetime {
+  --wheel-highlight-background: #e6f4f2;
+  color: var(--ion-color-custom);
+}
+
+
+.custom {
+  color: rgba(0, 146, 129, 1) !important;
+}
+
+.custombutton {
+  border: none !important;
+}
+
+ion-icon {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #e6f4f2;
 }
 
 ion-col {
@@ -38,11 +86,7 @@ ion-item {
   margin-bottom: 15px !important;
 }
 
-ion-button {
-      font-family: Inter !important;
-        font-weight: 500 !important;
-        font-size: 14px;
-}
+
 
 .update-button {
   --background: #54a0ff;

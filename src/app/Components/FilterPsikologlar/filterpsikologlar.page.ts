@@ -26,4 +26,9 @@ export class FilterPsikologlarPage implements OnInit {
       }
     }, 1500);
   }
+
+  insertPuan(id: number)
+  {
+    console.log(id);
+  }
 }

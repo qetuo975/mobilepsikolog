@@ -14,8 +14,9 @@
 
 
 
-  <div style="padding: 0 16px 16px 16px; text-align: left; line-height: 15px; background-color: transparent;">
-    <h3 *ngIf="ad">Günaydın {{ad}}</h3>
+  <div style="padding: 0 16px 16px 16px; text-align: left; line-height: 15px; background-color: transparent; margin-top: 20px;">
+    <h3 style="padding-left: 0 !important;" *ngIf="ad">Günaydın {{ad}}</h3>
+    <h3 style="padding-left: 0 !important;" *ngIf="!ad">Günaydın</h3>
     <p>
       En iyi psikologlarımızdan terapi al.
     </p>
@@ -64,7 +65,7 @@
 
 
 
-  <div *ngIf="banners" style="padding: 16px; border-radius: 5px; width: 100%; height: 125px; border-radius: 5px; ">
+  <!-- <div *ngIf="banners" style="padding: 16px; border-radius: 5px; width: 100%; height: 125px; border-radius: 5px; ">
     <div
       style="display: flex; width: 100; height: 100%; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); border-radius: 5px; background-position: center; background-repeat: no-repeat; background-size: cover; background-image: url(https://img.freepik.com/free-vector/watercolor-background_87374-69.jpg?t=st=1718013284~exp=1718016884~hmac=fa85e86f7993a992e485fd3f9641b2f6abe1e5cd8672f828c30539570dcfbede&w=1380);">
       <div
@@ -73,13 +74,30 @@
       </div>
       <img [src]="serverpath + '/' + banners[1].resim"  alt="bannerreklam" width="30%" height="100%">
     </div>
+  </div> -->
+
+
+
+  <div style="height: 200px; width: 100%;  margin-top: 24px;  background: linear-gradient(to right, #dff4f2, #ffffff);">
+    <div style="border-radius: 20px; width: inherit; display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column; gap: 20px; height: 100%; width: 225px;">
+        <h3 style="padding-left: 16px;">
+          Specialist Guidance: Shield Your Health
+          </h3>
+          <p style="padding-left: 24px;">Get special 10% discount this December</p>
+      </div>
+
+      <img src="../../../assets/doctor_img_bg.png" style="height: 100%;"/>
+      <img src="../../../assets/upcoming-slider-img-1.png" style="position: absolute; left: auto; right: 0; top: 190px;">
+    </div>
   </div>
 
 
+
   <div
-    style="display: flex; justify-content: space-between; padding: 8px 12px; align-items: center; background-color: #fff; margin: 15px 0px;">
-    <h3 style="font-size: 16px;">Psikologlar</h3>
-    <a id="open-modal" style="color: #54a0ff;">Psikoloğumu Bul</a>
+    class="panel">
+    <h3 class="gri" style="color: #252424;">Psikologlar</h3>
+    <a id="open-modal" class="yesil">Psikoloğumu Bul</a>
 
     <ion-modal trigger="open-modal">
       <ng-template>
@@ -105,7 +123,7 @@
 
               <div style="
           width: 100%;
-          padding: 0px 10px 10px 10px;
+          padding: 10px 10px 10px 10px;
           border-radius: 5px;
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
           display: flex;
@@ -122,7 +140,7 @@
 
               <div style="
           width: 100%;
-          padding: 0px 10px 10px 10px;
+          padding: 10px 10px 10px 10px;
           border-radius: 5px;
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
           display: flex;
@@ -135,14 +153,14 @@
                   <ion-label slot="end">100</ion-label>
                 </ion-range>
                 <div>
-                  Seçilen yaş aralığı: {{ $any(this.filterPsikologForm.value.yas).lower }} - {{
-                  $any(this.filterPsikologForm.value.yas).upper }}
+                  Seçilen yaş aralığı: <span>{{ $any(this.filterPsikologForm.value.yas).lower }} - {{
+                  $any(this.filterPsikologForm.value.yas).upper }}</span>
                 </div>
               </div>
 
               <div style="
               width: 100%;
-              padding: 0px 10px 10px 10px;
+              padding: 10px 10px 10px 10px;
               border-radius: 5px;
               box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
               display: flex;
@@ -158,14 +176,14 @@
                   </ion-select>
                 </ion-item>
                 <div>
-                  Seçilen kategori: {{ $any(this.filterPsikologForm.value.kategori) }}
+                  Seçilen kategori: <span>{{ $any(this.filterPsikologForm.value.kategori) }}</span>
                 </div>
               </div>
 
 
               <div style="
               width: 100%;
-              padding: 0px 10px 10px 10px;
+              padding: 10px 10px 10px 10px;
               border-radius: 5px;
               box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
               display: flex;
@@ -178,8 +196,8 @@
                   <ion-label slot="end">10000</ion-label>
                 </ion-range>
                 <div>
-                  Seçilen fiyat aralığı: {{ $any(this.filterPsikologForm.value.fiyat).lower }} - {{
-                  $any(this.filterPsikologForm.value.fiyat).upper }}
+                  Seçilen fiyat aralığı: <span >{{ $any(this.filterPsikologForm.value.fiyat).lower }} - {{
+                  $any(this.filterPsikologForm.value.fiyat).upper }}</span>
                 </div>
               </div>
 
@@ -192,7 +210,35 @@
   </div>
 
 
-  <div
+  <div style="width: 100%; padding: 16px; max-height: 500px; overflow-y: auto;">
+    <div class="doctor-card" *ngFor="let terapist of psikologlar">
+      <ion-icon (click)="insertPuan(terapist.id)" class="heart-icon" name="heart-outline"></ion-icon>
+      <div class="doctor-info">
+          <img src="{{serverpath}}/{{terapist.resim}}" alt="Doctor Image">
+          <div class="doctor-details">
+              <h3>{{terapist.adsoyad}}</h3>
+              <p>{{terapist.kategoriler[0].baslik}}</p>
+              <div class="rating">
+                  <span>★ {{terapist.puan}}</span>
+                  <span>•</span>
+                  <span *ngIf="terapist.psikologseans.length; else NoTime" class="time">{{terapist.psikologseans[0].baslangicsaat + '-' + terapist.psikologseans[0].bitissaat}}</span>
+                  <ng-template #NoTime>
+                    <span style="color: red;"> Dolu </span>
+                  </ng-template>
+                </div>
+          </div>
+      </div>
+      <div class="appointment">
+          <button routerLink="/psikolog/{{terapist.id}}">Görüntüle</button>
+          <span class="price">{{terapist.fiyat}} ₺</span>
+      </div>
+  </div>
+
+  </div>
+
+
+
+  <!-- <div
     style="border-radius: 5px; display: flex; flex-direction: column; gap: 10px; width: 100%;  overflow-y: auto; overflow-x: hidden; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
     <a routerLink="/psikolog/{{terapist.id}}" *ngFor="let terapist of psikologlar" style="width: 100%; display: flex; flex-direction: column; background-color: #fff; padding: 10px;  color: unset;
   font-size: unset !important;
@@ -206,29 +252,30 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px; padding: 10px; width: 55%; height: 100%;">
           <h2>{{terapist.adsoyad}}</h2>
-          <!-- <p>{{terapist.unvan}}</p> -->
         </div>
         <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 25%;">
           <h2>{{terapist.fiyat}} TL</h2>
         </div>
       </div>
     </a>
-  </div>
+  </div> -->
 
   <div *ngIf="banners" style="padding: 16px; border-radius: 5px; width: 100%; height: 125px; border-radius: 5px; ">
     <div
-      style="display: flex; width: 100; height: 100%; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); border-radius: 5px;">
+      style="display: flex; width: 100; height: 100%; box-shadow: 1px 2px 2px 1px rgba(0, 146, 129, 1); border-radius: 5px;">
       <div
         style="width: 70%; height: 100%; padding: 15px; display: flex; justify-content: center; align-items: center;">
-        <h2 class="blue">{{banners[0].icerik}}</h2>
+        <h2 class="yesil">{{banners[0].icerik}}</h2>
       </div>
       <img [src]="serverpath + '/' + banners[0].resim" alt="bannerreklam" width="30%" height="100%">
     </div>
   </div>
+
+
   <div
-    style="display: flex; justify-content: space-between; padding: 8px 12px; align-items: center; background-color: #fff; margin: 15px 0px;">
-    <h3 style="font-size: 16px;">Testler</h3>
-    <a style="color: #54a0ff;">Sana Uygun Testlerimiz</a>
+    class="panel">
+    <h3>Testler</h3>
+    <a class="yesil">Sana Uygun Testlerimiz</a>
   </div>
 
 
@@ -240,36 +287,32 @@
       <div
         style="display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding-top: 10px;">
         <h2 style="font-size: 15px;">{{i.baslik}}</h2>
-        <button routerLink="/test/{{i.id}}"> Teste Başla </button>
+        <button class="yesil" routerLink="/test/{{i.id}}"> Teste Başla </button>
       </div>
     </div>
   </div>
 
 
   <div
-    style="display: flex; justify-content: space-between; padding: 8px 12px; align-items: center; background-color: #fff; margin: 15px 0px;">
-    <h3 style="font-size: 16px;">Bloglar</h3>
-    <a routerLink="/bloglar" style="color: #54a0ff;">Hepsini Göster</a>
+    class="panel">
+    <h3>Bloglar</h3>
+    <a routerLink="/bloglar" class="yesil">Hepsini Göster</a>
   </div>
 
 
   <div
-    style="padding: 16px; width: 100%; height: 300px; display: -webkit-inline-box; gap: 10px; overflow: auto; background-color: #c7ecee;">
+    style="padding: 16px; width: 100%; height: 300px; display: -webkit-inline-box; gap: 10px; overflow: auto; ">
     <a routerLink="/bloglar/{{blog.id}}" *ngFor="let blog of blogs"
-      style="height: 100%; width: 100%; background-color: #fff; border-radius: 5px; display: flex; flex-direction: column; padding: 5px; overflow: hidden;">
+      style="height: 100%; width: 100%; border-bottom: 2px solid rgba(0, 146, 129, 1); background-color: #fff; border-radius: 10px; display: flex; justify-content: space-between; flex-direction: column; padding: 5px; overflow: hidden;">
       <img [src]="serverpath + '/' + blog.resim"
-        alt="stres" style="width: 100%; height: 70%; object-fit: cover;">
+        alt="stres" style="width: 100%; height: 60%; object-fit: cover;">
       <div style="display: flex; flex-direction: column; gap: 10px; justify-content: left; padding: 10px;">
-        <h2 style="color: #262626;">{{ blog.baslik }}</h2>
-        <p style="font-size: 12px;">{{ blog.createdAt | date }}</p>
+        <h2 class="yesil">{{ blog.baslik }}</h2>
+        <p style="font-size: 14px; color: #252424;">{{blog.aciklama | truncate}}</p>
       </div>
     </a>
   </div>
 
-
-
   <div style="height: 75px;"></div>
-
-
 
 </ion-content>
