@@ -4,7 +4,7 @@ import { SeansService } from './../../../Service/seans.service';
 import { UserService } from './../../../Service/user.service';
 import { TestService } from './../../../Service/test.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal, IonSearchbar } from '@ionic/angular';
+import { IonModal, IonSearchbar, ToastController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -60,19 +60,55 @@ export class AnasayfaPage implements OnInit {
     private TestService: TestService,
     private SeansService: SeansService,
     private PsikologService: PsikologService,
+    private toastController: ToastController,
     private UserService: UserService,
     private BlogsService: BlogsService,
     private router: Router
   ) {}
 
+
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: position,
+      color: color
+    });
+
+    await toast.present();
+  }
+
+
+
+  navigateChat(seans: any) {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        chatData: {
+          target: seans.user
+            ? { target: seans.user, type: 'User' }
+            : { target: seans.psikolog, type: 'Psikolog' },
+        },
+      },
+    };
+    this.router.navigate(['/chat'], navigationExtras);
+  }
+
+  ionViewWillEnter(): void {
+    // Sayfa her ziyaret edildiğinde verileri yeniden yükle
+    this.init();
+  }
+
   insertPuan(id: number)
   {
     this.UserService.insertPuan(this.type, this.id, id).subscribe({
       next: (res: any) => {
+        this.presentToast("top", "Beğeni Paylaşıldı", 'success');
         console.log(res);
       },
       error: (err: any) => {
         console.log(err);
+        this.presentToast("top", "Beğeni Paylaşılamadı", 'danger');
       }
     })
   }
@@ -104,7 +140,10 @@ export class AnasayfaPage implements OnInit {
   }
 
   checkSeansDates() {
+    this.upcomingSeanslar = []; // Bu diziyi sıfırlayalım ki her seferinde tekrar kontrol edilsin
+
     this.seanslar.forEach((seans) => {
+      console.log('Seans:', seans);
       seans.isUpcoming = this.isSeansUpcoming(seans.tarih);
       seans.isPast = this.isSeansPast(seans.tarih);
 
@@ -112,38 +151,100 @@ export class AnasayfaPage implements OnInit {
         this.upcomingSeanslar.push(seans);
       }
     });
+
+    console.log('Upcoming Seanslar: ', this.upcomingSeanslar);
   }
 
   isSeansUpcoming(tarih: string): boolean {
-    const seansTarih = this.parseSeansDate(tarih);
+    const seansTarih = this.parseSeansDate(tarih, 'start');
+    const seansBitis = this.parseSeansDate(tarih, 'end');
     const currentDate = moment();
-    const seansBitis = seansTarih.clone().add(2, 'hours'); // Seans bitiş saati, seans süresi 2 saat olduğunu varsaydım
 
-    return currentDate.isBetween(seansTarih, seansBitis);
+    console.log(
+      'Seans Başlangıç:',
+      seansTarih.format(),
+      'Seans Bitiş:',
+      seansBitis.format(),
+      'Şu Anki Tarih:',
+      currentDate.format()
+    );
+
+    return currentDate.isBetween(seansTarih, seansBitis, null, '[)');
   }
 
   isSeansPast(tarih: string): boolean {
-    const seansTarih = this.parseSeansDate(tarih);
+    const seansBitis = this.parseSeansDate(tarih, 'end');
     const currentDate = moment();
-    return currentDate.isAfter(seansTarih.clone().add(2, 'hours'));
+
+    console.log(
+      'Seans Bitiş:',
+      seansBitis.format(),
+      'Şu Anki Tarih:',
+      currentDate.format()
+    );
+
+    return currentDate.isAfter(seansBitis);
   }
 
-  parseSeansDate(tarih: string): moment.Moment {
-    const [dayPart, timePart] = tarih.split('|').map((part) => part.trim());
-    const startTime = timePart.split(':')[0].trim();
-    const dayOfWeek = this.getDayOfWeek(dayPart);
+  parseSeansDate(tarih: string, type: 'start' | 'end'): moment.Moment {
+    console.log(tarih, type); // Gelen tarih ve type'ı kontrol etmek için
+    if (!tarih) {
+      console.error('Tarih değeri eksik veya undefined:', tarih);
+      return moment.invalid(); // Geçersiz tarih döndür
+    }
 
-    const currentWeek = moment().isoWeek();
+    // Tarihi '|' işareti ile böl
+    const parts = tarih.split('|');
+    if (parts.length !== 2) {
+      console.error("Tarih formatı hatalı, '|' eksik:", tarih);
+      return moment.invalid(); // Hatalı tarih döndür
+    }
 
-    return moment()
-      .isoWeek(currentWeek)
-      .day(dayOfWeek)
-      .set({
-        hour: parseInt(startTime.split(':')[0], 10),
-        minute: parseInt(startTime.split(':')[1], 10),
-        second: 0,
-        millisecond: 0,
+    // Tarih ve saat kısmını ayır
+    const dayPart = parts[0].trim();
+    const timePart = parts[1].trim();
+
+    // Tarihi gün.ay.yıl formatında ayır
+    const dateParts = dayPart.split('.');
+    if (dateParts.length !== 3) {
+      console.error("Tarih formatı hatalı, gün.ay.yıl eksik:", dayPart);
+      return moment.invalid(); // Hatalı tarih döndür
+    }
+
+    const [day, month, year] = dateParts;
+
+    // Seans tarihini moment ile oluştur (gün.ay.yıl)
+    let seansDate = moment(`${year}-${month}-${day}`, 'YYYY-MM-DD');
+    if (!seansDate.isValid()) {
+      console.error('Tarih geçersiz:', seansDate);
+      return moment.invalid(); // Geçersiz tarih döndür
+    }
+
+    // Saat kısmını doğru şekilde ayır (önce boşlukları sil, sonra saatleri ikiye böl)
+    const times = timePart.split(':');
+    const [startTime, endTime] = timePart.split(' : ').map((time) => time.trim());
+
+    if (!startTime || !endTime) {
+      console.error('Başlangıç veya bitiş saat hatalı:', timePart);
+      return moment.invalid();
+    }
+
+    // Başlangıç saati işlemi
+    if (type === 'start') {
+      const [startHour, startMinute] = startTime.split(':');
+      return seansDate.set({
+        hour: parseInt(startHour, 10),
+        minute: parseInt(startMinute, 10),
       });
+    }
+    // Bitiş saati işlemi
+    else {
+      const [endHour, endMinute] = endTime.split(':');
+      return seansDate.set({
+        hour: parseInt(endHour, 10),
+        minute: parseInt(endMinute, 10),
+      });
+    }
   }
 
   getDayOfWeek(day: string): number {
@@ -159,9 +260,38 @@ export class AnasayfaPage implements OnInit {
     return days[day] ?? -1;
   }
 
+
   ngOnInit(): void {
     this.id = localStorage.getItem('id');
     this.type = localStorage.getItem('type');
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(3000), distinctUntilChanged())
+      .subscribe((searchTerm) => {
+        if (searchTerm) {
+          this.PsikologService.getSearch(searchTerm.toLowerCase()).subscribe({
+            next: (result: any) => {
+              console.log(result);
+              const navigationExtras: NavigationExtras = {
+                state: {
+                  filterData: result,
+                },
+              };
+              this.searchControl.reset();
+              this.router.navigate(['/filterpsikologlar'], navigationExtras);
+            },
+            error: (err: any) => {
+              console.error(err);
+            },
+          });
+        }
+      });
+      this.init();
+  }
+
+  init()
+  {
+    this.getSeanslar();
 
     this.BlogsService.getBanners().subscribe({
       next: (res: any) => {
@@ -204,33 +334,6 @@ export class AnasayfaPage implements OnInit {
     });
     }
 
-
-
-
-    this.searchControl.valueChanges
-      .pipe(debounceTime(3000), distinctUntilChanged())
-      .subscribe((searchTerm) => {
-        if (searchTerm) {
-          this.PsikologService.getSearch(searchTerm.toLowerCase()).subscribe({
-            next: (result: any) => {
-              console.log(result);
-              const navigationExtras: NavigationExtras = {
-                state: {
-                  filterData: result,
-                },
-              };
-              this.searchControl.reset();
-              this.router.navigate(['/filterpsikologlar'], navigationExtras);
-            },
-            error: (err: any) => {
-              console.error(err);
-            },
-          });
-        }
-      });
-
-    this.getSeanslar();
-
     this.BlogsService.getBlogs().subscribe({
       next: (result: any) => {
         this.blogs = result;
@@ -271,7 +374,6 @@ export class AnasayfaPage implements OnInit {
       },
     });
   }
-
 
   filterPsikolog() {
     this.PsikologService.filterpsikolog(

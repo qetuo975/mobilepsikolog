@@ -41,14 +41,6 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'oda',
-        loadChildren: () =>
-          import('../Components/Oda/oda.module').then(
-            (m) => m.OdaModule
-          ),
-        canActivate: [AuthGuard],
-      },
-      {
         path: '',
         redirectTo: '/tabs/anasayfa',
         pathMatch: 'full',

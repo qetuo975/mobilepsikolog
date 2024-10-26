@@ -18,7 +18,7 @@ export class UserService {
     psikologid: any,
   ): Observable<any> {
     const body = { type, currentid, psikologid };
-    return this.http.post(`${this.baseUrl}/insertpuan`, body).pipe();
+    return this.http.post(`${this.general}/insertpuan`, body).pipe();
   }
 
   getFilterPsikolog(

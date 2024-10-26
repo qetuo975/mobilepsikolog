@@ -26,16 +26,4 @@ export class SeansService {
   getSeansPsikolog(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/seanspsikolog/${id}`).pipe();
   }
-
-  deletePastSeans(seanslar: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/deletepastseans`, {
-      seanslar,
-    });
-  }
-
-  deletePastRandevu(randevular: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/deletepastrandevu`, {
-      randevular,
-    });
-  }
 }

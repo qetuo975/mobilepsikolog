@@ -111,7 +111,15 @@
 
 
 
-
+button {
+  padding: 10px 15px;
+  border: 2px solid rgba(0, 146, 129, 1);
+  background-color: white;
+  border-radius: 5px;
+  color: rgba(0, 146, 129, 1);
+  cursor: pointer;
+  font-weight: bold;
+}
 
 
 ion-icon {
@@ -167,9 +175,6 @@ div {
   font-weight: 500 !important;
   font-size: 14px;
 }
-
-
-
 
 
 

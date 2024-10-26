@@ -9,7 +9,7 @@
 
 <ion-content class="ion-padding" [fullscreen]="true">
   <div
-    style="width: 100%; display: flex; flex-direction: column; background-color: #fff; justify-content: center; align-items: center;">
+    style="width: 100%; display: flex; flex-direction: column; background-color: rgba(0, 146, 129, 1); color: #fff; border-radius: 5px; justify-content: center; align-items: center;">
     <div style="border-radius: 5px; display: flex;  height: 125px; width: 100%;">
       <div style="width: 30%; display: flex; justify-content: center; align-items: center; padding: 5px;">
         <ng-container *ngIf="psikolog">
@@ -23,7 +23,7 @@
       </div>
       <div
         style="width: 70%; display: flex; flex-direction: column; gap: 10px; padding: 10px; justify-content: center;">
-        <h2 *ngIf="psikolog">{{psikolog.adsoyad}}</h2>
+        <h2 style="color: #fff;" *ngIf="psikolog">{{psikolog.adsoyad}}</h2>
 
 
         <ng-container *ngIf="psikolog">
@@ -76,26 +76,49 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-list *ngIf="psikologseanslar.length > 0" style="margin-bottom: 30px;">
-        <ion-item button="true" (click)="selectSeans(seans)" *ngFor="let seans of psikologseanslar"
-          [class.selected]="selectedSeans === seans">
-          <ion-label>
-            {{seans.tarih}}: {{seans.baslangicsaat}} - {{seans.bitissaat}}
-          </ion-label>
-          <b *ngIf="seans.dolu === false" style="color: #2ecc71;">Boş</b>
-          <b *ngIf="seans.dolu === true" style="color: #c0392b;">Dolu</b>
-        </ion-item>
-      </ion-list>
 
-      <ion-button *ngIf="!odaid" [disabled]="!selectedSeans" (click)="seansAdd()" expand="block">
-        <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
-        Seans Ekle
-      </ion-button>
+        <!-- Gün Seçimi -->
+  <ion-item style="margin-bottom: 30px;">
+    <ion-label>Gün Seç</ion-label>
+    <ion-select placeholder="Gün Seçiniz" (ionChange)="onDayChange($event)">
+      <ion-select-option *ngFor="let day of daysOfWeek" [value]="day">{{ day }}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
-      <ion-button *ngIf="odaid" [disabled]="!selectedSeans" (click)="freeseansAdd()" expand="block">
-        <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
-        Seans Ekle
-      </ion-button>
+  <!-- Seçilen Güne Ait Seanslar -->
+  <ion-list *ngIf="filteredSeanslar.length > 0">
+    <ion-item button (click)="selectSeans(seans)" *ngFor="let seans of filteredSeanslar">
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+        <ion-label>
+          {{seans.baslangicsaat}} - {{seans.bitissaat}}
+        </ion-label>
+        <b *ngIf="seans.dolu; else NoDolu" style="color: #E74C3C;">
+          Dolu
+        </b>
+        <ng-template #NoDolu>
+          <b style="color: #2ECC71;">Boş</b>
+        </ng-template>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <!-- Seans yoksa uyarı -->
+  <ion-item *ngIf="filteredSeanslar.length === 0">
+    <ion-label>Seçilen güne ait seans bulunamadı.</ion-label>
+  </ion-item>
+
+  <ng-container *ngIf="filteredSeanslar.length !== 0">
+    <ion-button style="margin-top: 15px;" *ngIf="!odaid" [disabled]="!selectedSeans" (click)="seansAdd()" expand="block">
+      <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
+      Seans Ekle
+    </ion-button>
+
+    <ion-button style="margin-top: 15px;" *ngIf="odaid" [disabled]="!selectedSeans" (click)="freeseansAdd()" expand="block">
+      <ion-icon name="add-outline" slot="start" size="medium"></ion-icon>
+      Seans Ekle
+    </ion-button>
+  </ng-container>
+
 
 
     </ion-content>

@@ -29,7 +29,11 @@ export class HesabimPage implements OnInit {
     private toastController: ToastController,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) {
+    for (let i = 0; i <= 24; i++) {
+      this.hours.push(i);
+    }
+  }
 
   selectedTime!: string;
 
@@ -257,10 +261,12 @@ export class HesabimPage implements OnInit {
   }
 
   psikologkategoriler: any[] = [];
+  psikolog: any;
 
   setAccountPsikolog() {
     this.UserService.getPsikolog(Number(localStorage.getItem('id'))).subscribe({
       next: (result: any) => {
+        this.psikolog = result
         console.log(result);
         const usercontrol = result.adsoyad;
         if (usercontrol) {
@@ -314,139 +320,161 @@ export class HesabimPage implements OnInit {
     return `${maxLength - inputLength} Karakter Kaldı`;
   }
 
-  onPopoverDismiss() {
-    this.isPopoverOpen = false;
+  selectDate: any = new Date();
+  selectedHours: number[] = []; // Seçilen saatlerin listesi
+
+
+  selectDay: any;
+  hours: number[] = [];
+
+  onDateChange(event: any) {
+    this.selectDate = new Date(event.detail.value);
+    this.combineDateAndTimes();
   }
 
-  addSeans() {
-    if (this.startTime && this.endTime && this.selectedDay) {
+// Saatler seçildiğinde çağrılacak fonksiyon
+onHoursChange(event: any) {
+  this.selectedHours = event.detail.value;
+  this.combineDateAndTimes();
+}
 
-      // Bitiş saatinin başlangıç saatinden küçük olup olmadığını kontrol et (moment.js ile)
-      const startTimeMoment = moment(this.startTime, 'HH:mm');
-      const endTimeMoment = moment(this.endTime, 'HH:mm');
-
-      if (endTimeMoment.isBefore(startTimeMoment)) {
-        this.presentToast('top', 'Bitiş saati başlangıç saatinden küçük olamaz.');
-        return;
-      }
-
-      // Başlangıç ve bitiş saati arasındaki farkı hesapla
-      const duration = moment.duration(endTimeMoment.diff(startTimeMoment));
-      const minutes = duration.asMinutes();
-
-      // Eğer fark 30 dakikadan az ise hata mesajı göster
-      if (minutes < 30) {
-        this.presentToast('top', 'Başlangıç ve bitiş saati arasında en az 30 dakika olmalıdır.');
-        return;
-      }
-
-      // Çakışmaları kontrol et
-      const overlaps = this.seanslar.some((seans) => {
-        return (
-          (this.startTime >= seans.startTime && this.startTime < seans.endTime) ||
-          (this.endTime > seans.startTime && this.endTime <= seans.endTime) ||
-          (seans.startTime >= this.startTime && seans.endTime <= this.endTime)
-        ) && this.selectedDay === seans.selectedDay;
-      });
-
-      // Eklemek istediğiniz seansın zaten listede olup olmadığını kontrol et (moment.js ile)
-      const alreadyExists = this.seanslar.some((seans) => {
-        const newStartTime = moment(this.startTime, 'HH:mm');
-        const newEndTime = moment(this.endTime, 'HH:mm');
-        const existingStartTime = moment(seans.baslangicsaat, 'HH:mm');
-        const existingEndTime = moment(seans.bitissaat, 'HH:mm');
-
-        return (
-          newStartTime.isSame(existingStartTime) &&
-          newEndTime.isSame(existingEndTime) &&
-          this.selectedDay === seans.tarih
-        );
-      });
-
-      console.log(alreadyExists);
-      console.log(this.seanslar);
-
-      if (overlaps) {
-        this.presentToast('top', 'Seçtiğiniz saat aralığı başka bir seans ile çakışmaktadır.');
-        return;
-      }
-
-      if (alreadyExists) {
-        this.presentToast('top', 'Bu seans zaten eklenmiş.');
-        return;
-      }
-
-      if (this.startTime == 'Invalid Date' || this.endTime == 'Invalid Date')
-      {
-        this.presentToast('top', 'Lütfen başlanıç ve bitiş saati seçiniz.');
-        return
-      }
-      // Seans ekleme
-      this.UserService.addSeans(
-        this.startTime,
-        this.endTime,
-        this.selectedDay,
-        localStorage.getItem('id')
-      ).subscribe({
-        next: (result: any) => {
-          // this.seanslar dizisini güncelle
-          this.seanslar = [...this.seanslar, result]; // Yeni seansı ekleyerek güncelleme
-          // veya
-          // this.UserService.getSeanslar().subscribe((seanslar) => {
-          //   this.seanslar = seanslar;
-          // }); // Sunucudan güncel seans listesini alarak güncelleme
-
-          console.log(result);
-          this.startTime = '';
-          this.endTime = '';
-          this.selectedDay = '';
-          this.presentToast('top', 'Seans Eklendi');
-        },
-        error: (err: any) => {
-          console.log(err);
-          this.presentToast('top', 'Seans Eklenirken Hata Oluştu');
-        },
-      });
-    } else {
-      this.presentToast('top', 'Gerekli Zaman Ayarlarını Giriniz.');
-    }
-  }
-
-
-  confirmTime() {
-    const time = new Date(this.selectedTime).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
+combineDateAndTimes() {
+  if (this.selectedHours.length > 0) {
+    this.selectedHours.forEach(hour => {
+      const combinedDate = new Date(this.selectDate);
+      combinedDate.setHours(hour, 0, 0, 0); // Saati ayarla, dakika ve saniye 0
+      console.log("Birleştirilmiş Tarih ve Saat:", combinedDate);
+      // Her bir saat için farklı işlemler burada yapılabilir
     });
-    if (this.timeType === 'startTime') {
-      this.startTime = time;
-    } else if (this.timeType === 'endTime') {
-      this.endTime = time;
-    }
-    this.isPopoverOpen = false;
+  }
+}
+
+addMultipleSeans() {
+  if (!this.selectDate) {
+    this.presentToast('top', 'Lütfen bir tarih seçiniz.');
+    return;
   }
 
-  openPopover(ev: any, timeType: string) {
-    this.timeType = timeType;
-    this.isPopoverOpen = true;
+  // Seçilen tarihin geçmişte olup olmadığını kontrol edelim
+  const today = moment().startOf('day'); // Bugünün tarihi (gece yarısı olarak başlatılmış)
+  const selectedDate = moment(this.selectDate).startOf('day'); // Seçilen tarih (sadece gün)
+
+  if (selectedDate.isBefore(today)) {
+    this.presentToast('top', 'Geçmiş bir tarih seçtiniz. Lütfen bugünden sonraki bir tarih seçiniz.');
+    return;
   }
+
+  if (this.selectedHours.length === 0) {
+    this.presentToast('top', 'Lütfen en az bir saat seçiniz.');
+    return;
+  }
+
+  // Seçilen saatler üzerinde döngü yap ve her biri için addSeans'ı çağır
+  this.selectedHours.forEach(hour => {
+    this.addSeans(hour);
+  });
+  this.presentToast('top', 'Seanslar eklendi.')
+
+}
+
+
+
+addSeans(hour: number) {
+  if (!this.selectDate) {
+    this.presentToast('top', 'Lütfen bir tarih seçiniz.');
+    return;
+  }
+
+  // selectDate ile gelen tarihi baz alarak saat ile birleştir
+  const selectedMoment = moment(this.selectDate);
+
+  // Saat olarak gelen değeri kullanarak başlangıç saatini ayarla
+  selectedMoment.set('hour', hour);
+  selectedMoment.set('minute', 0); // Dakikayı sıfır olarak ayarlıyoruz
+
+  // Başlangıç saati olarak mevcut saati belirle
+  const startTime = selectedMoment.format('HH:mm');
+
+  // Bitiş saati olarak startTime'a 1 saat ekle
+  const endTime = selectedMoment.add(1, 'hours').format('HH:mm');
+
+  // Günü seçilen gün olarak al (gün.ay.yıl formatında)
+  const selectedDay = selectedMoment.format('DD.MM.YYYY');
+
+  // Bitiş saatinin başlangıç saatinden küçük olup olmadığını kontrol et (moment.js ile)
+  const startTimeMoment = moment(startTime, 'HH:mm');
+  const endTimeMoment = moment(endTime, 'HH:mm');
+
+  if (endTimeMoment.isBefore(startTimeMoment)) {
+    this.presentToast('top', 'Bitiş saati başlangıç saatinden küçük olamaz.');
+    return;
+  }
+
+  // Başlangıç ve bitiş saati arasındaki farkı hesapla
+  const duration = moment.duration(endTimeMoment.diff(startTimeMoment));
+  const minutes = duration.asMinutes();
+
+  // Eğer fark 30 dakikadan az ise hata mesajı göster
+  if (minutes < 30) {
+    this.presentToast('top', 'Başlangıç ve bitiş saati arasında en az 30 dakika olmalıdır.');
+    return;
+  }
+
+  // Çakışmaları kontrol et
+  const overlaps = this.seanslar.some((seans) => {
+    return (
+      (startTime >= seans.startTime && startTime < seans.endTime) ||
+      (endTime > seans.startTime && endTime <= seans.endTime) ||
+      (seans.startTime >= startTime && seans.endTime <= endTime)
+    ) && selectedDay === seans.selectedDay;
+  });
+
+  // Eklemek istediğiniz seansın zaten listede olup olmadığını kontrol et (moment.js ile)
+  const alreadyExists = this.seanslar.some((seans) => {
+    const newStartTime = moment(startTime, 'HH:mm');
+    const newEndTime = moment(endTime, 'HH:mm');
+    const existingStartTime = moment(seans.baslangicsaat, 'HH:mm');
+    const existingEndTime = moment(seans.bitissaat, 'HH:mm');
+
+    return (
+      newStartTime.isSame(existingStartTime) &&
+      newEndTime.isSame(existingEndTime) &&
+      selectedDay === seans.tarih
+    );
+  });
+
+  if (overlaps) {
+    this.presentToast('top', 'Seçtiğiniz saat aralığı başka bir seans ile çakışmaktadır.');
+    return;
+  }
+
+  if (alreadyExists) {
+    this.presentToast('top', 'Bu seans zaten eklenmiş.');
+    return;
+  }
+
+  // Seans ekleme
+  this.UserService.addSeans(
+    startTime,
+    endTime,
+    selectedDay, // Seçilen günün kelime karşılığını ekliyoruz
+    localStorage.getItem('id')
+  ).subscribe({
+    next: (result: any) => {
+      // this.seanslar dizisini güncelle
+      this.seanslar = [...this.seanslar, result]; // Yeni seansı ekleyerek güncelleme
+      this.presentToast('top', 'Seans Eklendi');
+    },
+    error: (err: any) => {
+      console.log(err);
+      this.presentToast('top', 'Seans Eklenirken Hata Oluştu');
+    },
+  });
+}
+
 
   // Psikolog Değişkenleri
   // --------------------------------------------
-  gunler: any[] = [
-    'Pazartesi',
-    'Salı',
-    'Çarşamba',
-    'Perşembe',
-    'Cuma',
-    'Cumartesi',
-    'Pazar',
-  ];
-
-  startTime!: string;
-  endTime!: string;
-  selectedDay!: string;
-  isPopoverOpen: boolean = false;
   timeType!: string;
   seanslar: any[] = [];
   balance: number = 0;

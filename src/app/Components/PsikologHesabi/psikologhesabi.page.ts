@@ -3,6 +3,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonModal, ToastController } from '@ionic/angular';
 
+import moment from 'moment';
+moment.locale('en');  // Moment'i İngilizce olarak ayarlıyoruz
+
 @Component({
   selector: 'app-psikologhesabi',
   templateUrl: 'psikologhesabi.page.html',
@@ -28,6 +31,38 @@ export class PsikologHesabiPage implements OnInit {
     private Router: Router
   ) {}
 
+  daysOfWeek = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+    // Türkçe günleri İngilizce'ye çeviren bir eşleme
+    daysMap: { [key: string]: string } = {
+      'Pazar': 'Sunday',
+      'Pazartesi': 'Monday',
+      'Salı': 'Tuesday',
+      'Çarşamba': 'Wednesday',
+      'Perşembe': 'Thursday',
+      'Cuma': 'Friday',
+      'Cumartesi': 'Saturday'
+    };
+  filteredSeanslar: any = [];
+  selecteDay: any;
+
+  onDayChange(event: any) {
+    this.selecteDay = event.detail.value;  // Kullanıcının seçtiği Türkçe gün
+    const selectedDayEnglish = this.daysMap[this.selecteDay];  // İngilizce karşılığı
+
+    // Seansları filtrele ve tarihe göre günü belirle (İngilizce olarak karşılaştırma)
+    this.filteredSeanslar = this.psikologseanslar.filter((seans: any) => {
+      // Tarihi doğru formatta dönüştürüp gün adını İngilizce alıyoruz
+      const seansDay = moment(seans.tarih, 'DD.MM.YYYY').format('dddd');
+
+      console.log(`Seans Tarihi: ${seans.tarih}, Gün: ${seansDay}`);  // Gün isimlerini kontrol edelim
+
+      return seansDay === selectedDayEnglish;  // Gün karşılaştırması İngilizce olarak yapılıyor
+    });
+
+    console.log(this.filteredSeanslar);
+  }
+
+
   async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
     const toast = await this.ToastController.create({
       message: message,
@@ -40,6 +75,7 @@ export class PsikologHesabiPage implements OnInit {
 
   selectSeans(seans: any) {
     this.selectedSeans = seans;
+    console.log(this.selectedSeans);
     if (this.selectedSeans.dolu == true) {
       this.presentToast(
         'top',
@@ -64,6 +100,8 @@ export class PsikologHesabiPage implements OnInit {
         if (result.result == true) {
           this.presentToast('top', result.seans.tarih + ' Seans Alınmıştır.');
           this.getPsikologSeanslar();
+
+
         } else {
           this.presentToast('top', 'Seans alma başarısız.');
         }
@@ -175,6 +213,17 @@ export class PsikologHesabiPage implements OnInit {
           );
         }
         console.log(result);
+        const selectedDayEnglish = this.daysMap[this.selecteDay];  // İngilizce karşılığı
+
+        // Seansları filtrele ve tarihe göre günü belirle (İngilizce olarak karşılaştırma)
+        this.filteredSeanslar = this.psikologseanslar.filter((seans: any) => {
+          // Tarihi doğru formatta dönüştürüp gün adını İngilizce alıyoruz
+          const seansDay = moment(seans.tarih, 'DD.MM.YYYY').format('dddd');
+
+          console.log(`Seans Tarihi: ${seans.tarih}, Gün: ${seansDay}`);  // Gün isimlerini kontrol edelim
+
+          return seansDay === selectedDayEnglish;  // Gün karşılaştırması İngilizce olarak yapılıyor
+        });
       },
       error: (err: any) => {
         console.log(err);

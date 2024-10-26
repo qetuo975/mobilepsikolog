@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { BloglarPage} from './bloglar.page';
 import { BloglarRoutingModule } from './bloglar-routing.module';
 import { BlogDetailsComponent } from './blog-details/blog-details.component';
-import { TruncatePipe } from 'src/app/Pipe/truncate.pipe';
+import { SharedModule } from 'src/app/Shared/shared.module';
+
 
 
 @NgModule({
@@ -13,8 +14,9 @@ import { TruncatePipe } from 'src/app/Pipe/truncate.pipe';
     IonicModule,
     CommonModule,
     FormsModule,
-    BloglarRoutingModule
+    BloglarRoutingModule,
+    SharedModule
   ],
-  declarations: [BloglarPage, BlogDetailsComponent, TruncatePipe]
+  declarations: [BloglarPage, BlogDetailsComponent]
 })
 export class BloglarModule {}

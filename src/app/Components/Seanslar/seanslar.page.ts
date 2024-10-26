@@ -15,13 +15,8 @@ export class SeanslarPage implements OnInit {
   id: any;
   seanslar: any[] = [];
   randevu: any[] = [];
-  gecmisseanslar: any[] = [];
-  gecmisrandevular: any[] = [];
   upcomingSeanslar: any[] = [];
-  pastSeanslar: any[] = [];
-
   upcomingrandevu: any[] = [];
-  pastrandevu: any[] = [];
 
   serverpath: any = 'https://api.therapydays.com/static';
 
@@ -39,7 +34,6 @@ export class SeanslarPage implements OnInit {
       this.SeansService.getSeansUser(this.id).subscribe({
         next: (result: any) => {
           this.seanslar = result.seans;
-          this.gecmisseanslar = result.tarihigecmisseans;
           this.checkSeansDates();
           console.log(result);
         },
@@ -51,7 +45,6 @@ export class SeanslarPage implements OnInit {
       this.SeansService.getRandevuUser(this.id).subscribe({
         next: (result: any) => {
           this.randevu = result.randevu;
-          this.gecmisrandevular = result.tarihigecmisrandevu;
           this.checkRandevuDates();
           console.log(result);
         },
@@ -63,7 +56,6 @@ export class SeanslarPage implements OnInit {
       this.SeansService.getSeansPsikolog(this.id).subscribe({
         next: (result: any) => {
           this.seanslar = result.seans;
-          this.gecmisseanslar = result.tarihigecmisseans;
           this.checkSeansDates();
           console.log(result);
         },
@@ -75,7 +67,6 @@ export class SeanslarPage implements OnInit {
       this.SeansService.getRandevuPsikolog(this.id).subscribe({
         next: (result: any) => {
           this.randevu = result.randevu;
-          this.gecmisrandevular = result.tarihigecmisrandevu;
           this.checkRandevuDates();
           console.log(result);
         },
@@ -88,8 +79,6 @@ export class SeanslarPage implements OnInit {
 
   checkSeansDates() {
     this.upcomingSeanslar = []; // Bu diziyi sıfırlayalım ki her seferinde tekrar kontrol edilsin
-    this.pastSeanslar = []; // Aynı şekilde geçmiş seanslar da sıfırlanmalı
-
     this.seanslar.forEach((seans) => {
       console.log('Seans:', seans);
       seans.isUpcoming = this.isSeansUpcoming(seans.tarih);
@@ -97,22 +86,10 @@ export class SeanslarPage implements OnInit {
 
       if (seans.isUpcoming) {
         this.upcomingSeanslar.push(seans);
-      } else if (seans.isPast) {
-        this.pastSeanslar.push(seans);
       }
     });
-    if (this.pastSeanslar) {
-      this.SeansService.deletePastSeans(this.pastSeanslar).subscribe({
-        next: (result: any) => {
-          console.log(result);
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
-    }
+
     console.log('Upcoming Seanslar: ', this.upcomingSeanslar);
-    console.log('Past Seanslar: ', this.pastSeanslar);
   }
 
   checkRandevuDates() {
@@ -122,22 +99,9 @@ export class SeanslarPage implements OnInit {
 
       if (seans.isUpcoming) {
         this.upcomingrandevu.push(seans);
-      } else if (seans.isPast) {
-        this.pastrandevu.push(seans);
       }
     });
-    if (this.pastrandevu) {
-      this.SeansService.deletePastRandevu(this.pastrandevu).subscribe({
-        next: (result: any) => {
-          console.log(result);
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
-    }
     console.log('Upcoming Seanslar: ', this.upcomingrandevu);
-    console.log('Past Seanslar: ', this.pastrandevu);
   }
 
   isSeansUpcoming(tarih: string): boolean {
@@ -171,19 +135,6 @@ export class SeanslarPage implements OnInit {
     return currentDate.isAfter(seansBitis);
   }
 
-  navigateChat(seans: any) {
-    const navigationExtras: NavigationExtras = {
-      state: {
-        chatData: {
-          target: seans.user
-            ? { target: seans.user, type: 'User' }
-            : { target: seans.psikolog, type: 'Psikolog' },
-        },
-      },
-    };
-    this.router.navigate(['/chat'], navigationExtras);
-  }
-
   parseSeansDate(tarih: string, type: 'start' | 'end'): moment.Moment {
     console.log(tarih, type); // Gelen tarih ve type'ı kontrol etmek için
     if (!tarih) {
@@ -191,35 +142,41 @@ export class SeanslarPage implements OnInit {
       return moment.invalid(); // Geçersiz tarih döndür
     }
 
+    // Tarihi '|' işareti ile böl
     const parts = tarih.split('|');
     if (parts.length !== 2) {
       console.error("Tarih formatı hatalı, '|' eksik:", tarih);
       return moment.invalid(); // Hatalı tarih döndür
     }
 
-    const [dayPart, timePart] = parts.map((part) => part.trim());
+    // Tarih ve saat kısmını ayır
+    const dayPart = parts[0].trim();
+    const timePart = parts[1].trim();
 
-    // Günü doğru hesapla: Gün bugünden küçükse, bu hafta içindeyiz, aksi takdirde gelecek hafta
-    const currentDay = moment().isoWeekday();
-    const dayIndex = this.getDayOfWeek(dayPart); // Pazartesi=1, Salı=2, ...
-
-    let seansDate = moment();
-
-    // Eğer seans günü bugünden küçükse, bu hafta içinde kalırız, aksi takdirde bir sonraki haftaya geçeriz
-    if (dayIndex >= currentDay) {
-      seansDate = seansDate.isoWeekday(dayIndex); // Aynı hafta içinde ayarla
-    } else {
-      seansDate = seansDate.add(1, 'weeks').isoWeekday(dayIndex); // Bir sonraki haftaya ayarla
+    // Tarihi gün.ay.yıl formatında ayır
+    const dateParts = dayPart.split('.');
+    if (dateParts.length !== 3) {
+      console.error("Tarih formatı hatalı, gün.ay.yıl eksik:", dayPart);
+      return moment.invalid(); // Hatalı tarih döndür
     }
 
-    // Saat temizleme işlemleri
-    const times = timePart.match(/(\d{1,2}:\d{2})/g); // Sadece saat formatındaki kısımları çek
-    if (!times || times.length !== 2) {
-      console.error('Saat formatı doğru değil:', timePart);
-      return moment.invalid(); // Hatalı saat aralığı döndür
+    const [day, month, year] = dateParts;
+
+    // Seans tarihini moment ile oluştur (gün.ay.yıl)
+    let seansDate = moment(`${year}-${month}-${day}`, 'YYYY-MM-DD');
+    if (!seansDate.isValid()) {
+      console.error('Tarih geçersiz:', seansDate);
+      return moment.invalid(); // Geçersiz tarih döndür
     }
 
-    const [startTime, endTime] = times;
+    // Saat kısmını doğru şekilde ayır (önce boşlukları sil, sonra saatleri ikiye böl)
+    const times = timePart.split(':');
+    const [startTime, endTime] = timePart.split(' : ').map((time) => time.trim());
+
+    if (!startTime || !endTime) {
+      console.error('Başlangıç veya bitiş saat hatalı:', timePart);
+      return moment.invalid();
+    }
 
     // Başlangıç saati işlemi
     if (type === 'start') {
@@ -238,6 +195,22 @@ export class SeanslarPage implements OnInit {
       });
     }
   }
+
+
+  navigateChat(seans: any) {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        chatData: {
+          target: seans.user
+            ? { target: seans.user, type: 'User' }
+            : { target: seans.psikolog, type: 'Psikolog' },
+        },
+      },
+    };
+    this.router.navigate(['/chat'], navigationExtras);
+  }
+
+
 
   getDayOfWeek(day: string): number {
     const days: { [key: string]: number } = {

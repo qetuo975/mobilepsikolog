@@ -33,9 +33,35 @@
     </a>
   </div> -->
 
-  <div *ngIf="psikologlar" style="width: 100%;  max-height: 500px; overflow-y: auto;">
+  <div *ngIf="psikologlar" style="width: 100%; height: 350px; display: flex; flex-direction: column; gap: 10px;  max-height: 500px; overflow-y: auto; margin-bottom: 50px;">
+    <ng-container *ngIf="oda">
+      <div class="doctor-card" (click)="navigatePsikolog(terapist.id)" *ngFor="let terapist of oda[0].psikologlar">
+        <ion-icon (click)="insertPuan(terapist.id)" class="heart-icon" name="heart-outline"></ion-icon>
+        <div class="doctor-info">
+            <img src="{{serverpath}}/{{terapist.resim}}" alt="Doctor Image">
+            <div class="doctor-details">
+                <h3>{{terapist.adsoyad}}</h3>
+                <p>{{terapist.kategoriler[0].baslik}}</p>
+                <div class="rating">
+                    <span>★ {{terapist.puan}}</span>
+                    <span>•</span>
+                    <span *ngIf="terapist.psikologseans.length; else NoTime" class="time">{{terapist.psikologseans[0].baslangicsaat + '-' + terapist.psikologseans[0].bitissaat}}</span>
+                    <ng-template #NoTime>
+                      <span style="color: red;"> Dolu </span>
+                    </ng-template>
+                  </div>
+            </div>
+        </div>
+        <div class="appointment">
+            <button routerLink="/psikolog/{{terapist.id}}">Görüntüle</button>
+            <span class="price" style="color: #00b894;"> Ücretsiz !</span>
+        </div>
+    </div>
+    </ng-container>
+
+
     <div class="doctor-card" *ngFor="let terapist of psikologlar">
-      <ion-icon class="heart-icon" name="heart-outline"></ion-icon>
+      <ion-icon (click)="insertPuan(terapist.id)" class="heart-icon" name="heart-outline"></ion-icon>
       <div class="doctor-info">
           <img src="{{serverpath}}/{{terapist.resim}}" alt="Doctor Image">
           <div class="doctor-details">

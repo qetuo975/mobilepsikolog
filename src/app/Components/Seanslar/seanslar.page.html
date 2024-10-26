@@ -5,19 +5,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-segment [(ngModel)]="selectedSegment" value="default">
-    <ion-segment-button value="default">
-      <ion-label>Planlanmış</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="segment">
-      <ion-label>Geçmiş</ion-label>
-    </ion-segment-button>
-  </ion-segment>
 
-  <ng-container *ngIf="selectedSegment === 'default'">
+  <ng-container >
     <div style="padding: 16px; display: flex; flex-direction: column; gap: 15px;">
       <div *ngFor="let seans of seanslar"
-        style="width: 100%; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: 150px; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid #54a0ff; border-radius: 5px; padding: 5px;">
+        style="width: 100%; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: 150px; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid rgba(0, 146, 129, 1); border-radius: 5px; padding: 5px;">
         <div style="width: 100%; height: 50%; display: flex; align-items: center; justify-content: space-between;">
           <div
             style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: baseline; width: 100%; height: 100%;">
@@ -28,7 +20,7 @@
             </div>
           </div>
           <div *ngIf="seans.isUpcoming">
-            <ion-button (click)="navigateChat(seans)" fill="outline">Katıl</ion-button>
+            <button (click)="navigateChat(seans)">Katıl</button>
           </div>
         </div>
         <div style="width: 100%; height: 1px; background-color: #707070; margin-top: 5px; margin-bottom: 5px;"></div>
@@ -49,7 +41,7 @@
       </div>
 
           <div *ngFor="let seans of randevu"
-            style="width: 100%; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: 150px; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid #54a0ff; border-radius: 5px; padding: 5px;">
+            style="width: 100%; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: 150px; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid rgba(0, 146, 129, 1); border-radius: 5px; padding: 5px;">
             <div style="width: 100%; height: 50%; display: flex; align-items: center; justify-content: space-between;">
               <div
                 style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: baseline; width: 100%; height: 100%;">
@@ -60,7 +52,7 @@
                 </div>
               </div>
               <div *ngIf="seans.isUpcoming">
-                <ion-button (click)="navigateChat(seans)" fill="outline">Katıl</ion-button>
+                <button (click)="navigateChat(seans)" fill="outline">Katıl</button>
               </div>
             </div>
             <div style="width: 100%; height: 1px; background-color: #707070; margin-top: 5px; margin-bottom: 5px;"></div>
@@ -82,34 +74,5 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="selectedSegment === 'segment'">
-    <div style="padding: 16px; display: flex; flex-direction: column; gap: 15px;">
-      <div *ngFor="let gecmisseans of gecmisseanslar"
-        style="width: 100%; padding-left: 10px !important; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); height: 150px; display: flex; flex-direction: column; background-color: transparent; border-left: 5px solid #54a0ff; border-radius: 5px; padding: 5px;">
-        <div style="width: 100%; height: 50%; display: flex; align-items: center; justify-content: space-between;">
-          <div
-            style="display: flex; flex-direction: column; gap: 10px; justify-content: center; align-items: baseline; width: 100%; height: 100%;">
-            <p>Randevu Tarihi</p>
-            <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-              <ion-icon name="time-outline" slot="start"></ion-icon>
-              <h4>{{gecmisseans.tarih}}</h4>
-            </div>
-          </div>
 
-        </div>
-        <div style="width: 100%; height: 1px; background-color: #707070; margin-top: 5px; margin-bottom: 5px;"></div>
-        <div style="width: 100%; height: 50%; display: flex; align-items: center; justify-content: left; gap: 15px;">
-
-          <img style="width: 60px; height: 60px; border-radius: 50%;" alt="Silhouette of a person's head"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4j6P_40m6z-_ZbAVkUsKt05BmGX8WUX-2cuY1PMLFng&s" />
-
-          <div
-            style="width: 100%; height: 100%; display: flex; flex-direction: column; align-content: center; justify-content: center; gap: 10px;">
-            <h4>{{type !== 'user' ? gecmisseans['user'].adsoyad : gecmisseans['psikolog'].adsoyad}}</h4>
-            <p *ngIf="type === 'user'">{{gecmisseans['psikolog']['kategoriler'][0].baslik}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
 </ion-content>
