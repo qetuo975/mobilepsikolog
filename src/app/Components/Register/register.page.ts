@@ -57,76 +57,57 @@ export class RegisterPage implements OnInit {
     await toast.present();
   }
 
+
   onSubmit() {
     if (this.loginForm && this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.userService
-        .register(email, password, this.loginForm.value.isPsikolog ? this.loginForm.value.isPsikolog : false)
+      const { email, password, isPsikolog } = this.loginForm.value;
+
+      // registerTemp çağrısı yap ve doğrulama sayfasına yönlendir
+      this.userService.registerTemp(email, password, isPsikolog ? isPsikolog : false)
         .subscribe({
           next: (response) => {
-            console.log('Registration successful:', response);
-            this.presentToast('Kayıt başarılı!', 'success', 'top');
-            this.router.navigate(['/login']);
+            console.log('Verification email sent:', response);
+            // Kullanıcıyı doğrulama sayfasına yönlendir
+            this.router.navigate(['/verification-code'], { queryParams: { email } });
           },
           error: (error) => {
-            console.error('Registration failed:', error);
-            this.presentToast(
-              'Kayıt başarısız. Lütfen tekrar deneyin.',
-              'danger',
-              'top'
-            );
+            console.error('Verification failed:', error);
+            this.presentToast('Doğrulama başarısız. Lütfen tekrar deneyin.', 'danger', 'top');
           },
         });
-    } else {
-      this.presentToast(
-        'Lütfen Gerekli Alanları Doldurunuz.',
-        'secondary',
-        'top'
-      );
     }
   }
+
 
   loginWithGoogle() {
     this.GoogleAuthService.loginWithGoogle()
       .then((data) => {
         const email: any = data.user?.email;
         const password: any = data.user?.uid;
-        const verifiy: any = data.user?.emailVerified;
+        const isPsikolog = this.loginForm?.value?.isPsikolog || false;
 
-        if (verifiy) {
-          this.userService
-            .register(
-              email,
-              password,
-              this.loginForm.value.isPsikolog
-                ? this.loginForm.value.isPsikolog
-                : false
-            )
+        if (data.user?.emailVerified) {
+          // Kullanıcı e-posta doğrulaması yapmışsa doğrudan registerTemp ile geçici kayıt yap
+          this.userService.registerTemp(email, password, isPsikolog)
             .subscribe({
               next: (response) => {
-                console.log('Registration successful:', response);
-                this.presentToast('Kayıt başarılı!', 'success', 'top');
-                this.router.navigate(['/login']);
+                console.log('Verification email sent:', response);
+                this.router.navigate(['/verification-code'], { queryParams: { email } });
               },
               error: (error) => {
                 console.error('Registration failed:', error);
-                this.presentToast(
-                  'Kayıt başarısız. Lütfen tekrar deneyin.',
-                  'danger',
-                  'top'
-                );
+                this.presentToast('Kayıt başarısız. Lütfen tekrar deneyin.', 'danger', 'top');
               },
             });
         } else {
-          this.presentToast(
-            'Lütfen Gerekli Alanları Doldurunuz.',
-            'secondary',
-            'top'
-          );
+          // Kullanıcının e-posta doğrulaması yapılmamışsa uyarı göster
+          this.presentToast('Google hesabınızı doğrulamanız gerekiyor.', 'secondary', 'top');
         }
       })
       .catch((error) => {
         console.error(error);
+        this.presentToast('Google girişi başarısız. Lütfen tekrar deneyin.', 'danger', 'top');
       });
   }
+
 }

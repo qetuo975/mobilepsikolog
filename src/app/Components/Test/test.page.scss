@@ -49,3 +49,10 @@ ion-button {
 ion-radio {
   --color-checked: rgba(0, 146, 129, 1);
 }
+
+ion-loading {
+  --spinner-color: rgba(0, 146, 129, 1);
+  color: rgba(0, 146, 129, 1);
+  font-size: 15px;
+  font-weight: 500;
+}

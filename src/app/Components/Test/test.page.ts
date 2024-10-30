@@ -19,6 +19,7 @@ export class TestPage implements OnInit {
     private sanitizer: DomSanitizer
   ) {}
 
+  isLoading: boolean = true;
   icerik: string = '';
   baslik: string = '';
   resim: string = '';
@@ -66,27 +67,33 @@ export class TestPage implements OnInit {
     console.log(toplamPuan);
 
     if (uygunSonuc) {
-      this.presentAlert(uygunSonuc.baslik);
+      // this.presentAlert(uygunSonuc.baslik);
+      this.presentAlert("Test sonuçlarınızı değerlendirdik, size uygun en iyi psikologlarımıza yönlendiriyoruz.", uygunSonuc);
     } else {
-      this.presentAlert('Bir sorun yok gibi görünüyor.');
+      this.presentAlert('Bir sorun yok gibi görünüyor.', uygunSonuc);
     }
-
-    setTimeout(() => {
-      const navigationExtras: NavigationExtras = {
-        state: {
-          puan: uygunSonuc ? true : false,
-        },
-      };
-      this.router.navigate([`/tabs/psikologlar/`], navigationExtras);
-    }, 3000);
   }
 
-
-  async presentAlert(message: string) {
+  async presentAlert(message: string, uygunSonuc: any = null) {
     const alert = await this.alertController.create({
       header: this.baslik + ' Testi',
       message: message,
-      buttons: ['Anladım'],
+      buttons: [{
+        text: 'Anladım',
+        handler: () => {
+          this.isLoading = !this.isLoading;
+          setTimeout(() => {
+            this.isLoading = !this.isLoading;
+            const navigationExtras: NavigationExtras = {
+              state: {
+                puan: uygunSonuc ? true : false,
+              },
+            };
+            this.router.navigate([`/tabs/psikologlar/`], navigationExtras);
+          }, 2000);
+        }
+      }],
+
     });
 
     await alert.present();

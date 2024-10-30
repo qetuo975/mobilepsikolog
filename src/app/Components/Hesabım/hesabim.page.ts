@@ -166,6 +166,7 @@ export class HesabimPage implements OnInit {
     cinsiyet: new FormControl('', Validators.required),
     resim: new FormControl(''),
   });
+  isLoading: boolean = true;
 
   // User Fonksiyonları
   // --------------------------------------------
@@ -206,7 +207,13 @@ export class HesabimPage implements OnInit {
       ).subscribe({
         next: (result: any) => {
           console.log(result);
+
           this.presentToast('top', 'Güncelleme Başarılı.');
+          this.isLoading = !this.isLoading;
+          setTimeout(() => {
+            this.cancel(this.modal2);
+            this.isLoading = !this.isLoading;
+          }, 1500);
         },
         error: (err: any) => {
           console.log(err);
@@ -227,7 +234,12 @@ export class HesabimPage implements OnInit {
       ).subscribe({
         next: (result: any) => {
           console.log(result);
+          this.isLoading = !this.isLoading;
           this.presentToast('top', 'Güncelleme Başarılı.');
+          setTimeout(() => {
+            this.cancel(this.modal2);
+            this.isLoading = !this.isLoading;
+          }, 1500);
         },
         error: (err: any) => {
           console.log(err);
@@ -285,6 +297,11 @@ export class HesabimPage implements OnInit {
             ozellik3: result.ozellikler[2].baslik,
             ozellik4: result.ozellikler[3].baslik,
             ozellik5: result.ozellikler[4].baslik,
+          });
+
+          this.balanceformPsikolog.patchValue({
+            IBAN: result.odeme.IBAN,
+            fiyat: result.fiyat
           });
 
           this.psikologkategoriler = result.kategoriler.map((pk: any) => pk.baslik);
@@ -464,6 +481,11 @@ addSeans(hour: number) {
       // this.seanslar dizisini güncelle
       this.seanslar = [...this.seanslar, result]; // Yeni seansı ekleyerek güncelleme
       this.presentToast('top', 'Seans Eklendi');
+      this.isLoading = !this.isLoading;
+      setTimeout(() => {
+        this.cancel(this.modal3);
+        this.isLoading = !this.isLoading;
+      }, 1500);
     },
     error: (err: any) => {
       console.log(err);

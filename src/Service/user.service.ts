@@ -55,10 +55,18 @@ export class UserService {
     return this.http.get(`${this.general}/kategoriler`).pipe();
   }
 
-  register(email: string, password: string, type: string): Observable<any> {
+
+  registerTemp(email: string, password: string, type: string): Observable<any> {
     const body = { email, password, type };
-    return this.http.post(`${this.baseUrl}/register`, body).pipe();
+    return this.http.post(`${this.baseUrl}/registerTemp`, body).pipe();
   }
+
+  verify(email: string, verificationCode: string): Observable<any> {
+    const body = { email, verificationCode };
+    return this.http.post(`${this.baseUrl}/verify`, body).pipe();
+  }
+
+
 
   updatePsikologAccount(accountData: any, id: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/updatepsikologaccount`, {

@@ -1,0 +1,21 @@
+<!-- verification-code.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center; margin-right: 40px;">Doğrulama Kodu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Doğrulama Kodu</ion-label>
+        <ion-input [(ngModel)]="verificationCode" type="number" required></ion-input>
+      </ion-item>
+      <ion-button style="width: 100%; margin-top: 20px;" fill="outline" color="custom" (click)="onVerify()">Doğrula</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

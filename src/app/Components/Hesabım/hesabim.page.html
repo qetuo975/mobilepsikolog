@@ -175,8 +175,8 @@
               <br>
               <ion-item lines="none">
                 <ion-label>Aktarılacak Bakiye</ion-label>
-                <ion-badge color="primary" slot="end" color="success">
-                  {{balance}} ₺
+                <ion-badge style="color: #fff;" slot="end" color="success">
+                  {{balance ? balance: '0'}} ₺
                 </ion-badge>
               </ion-item>
 
@@ -263,3 +263,4 @@
     </ion-item>
   </ion-list>
 </ion-content>
+<ion-loading [isOpen]="!isLoading" message="Yönlendiriliyorsunuz..."></ion-loading>

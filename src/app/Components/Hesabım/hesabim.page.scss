@@ -83,3 +83,10 @@ ion-item {
   margin-bottom: 15px !important;
 }
 
+
+ion-loading {
+  --spinner-color: rgba(0, 146, 129, 1);
+  color: rgba(0, 146, 129, 1);
+  font-size: 15px;
+  font-weight: 500;
+}

@@ -39,6 +39,7 @@ export class PsikologlarPage implements OnInit {
             console.log(result);
             if (Array(result).length) {
               this.oda = result;
+              console.log(this.oda);
             }
           },
           error: (err: any) => {

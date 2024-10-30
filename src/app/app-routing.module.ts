@@ -36,6 +36,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'verification-code',
+    loadChildren: () =>
+      import('./Components/Veritify/veritfy.module').then((m) => m.VeritfyModule),
+  },
+  {
     path: 'bloglar',
     loadChildren: () =>
       import('./Components/Bloglar/bloglar.module').then(

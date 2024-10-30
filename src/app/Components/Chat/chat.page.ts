@@ -117,7 +117,7 @@ export class ChatPage implements OnInit {
   // Backend'e PeerJS ID kaydetme
   registerPeerId(userId: string | number, peerId: string) {
     return this.http
-      .post('http://bahrikement.com:9000/register', {
+      .post('https://peer.therapydays.com/register', {
         userId: userId,
         peerId: peerId,
       })
@@ -126,7 +126,7 @@ export class ChatPage implements OnInit {
 
   // Başka bir kullanıcının PeerJS ID'sini almak için
   getPeerId(targetUserId: string | number): Observable<any> {
-    return this.http.get(`http://bahrikement.com:9000/peer-id/${targetUserId}`).pipe();
+    return this.http.get(`https://peer.therapydays.com/peer-id/${targetUserId}`).pipe();
   }
 
   // Görüntülü arama başlatma
@@ -147,12 +147,12 @@ export class ChatPage implements OnInit {
         .getUserMedia({ video: true, audio: true })
         .then((stream) => {
           this.localStream = stream;
-          this.displayLocalStream(); // Kendi videonu ekrana getir
-          const call = this.peer.call(res.peerId, stream); // Hedef PeerJS ID'ye arama yap
-          this.isCallStarted = true; // Görüşme başlatıldı, butonu gizle
+          this.displayLocalStream();
+          const call = this.peer.call(res.peerId, stream);
+          this.isCallStarted = true;
 
           call.on('stream', (remoteStream) => {
-            this.playRemoteStream(remoteStream); // Karşı tarafın videosunu ekrana getir
+            this.playRemoteStream(remoteStream);
           });
         })
         .catch((err) => {
