@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "313472590646",
-    "project_id": "psikologmobile-a9ca7",
-    "storage_bucket": "psikologmobile-a9ca7.appspot.com"
+    "project_number": "724516351611",
+    "project_id": "therapydays-b6a85",
+    "storage_bucket": "therapydays-b6a85.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:313472590646:android:72c19d18dfd439d56b4997",
+        "mobilesdk_app_id": "1:724516351611:android:bcdf9a1d4cb358153c7cde",
         "android_client_info": {
           "package_name": "therapydays.ionic.starter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "313472590646-tknh97lea8doik4uo5mo8rvpf1gauchh.apps.googleusercontent.com",
+          "client_id": "724516351611-idvm84qbpq50v8c9t69lnsq3biasjp2n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBldzkBghjgjctGyTomW6eTmy_BOmv4Vis"
+          "current_key": "AIzaSyCfR0Y9HqXadLGxBSdetcxnV6CUAg1fJ88"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "313472590646-tknh97lea8doik4uo5mo8rvpf1gauchh.apps.googleusercontent.com",
+              "client_id": "724516351611-idvm84qbpq50v8c9t69lnsq3biasjp2n.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

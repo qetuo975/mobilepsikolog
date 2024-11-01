@@ -31,37 +31,6 @@ export class PsikologHesabiPage implements OnInit {
     private Router: Router
   ) {}
 
-  daysOfWeek = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
-    // Türkçe günleri İngilizce'ye çeviren bir eşleme
-    daysMap: { [key: string]: string } = {
-      'Pazar': 'Sunday',
-      'Pazartesi': 'Monday',
-      'Salı': 'Tuesday',
-      'Çarşamba': 'Wednesday',
-      'Perşembe': 'Thursday',
-      'Cuma': 'Friday',
-      'Cumartesi': 'Saturday'
-    };
-  filteredSeanslar: any = [];
-  selecteDay: any;
-
-  onDayChange(event: any) {
-    this.selecteDay = event.detail.value;  // Kullanıcının seçtiği Türkçe gün
-    const selectedDayEnglish = this.daysMap[this.selecteDay];  // İngilizce karşılığı
-
-    // Seansları filtrele ve tarihe göre günü belirle (İngilizce olarak karşılaştırma)
-    this.filteredSeanslar = this.psikologseanslar.filter((seans: any) => {
-      // Tarihi doğru formatta dönüştürüp gün adını İngilizce alıyoruz
-      const seansDay = moment(seans.tarih, 'DD.MM.YYYY').format('dddd');
-
-      console.log(`Seans Tarihi: ${seans.tarih}, Gün: ${seansDay}`);  // Gün isimlerini kontrol edelim
-
-      return seansDay === selectedDayEnglish;  // Gün karşılaştırması İngilizce olarak yapılıyor
-    });
-
-    console.log(this.filteredSeanslar);
-  }
-
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
     const toast = await this.ToastController.create({
@@ -202,33 +171,51 @@ export class PsikologHesabiPage implements OnInit {
     }
   }
 
+  availableTimes: any[] = [];
+  availableDates: any[] = []; // Sadece geçerli tarihleri tutacak dizi
+  availableDays: number[] = [];
+  availableMonths: number[] = [];
+  minDate!: string;
+  maxDate!: string;
+  selectedDate!: string;
+
   getPsikologSeanslar() {
     this.UserService.getPsikologSeans(this.psikolog.id).subscribe({
       next: (result: any) => {
         this.psikologseanslar = result;
-        if (result.length == 0) {
-          this.presentToast(
-            'top',
-            this.psikolog.adsoyad + ' çalışma planı yok.'
-          );
+
+        if (result.length === 0) {
+          this.presentToast('top', this.psikolog.adsoyad + ' çalışma planı yok.');
+        } else {
+          // Benzersiz ve geçerli tarihleri alarak formatını düzenleyelim
+          this.availableDates = [...new Set(result.map((seans: any) => {
+            const [day, month, year] = seans.tarih.split('.');
+            return `${year}-${month}-${day}`; // YYYY-MM-DD formatına dönüştür
+          }))];
+
+          // Geçerli gün ve ay değerlerini ayarla
+          this.availableDays = this.availableDates.map(date => new Date(date).getDate());
+          this.availableMonths = [...new Set(this.availableDates.map(date => new Date(date).getMonth() + 1))];
+
+          // Min ve max tarihi ayarla
+          this.minDate = new Date(Math.min(...this.availableDates.map(date => new Date(date).getTime()))).toISOString().split('T')[0];
+          this.maxDate = new Date(Math.max(...this.availableDates.map(date => new Date(date).getTime()))).toISOString().split('T')[0];
+
+          console.log(result);
         }
-        console.log(result);
-        const selectedDayEnglish = this.daysMap[this.selecteDay];  // İngilizce karşılığı
-
-        // Seansları filtrele ve tarihe göre günü belirle (İngilizce olarak karşılaştırma)
-        this.filteredSeanslar = this.psikologseanslar.filter((seans: any) => {
-          // Tarihi doğru formatta dönüştürüp gün adını İngilizce alıyoruz
-          const seansDay = moment(seans.tarih, 'DD.MM.YYYY').format('dddd');
-
-          console.log(`Seans Tarihi: ${seans.tarih}, Gün: ${seansDay}`);  // Gün isimlerini kontrol edelim
-
-          return seansDay === selectedDayEnglish;  // Gün karşılaştırması İngilizce olarak yapılıyor
-        });
       },
       error: (err: any) => {
         console.log(err);
       },
     });
+  }
+
+  onDateChange(event: any) {
+    const selectedDate = new Date(event.detail.value).toLocaleDateString('tr-TR');
+    this.selectedDate = selectedDate;
+    this.availableTimes = this.psikologseanslar.filter(
+      (seans: any) => seans.tarih === selectedDate && !seans.dolu
+    );
   }
 
   cancel(modal: IonModal) {

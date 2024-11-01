@@ -2,34 +2,49 @@
 
 .video-container {
   position: relative;
+  width: 100%;
+  height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 60vh;
-  background-color: #000;
-    border-radius: 8px;
+  justify-content: center;
+  background-color: black;
 }
 
-.remote-video {
+.large-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
 }
 
-.local-video {
+.small-video {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 100px;
-  height: 100px;
+  width: 30%; /* Küçük video boyutunu küçült */
+  height: 20%;
+  bottom: 120px; /* Alt kenardan 30-40px yukarıda olacak şekilde ayarla */
+  right: 20px;
+  object-fit: cover;
   border: 2px solid white;
   border-radius: 8px;
 }
 
-.controls {
-  margin-top: 20px;
+.settings-icon {
+  position: absolute;
+  top: 60px; /* İkonu sağ üst köşeye taşımak için */
+  right: 5px;
+  z-index: 1000;
+}
+
+
+
+.fixed-controls {
+  position: absolute;
+  background-color: #fff;
+  bottom: 55px;
+  border-top-left-radius: 7.5px;
+  border-top-right-radius: 7.5px;
+  left: 0;
+  right: 0;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  gap: 15px;
 }

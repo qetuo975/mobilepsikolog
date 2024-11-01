@@ -16,7 +16,7 @@ export const environment = {
 };
 
 export const serverpath = 'https://api.therapydays.com/static';
-export const api = 'http://localhost:443/api';
+export const api = 'https://api.therapydays.com/api';
 //export const api = 'http://localhost:4000/api';
 /*
  * For easier debugging in development mode, you can import the following file

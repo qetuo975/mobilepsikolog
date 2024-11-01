@@ -25,6 +25,8 @@ export class ChatPage implements OnInit {
 
   // Kamera ve mikrofon kontrol durumları
   isMicEnabled: boolean = true;
+  isRemoteLarge: boolean = true;
+  isSettingsOpen: boolean = false;
   isCamEnabled: boolean = true;
   currentCall: any; // Aktif aramayı saklamak için
 
@@ -40,6 +42,14 @@ export class ChatPage implements OnInit {
     } else {
       console.log('Camera permission is already granted');
     }
+  }
+
+  toggleSwap() {
+    this.isRemoteLarge = !this.isRemoteLarge;
+  }
+
+  toggleSettings() {
+    this.isSettingsOpen = !this.isSettingsOpen;
   }
 
   ngOnInit() {
