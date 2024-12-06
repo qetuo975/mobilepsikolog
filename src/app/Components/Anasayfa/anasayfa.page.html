@@ -1,13 +1,14 @@
 <ion-content [fullscreen]="true">
   <ion-header [translucent]="true" id="header">
-    <ion-toolbar class="transparent-toolbar">
-      <ion-title>
-        <img *ngIf="arkaplan" [src]="serverpath + '/' + arkaplan.logo" alt="Logo"
-          style="height: 40px; vertical-align: middle;">
-      </ion-title>
-    </ion-toolbar>
-    <ion-toolbar class="transparent-toolbar">
-      <ion-searchbar [formControl]="searchControl" placeholder="Terapini Ara"></ion-searchbar>
+    <ion-toolbar>
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 15px;">
+        <!-- Logo (sola) -->
+        <ion-title style="display: flex; align-items: center; margin: 0;">
+          <img *ngIf="arkaplan" [src]="serverpath + '/' + arkaplan.logo" alt="Logo" style="height: 40px;">
+        </ion-title>
+        <!-- Yazı (sağa) -->
+        <h3 style="margin: 0; color: #262626; font-size: 14px;" *ngIf="ad">Günaydın {{ad}}</h3>
+      </div>
     </ion-toolbar>
   </ion-header>
 
@@ -15,7 +16,6 @@
 
 
   <div style="padding: 0 16px 16px 16px; text-align: left; line-height: 15px; background-color: transparent; margin-top: 20px;">
-    <h3 style="padding-left: 0 !important;" *ngIf="ad">Günaydın {{ad}}</h3>
     <h3 style="padding-left: 0 !important;" *ngIf="!ad">Günaydın</h3>
     <p>
       En iyi psikologlarımızdan terapi al.
@@ -82,7 +82,7 @@
       <img src="../../../assets/doctor_img_bg.png" style="height: 100%;"/>
       <img
       src="{{serverpath}}/{{banners[1].resim}}"
-      [ngStyle]="{'position': 'absolute', 'left': 'auto', 'right': '0', 'top': upcomingSeanslar.length > 0 ? '395px' : '195px'}"
+      [ngStyle]="{'position': 'absolute', 'left': 'auto', 'right': '0', 'top': upcomingSeanslar.length > 0 ? '265px' : '125px'}"
     />
 
     </div>
@@ -258,10 +258,10 @@
 
   <div *ngIf="banners" style="padding: 16px; border-radius: 5px; width: 100%; height: 125px; border-radius: 5px; ">
     <div
-      style="display: flex; width: 100; height: 100%; box-shadow: 1px 2px 2px 1px rgba(0, 146, 129, 1); border-radius: 5px;">
+      style="display: flex; width: 100; height: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  border-radius: 5px;">
       <div
         style="width: 70%; height: 100%; padding: 15px; display: flex; justify-content: center; align-items: center;">
-        <h2 class="yesil">{{banners[0].icerik}}</h2>
+        <h2 style="color: #0e0d39;">{{banners[0].icerik}}</h2>
       </div>
       <img [src]="serverpath + '/' + banners[0].resim" alt="bannerreklam" width="30%" height="100%">
     </div>
@@ -299,7 +299,7 @@
   <div
     style="padding: 16px; width: 100%; height: 300px; display: -webkit-inline-box; gap: 10px; overflow: auto; ">
     <a routerLink="/bloglar/{{blog.id}}" *ngFor="let blog of blogs"
-      style="height: 100%; width: 100%; border-bottom: 2px solid rgba(0, 146, 129, 1); background-color: #fff; border-radius: 10px; display: flex; justify-content: space-between; flex-direction: column; padding: 5px; overflow: hidden;">
+      style="height: 100%; width: 100%;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); background-color: #fff; border-radius: 10px; display: flex; justify-content: space-between; flex-direction: column; padding: 10px; overflow: hidden;">
       <img [src]="serverpath + '/' + blog.resim"
         alt="stres" style="width: 100%; height: 60%; object-fit: cover;">
       <div style="display: flex; flex-direction: column; gap: 10px; justify-content: left; padding: 10px;">

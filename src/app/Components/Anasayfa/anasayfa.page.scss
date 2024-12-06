@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-.transparent-toolbar {
-  --border-color: transparent;
-  text-align: center;
-}
 
 
 .doctor-card {
@@ -141,10 +137,14 @@ ion-searchbar {
   color: rgba(0, 146, 129, 1) !important;
 }
 
-.transparent-toolbar {
-  --background: #fff;
-  --backdrop-filter: blur(10px);
-  --border-color: transparent;
+ion-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+ion-header {
+  box-shadow:  unset !important;
 }
 
 ion-button {
@@ -167,7 +167,11 @@ ion-radio {
   --color-checked: rgba(0, 146, 129, 1);
 }
 
-
+ion-title {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
 
 ion-radio,
 div {

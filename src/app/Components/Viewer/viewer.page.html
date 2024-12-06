@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">
+
+  <div class="doctor-container">
+    <div *ngFor="let doctor of doctors; let i = index"
+         class="doctor-card"
+         [class.animate-up]="i % 2 === 0"
+         [class.animate-down]="i % 2 !== 0">
+      <img src="{{serverpath}}/{{doctor.image}}" alt="Doctor">
+    </div>
+  </div>
+
+
+  <div *ngIf="currentMessage" class="bottom-menu">
+    <h2>Expert Doctor</h2>
+    <h3>{{ currentMessage.baslik }}</h3>
+    <!-- Animasyon Trigger -->
+    <p [@fadeInOut]="state">{{ currentMessage.detail }}</p>
+    <div class="actions">
+      <ion-button color="success" fill="solid" shape="round" (click)="changeMessage()">
+        <ion-icon slot="icon-only" style="color: #ffffff;" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+</ion-content>

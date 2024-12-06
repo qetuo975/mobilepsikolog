@@ -32,15 +32,7 @@ export class FCMService {
   private async addListeners() {
     await PushNotifications.addListener('registration', (token: Token) => {
       console.info('Registration token:', token.value);
-      const type = localStorage.getItem('type');
-      this.sendToken(token.value, Number(localStorage.getItem('id')), type).subscribe({
-        next: (res: any) => {
-          console.log(res);
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      });
+      localStorage.setItem('fcmtoken', token.value);
     });
 
     await PushNotifications.addListener('registrationError', (error: any) => {

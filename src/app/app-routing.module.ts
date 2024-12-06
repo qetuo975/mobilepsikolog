@@ -7,7 +7,15 @@ const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
-    canActivate: [AuthGuard],
+
+  },
+  {
+    path: 'viewer',
+    loadChildren: () =>
+      import('./Components/Viewer/viewer.module').then(
+        (m) => m.ViewerModule
+      ),
+
   },
   {
     path: 'login',
@@ -27,13 +35,13 @@ const routes: Routes = [
       import('./Components/FilterPsikologlar/filterpsikologlar.module').then(
         (m) => m.FilterPsikologlarModule
       ),
-    canActivate: [AuthGuard],
+
   },
   {
     path: 'chat',
     loadChildren: () =>
       import('./Components/Chat/chat.module').then((m) => m.ChatModule),
-    canActivate: [AuthGuard],
+
   },
   {
     path: 'verification-code',
@@ -46,13 +54,13 @@ const routes: Routes = [
       import('./Components/Bloglar/bloglar.module').then(
         (m) => m.BloglarModule
       ),
-    canActivate: [AuthGuard],
+
   },
   {
     path: 'test/:id',
     loadChildren: () =>
       import('./Components/Test/test.module').then((m) => m.TestModule),
-    canActivate: [AuthGuard],
+
   },
   {
     path: 'psikolog/:id',
@@ -60,7 +68,7 @@ const routes: Routes = [
       import('./Components/PsikologHesabi/psikologhesabi.module').then(
         (m) => m.PsikologHesabiModule
       ),
-    canActivate: [AuthGuard],
+
   },
 ];
 @NgModule({

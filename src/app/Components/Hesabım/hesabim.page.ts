@@ -179,6 +179,11 @@ export class HesabimPage implements OnInit {
         next: (result: any) => {
           console.log(result);
           this.presentToast('top', 'Güncelleme Başarılı.');
+          this.isLoading = false;
+          setTimeout(() => {
+            this.cancel(this.modal1);
+            this.isLoading = true;
+          }, 1500);
         },
         error: (err: any) => {
           console.log(err);
@@ -209,10 +214,10 @@ export class HesabimPage implements OnInit {
           console.log(result);
 
           this.presentToast('top', 'Güncelleme Başarılı.');
-          this.isLoading = !this.isLoading;
+          this.isLoading = false;
           setTimeout(() => {
-            this.cancel(this.modal2);
-            this.isLoading = !this.isLoading;
+            this.cancel(this.modal1);
+            this.isLoading = true;
           }, 1500);
         },
         error: (err: any) => {

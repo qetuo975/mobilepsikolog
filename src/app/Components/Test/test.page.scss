@@ -27,7 +27,7 @@ h2 {
   font-size: 17px;
   font-style: normal;
   margin-top: 15px !important;
-  color: rgba(0, 146, 129, 1) !important;
+  color: #262626 !important;
 }
 
 h5 {
@@ -36,6 +36,7 @@ h5 {
   font-size: 15px;
   font-style: normal;
   margin-top: 15px;
+  margin-bottom: 10px !important;
 }
 
 ion-button {
@@ -46,13 +47,90 @@ ion-button {
   color: rgba(0, 146, 129, 1);
 }
 
-ion-radio {
-  --color-checked: rgba(0, 146, 129, 1);
-}
-
 ion-loading {
   --spinner-color: rgba(0, 146, 129, 1);
   color: rgba(0, 146, 129, 1);
   font-size: 15px;
   font-weight: 500;
+}
+/* Kart stilini ayarla */
+.card {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: "Inter" sans-serif !important;
+}
+
+/* Kart başlığı */
+.card h5 {
+  font-size: 16px;
+  margin: 0;
+  color: #333;
+}
+
+/* Radio grubu */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Her bir radyo öğesi */
+.radio-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+  position: relative;
+  cursor: pointer;
+  gap: 10px;
+}
+
+
+
+/* Gizli radio input */
+.radio-item input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Özel radio düğmesi */
+.radio-item .custom-radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+/* Seçili olduğunda görünüm */
+.radio-item input[type="radio"]:checked + .custom-radio {
+  border-color: rgba(0, 146, 129, 1);
+  background-color: rgba(0, 146, 129, 1);
+}
+
+.radio-item input[type="radio"]:checked + .custom-radio::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Hover durumunda efekt */
+.radio-item:hover .custom-radio {
+  border-color: #888;
 }

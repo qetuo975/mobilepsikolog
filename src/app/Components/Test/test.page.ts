@@ -41,7 +41,6 @@ export class TestPage implements OnInit {
           console.log(result);
           this.icerik = result.icerik;
           this.baslik = result.baslik;
-          this.resim = result.resim;
           this.sonuclar = result.sonuclar;
           this.selectedsorular = result.sorular;
         },
@@ -84,12 +83,15 @@ export class TestPage implements OnInit {
           this.isLoading = !this.isLoading;
           setTimeout(() => {
             this.isLoading = !this.isLoading;
-            const navigationExtras: NavigationExtras = {
-              state: {
-                puan: uygunSonuc ? true : false,
-              },
-            };
-            this.router.navigate([`/tabs/psikologlar/`], navigationExtras);
+
+            setTimeout(() => {
+              const navigationExtras: NavigationExtras = {
+                state: {
+                  puan: uygunSonuc ? true : false,
+                },
+              };
+              this.router.navigate([`/tabs/psikologlar/`], navigationExtras);
+            }, 500)
           }, 2000);
         }
       }],

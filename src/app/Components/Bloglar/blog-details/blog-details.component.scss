@@ -10,7 +10,10 @@
 
 ion-card {
   margin: 0;
+  border-radius: 12px;
+  padding: 10px;
 }
+
 
 ion-card-title {
   font-size: 1.3em;
@@ -20,4 +23,8 @@ ion-card-title {
 
 ion-card-content p {
   text-align: justify;
+}
+
+p {
+  line-height: 16px !important;
 }

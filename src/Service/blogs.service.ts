@@ -14,6 +14,16 @@ export class BlogsService {
     return this.http.get(`${api}/general/arkaplan`).pipe();
   }
 
+  getPreviewDoctor()
+  {
+    return this.http.get(`${api}/general/getpreviewdoctor`).pipe();
+  }
+
+  getPreview()
+  {
+    return this.http.get(`${api}/general/getpreview`).pipe();
+  }
+
   getBanners()
   {
     return this.http.get(`${api}/general/banner`).pipe();

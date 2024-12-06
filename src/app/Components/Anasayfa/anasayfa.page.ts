@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import moment from 'moment';
+import { FCMService } from 'src/Service/fcm.service';
 
 
 @Component({
@@ -24,7 +25,6 @@ export class AnasayfaPage implements OnInit {
   tests: any[] = [];
   blogs: any[] = [];
   serverpath: any = 'https://api.therapydays.com/static';
-  searchControl: FormControl = new FormControl();
   banners: any;
   arkaplan: any;
 
@@ -63,7 +63,8 @@ export class AnasayfaPage implements OnInit {
     private toastController: ToastController,
     private UserService: UserService,
     private BlogsService: BlogsService,
-    private router: Router
+    private router: Router,
+    private fcmService: FCMService
   ) {}
 
 
@@ -79,7 +80,18 @@ export class AnasayfaPage implements OnInit {
     await toast.present();
   }
 
-
+  sendToken()
+  {
+    const token = localStorage.getItem('fcmtoken');
+    this.fcmService.sendToken(token, this.id, this.type).subscribe({
+      next: (res: any) => {
+        console.log(res);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    });
+  }
 
   navigateChat(seans: any) {
     const navigationExtras: NavigationExtras = {
@@ -265,28 +277,9 @@ export class AnasayfaPage implements OnInit {
     this.id = localStorage.getItem('id');
     this.type = localStorage.getItem('type');
 
-    this.searchControl.valueChanges
-      .pipe(debounceTime(3000), distinctUntilChanged())
-      .subscribe((searchTerm) => {
-        if (searchTerm) {
-          this.PsikologService.getSearch(searchTerm.toLowerCase()).subscribe({
-            next: (result: any) => {
-              console.log(result);
-              const navigationExtras: NavigationExtras = {
-                state: {
-                  filterData: result,
-                },
-              };
-              this.searchControl.reset();
-              this.router.navigate(['/filterpsikologlar'], navigationExtras);
-            },
-            error: (err: any) => {
-              console.error(err);
-            },
-          });
-        }
-      });
-      this.init();
+
+    this.init();
+    this.sendToken();
   }
 
   init()
