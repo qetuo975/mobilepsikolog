@@ -1,6 +1,6 @@
 import { UserService } from './../../../Service/user.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { IonModal, ToastController } from '@ionic/angular';
 
 import moment from 'moment';
@@ -42,44 +42,21 @@ export class PsikologHesabiPage implements OnInit {
     await toast.present();
   }
 
-  selectSeans(seans: any) {
-    this.selectedSeans = seans;
-    console.log(this.selectedSeans);
-    if (this.selectedSeans.dolu == true) {
-      this.presentToast(
-        'top',
-        'Seans dolu, lütfen başka tarihte seans seçiniz.'
-      );
-      this.selectedSeans = null;
-    }
-  }
-
   seansAdd() {
-    this.UserService.PsikologSeans(
-      Number(localStorage.getItem('id')),
-      this.psikolog.id,
-      {
-        tarih: this.selectedSeans.tarih,
-        start: this.selectedSeans.baslangicsaat,
-        end: this.selectedSeans.bitissaat,
+    const navigationExtras: NavigationExtras = {
+      state: {
+        data: {
+          tarih: this.selectedSeans.tarih,
+          start: this.selectedSeans.baslangicsaat,
+          end: this.selectedSeans.bitissaat,
+          psikologId: this.psikolog.id,
+          free: this.freeaccount
+        },
       },
-      this.freeaccount
-    ).subscribe({
-      next: (result: any) => {
-        if (result.result == true) {
-          this.presentToast('top', result.seans.tarih + ' Seans Alınmıştır.');
-          this.getPsikologSeanslar();
-
-
-        } else {
-          this.presentToast('top', 'Seans alma başarısız.');
-        }
-        console.log(result);
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-    });
+    };
+    console.log(this.selectedSeans);
+    this.cancel(this.UserSeansModal);
+    this.Router.navigate(['/pay'], navigationExtras);
   }
 
   freeseansAdd() {
@@ -183,6 +160,7 @@ export class PsikologHesabiPage implements OnInit {
     this.UserService.getPsikologSeans(this.psikolog.id).subscribe({
       next: (result: any) => {
         this.psikologseanslar = result;
+        console.log(this.psikologseanslar);
 
         if (result.length === 0) {
           this.presentToast('top', this.psikolog.adsoyad + ' çalışma planı yok.');

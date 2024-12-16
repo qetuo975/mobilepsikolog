@@ -73,9 +73,7 @@ export class HesabimPage implements OnInit {
 
   logout()
   {
-    localStorage.removeItem('id');
-    localStorage.removeItem('type');
-    window.location.reload();
+
     this.router.navigateByUrl('/login')
   }
 
@@ -164,6 +162,8 @@ export class HesabimPage implements OnInit {
     adsoyad: new FormControl('', Validators.required),
     yas: new FormControl('', Validators.required),
     cinsiyet: new FormControl('', Validators.required),
+    adres: new FormControl('', Validators.required),
+    telefon: new FormControl('', Validators.required),
     resim: new FormControl(''),
   });
   isLoading: boolean = true;
@@ -267,6 +267,8 @@ export class HesabimPage implements OnInit {
             yas: result.yas,
             cinsiyet: result.cinsiyet,
             resim: result.resim,
+            adres: result.adres,
+            telefon: result.telefon
           });
           console.log(this.accountformUser.value);
         }

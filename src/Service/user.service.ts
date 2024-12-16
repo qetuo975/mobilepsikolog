@@ -12,6 +12,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+
+  payment(
+    paymentData: any
+  ): Observable<any> {
+    return this.http.post(`${api}/iframetoken`, paymentData).pipe();
+  }
+
   insertPuan(
     type: any,
     currentid: any,

@@ -15,7 +15,27 @@ const routes: Routes = [
       import('./Components/Viewer/viewer.module').then(
         (m) => m.ViewerModule
       ),
-
+  },
+  {
+    path: 'pay',
+    loadChildren: () =>
+      import('./Components/Pay/pay.module').then(
+        (m) => m.PayModule
+      ),
+  },
+  {
+    path: 'pay',
+    loadChildren: () =>
+      import('./Components/Pay/pay.module').then(
+        (m) => m.PayModule
+      ),
+  },
+  {
+    path: 'status',
+    loadChildren: () =>
+      import('./Components/OdemeStatus/status.module').then(
+        (m) => m.StatusModule
+      ),
   },
   {
     path: 'login',

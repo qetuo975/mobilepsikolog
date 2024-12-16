@@ -1,0 +1,43 @@
+
+.payment-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.card-image {
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 100%;
+  height: auto;
+}
+ion-item {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+
+ion-title {
+  color: #262626;
+  font-family: "Inter" sans-serif !important;
+  font-weight: 600;
+}
+
+ion-button {
+  font-family: "Inter" sans-serif !important;
+  font-weight: 600;
+  margin-top: 20px;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

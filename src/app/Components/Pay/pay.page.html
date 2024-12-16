@@ -1,0 +1,28 @@
+<!-- verification-code.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ödeme</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <!-- Loading Spinner -->
+  <ion-spinner *ngIf="!iframeLoaded" name="crescent" class="center-spinner"></ion-spinner>
+
+  <!-- Iframe -->
+  <iframe
+    *ngIf="tokenUrl"
+    [src]="tokenUrl"
+    id="paytriframe"
+    frameborder="0"
+    scrolling="yes"
+    style="width: 100%; height: 100%; overflow: auto; border-radius: 16px; background-color: #ffffff; display: none;"
+    (load)="onIframeLoad()">
+  </iframe>
+
+  <!-- Script -->
+  <script>iFrameResize({}, '#paytriframe');</script>
+  <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
+</ion-content>
