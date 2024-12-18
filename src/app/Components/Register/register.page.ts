@@ -79,35 +79,4 @@ export class RegisterPage implements OnInit {
   }
 
 
-  loginWithGoogle() {
-    this.GoogleAuthService.loginWithGoogle()
-      .then((data) => {
-        const email: any = data.user?.email;
-        const password: any = data.user?.uid;
-        const isPsikolog = this.loginForm?.value?.isPsikolog || false;
-
-        if (data.user?.emailVerified) {
-          // Kullanıcı e-posta doğrulaması yapmışsa doğrudan registerTemp ile geçici kayıt yap
-          this.userService.registerTemp(email, password, isPsikolog)
-            .subscribe({
-              next: (response) => {
-                console.log('Verification email sent:', response);
-                this.router.navigate(['/verification-code'], { queryParams: { email } });
-              },
-              error: (error) => {
-                console.error('Registration failed:', error);
-                this.presentToast('Kayıt başarısız. Lütfen tekrar deneyin.', 'danger', 'top');
-              },
-            });
-        } else {
-          // Kullanıcının e-posta doğrulaması yapılmamışsa uyarı göster
-          this.presentToast('Google hesabınızı doğrulamanız gerekiyor.', 'secondary', 'top');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        this.presentToast('Google girişi başarısız. Lütfen tekrar deneyin.', 'danger', 'top');
-      });
-  }
-
 }

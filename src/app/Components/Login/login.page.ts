@@ -96,43 +96,4 @@ export class LoginPage implements OnInit {
     }
   }
 
-  loginWithGoogle() {
-    this.GoogleAuthService.loginWithGoogle()
-      .then((data) => {
-        console.log(data);
-        const email: any = data.user?.email;
-        const password: any = data.user?.uid;
-        const verifiy: any = data.user?.emailVerified;
-
-        if (verifiy) {
-          this.UserService.login(email, password).subscribe({
-            next: (response) => {
-              console.log('Login successful:', response);
-              localStorage.setItem('id', response.token.user.id);
-              localStorage.setItem('type', response.token.type);
-
-              this.presentToast('Giriş başarılı!', 'success', 'top');
-              this.router.navigate(['/']);
-            },
-            error: (error) => {
-              console.error('Login failed:', error);
-              this.presentToast(
-                'Giriş başarısız. Lütfen tekrar deneyin.',
-                'danger',
-                'top'
-              );
-            },
-          });
-        } else {
-          this.presentToast(
-            'Lütfen Gerekli Alanları Doldurunuz.',
-            'secondary',
-            'top'
-          );
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
 }

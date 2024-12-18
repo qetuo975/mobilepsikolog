@@ -12,11 +12,6 @@ const config: CapacitorConfig = {
     allowMixedContent: true // Mixed content'i etkinleştirir
   },
   plugins: {
-    "GoogleAuth": {
-      "scopes": ["profile", "email"],
-      "serverClientId": "888583782126-4s8kfffueh35h9deudgvfct4v0gkt35i.apps.googleusercontent.com",
-      "forceCodeForRefreshToken": true
-    },
     "PushNotifications": {
         "presentationOptions": ["badge", "sound", "alert"]
     }
