@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './Guards/auth.guard';
+import { FirstLoadGuard } from './Guards/firsload.guard';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
-
+    canActivate: [FirstLoadGuard],
   },
   {
     path: 'viewer',
@@ -22,13 +23,7 @@ const routes: Routes = [
       import('./Components/Pay/pay.module').then(
         (m) => m.PayModule
       ),
-  },
-  {
-    path: 'pay',
-    loadChildren: () =>
-      import('./Components/Pay/pay.module').then(
-        (m) => m.PayModule
-      ),
+      canActivate: [AuthGuard]
   },
   {
     path: 'status',
@@ -36,6 +31,7 @@ const routes: Routes = [
       import('./Components/OdemeStatus/status.module').then(
         (m) => m.StatusModule
       ),
+      canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -55,13 +51,13 @@ const routes: Routes = [
       import('./Components/FilterPsikologlar/filterpsikologlar.module').then(
         (m) => m.FilterPsikologlarModule
       ),
-
+      canActivate: [AuthGuard]
   },
   {
     path: 'chat',
     loadChildren: () =>
       import('./Components/Chat/chat.module').then((m) => m.ChatModule),
-
+    canActivate: [AuthGuard]
   },
   {
     path: 'verification-code',
@@ -74,13 +70,13 @@ const routes: Routes = [
       import('./Components/Bloglar/bloglar.module').then(
         (m) => m.BloglarModule
       ),
-
+      canActivate: [AuthGuard]
   },
   {
     path: 'test/:id',
     loadChildren: () =>
       import('./Components/Test/test.module').then((m) => m.TestModule),
-
+    canActivate: [AuthGuard]
   },
   {
     path: 'psikolog/:id',
@@ -88,7 +84,7 @@ const routes: Routes = [
       import('./Components/PsikologHesabi/psikologhesabi.module').then(
         (m) => m.PsikologHesabiModule
       ),
-
+      canActivate: [AuthGuard]
   },
 ];
 @NgModule({

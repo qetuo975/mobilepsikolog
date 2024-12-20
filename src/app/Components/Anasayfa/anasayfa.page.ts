@@ -276,10 +276,14 @@ export class AnasayfaPage implements OnInit {
   ngOnInit(): void {
     this.id = localStorage.getItem('id');
     this.type = localStorage.getItem('type');
-
-
+   // id ve type kontrolü
+   if (!this.id || !this.type) {
+    // Kullanıcıyı login sayfasına yönlendir
+    this.router.navigate(['/login']);
+  } else {
     this.init();
     this.sendToken();
+  }
   }
 
   init()
