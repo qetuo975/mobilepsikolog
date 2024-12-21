@@ -20,16 +20,8 @@
             <label for="password">Şifre</label>
             <input type="password" formControlName="password" class="forminput" placeholder="Şifre">
           </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <ion-label>Psikolog musunuz?</ion-label>
-              <ion-checkbox formControlName="isPsikolog"></ion-checkbox>
-            </div>
           <ion-button expand="block" type="submit" fill="outline"  style="margin-top: 50px;">Kayıt Ol</ion-button>
         </form>
-        <ion-button expand="block" fill="outline" class="google" (click)="loginWithGoogle()" style="margin-top: 20px;">
-          <ion-icon slot="start" name="logo-google"></ion-icon>
-          Google İle Kayıt Ol
-        </ion-button>
         <div class="register-container">
           <p>Hesabın Var Mı ? <a routerLink="/login" style="color: rgba(0, 146, 129, 1) !important">Giriş yap</a></p>
         </div>

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ödeme Durumu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div
+    class="status-container"
+    [ngStyle]="{
+      'background-color': paymentStatus === 'ok' ? '#d4edda' : '#f8d7da',
+      'color': paymentStatus === 'ok' ? '#155724' : '#721c24'
+    }"
+  >
+    <ion-icon
+      *ngIf="paymentStatus === 'ok'"
+      name="checkmark-circle-outline"
+      style="font-size: 80px;"
+    ></ion-icon>
+    <ion-icon
+      *ngIf="paymentStatus === 'false'"
+      name="close-circle-outline"
+      style="font-size: 80px;"
+    ></ion-icon>
+    <p style="font-size: 18px; text-align: center; margin-top: 15px;">{{ message }}</p>
+  </div>
+</ion-content>

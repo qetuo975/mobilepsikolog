@@ -12,6 +12,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+
+  payment(
+    paymentData: any
+  ): Observable<any> {
+    return this.http.post(`${api}/iframetoken`, paymentData).pipe();
+  }
+
   insertPuan(
     type: any,
     currentid: any,
@@ -56,8 +63,8 @@ export class UserService {
   }
 
 
-  registerTemp(email: string, password: string, type: string): Observable<any> {
-    const body = { email, password, type };
+  registerTemp(email: string, password: string): Observable<any> {
+    const body = { email, password };
     return this.http.post(`${this.baseUrl}/registerTemp`, body).pipe();
   }
 

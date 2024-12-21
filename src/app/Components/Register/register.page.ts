@@ -8,7 +8,7 @@ import { GoogleAuthServiceService } from 'src/Service/google-auth-service.servic
 import { UserService } from 'src/Service/user.service'; // UserService'i ekleyin
 
 @Component({
-  selector: 'app-tab1',
+  selector: 'app-register',
   templateUrl: 'register.page.html',
   styleUrls: ['register.page.scss'],
 })
@@ -16,7 +16,6 @@ export class RegisterPage implements OnInit {
   loginForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]], // Email alanı
     password: ['', Validators.required], // Şifre alanı
-    isPsikolog: [false, Validators.required]
   });
   serverpath: any = 'https://api.therapydays.com/static';
   arkaplan: any;
@@ -24,7 +23,6 @@ export class RegisterPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private toastController: ToastController,
-    private GoogleAuthService: GoogleAuthServiceService,
     private router: Router,
     private userService: UserService, // UserService'i enjekte edin
     private BlogsService: BlogsService
@@ -60,10 +58,10 @@ export class RegisterPage implements OnInit {
 
   onSubmit() {
     if (this.loginForm && this.loginForm.valid) {
-      const { email, password, isPsikolog } = this.loginForm.value;
+      const { email, password } = this.loginForm.value;
 
       // registerTemp çağrısı yap ve doğrulama sayfasına yönlendir
-      this.userService.registerTemp(email, password, isPsikolog ? isPsikolog : false)
+      this.userService.registerTemp(email, password)
         .subscribe({
           next: (response) => {
             console.log('Verification email sent:', response);
@@ -79,35 +77,5 @@ export class RegisterPage implements OnInit {
   }
 
 
-  loginWithGoogle() {
-    this.GoogleAuthService.loginWithGoogle()
-      .then((data) => {
-        const email: any = data.user?.email;
-        const password: any = data.user?.uid;
-        const isPsikolog = this.loginForm?.value?.isPsikolog || false;
-
-        if (data.user?.emailVerified) {
-          // Kullanıcı e-posta doğrulaması yapmışsa doğrudan registerTemp ile geçici kayıt yap
-          this.userService.registerTemp(email, password, isPsikolog)
-            .subscribe({
-              next: (response) => {
-                console.log('Verification email sent:', response);
-                this.router.navigate(['/verification-code'], { queryParams: { email } });
-              },
-              error: (error) => {
-                console.error('Registration failed:', error);
-                this.presentToast('Kayıt başarısız. Lütfen tekrar deneyin.', 'danger', 'top');
-              },
-            });
-        } else {
-          // Kullanıcının e-posta doğrulaması yapılmamışsa uyarı göster
-          this.presentToast('Google hesabınızı doğrulamanız gerekiyor.', 'secondary', 'top');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        this.presentToast('Google girişi başarısız. Lütfen tekrar deneyin.', 'danger', 'top');
-      });
-  }
 
 }
