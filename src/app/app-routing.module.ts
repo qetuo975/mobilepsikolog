@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
-    canActivate: [FirstLoadGuard],
+    canActivate: [FirstLoadGuard, AuthGuard],
   },
   {
     path: 'viewer',
@@ -37,13 +37,6 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () =>
       import('./Components/Login/login.module').then((m) => m.LoginPageModule),
-  },
-  {
-    path: 'register',
-    loadChildren: () =>
-      import('./Components/Register/register.module').then(
-        (m) => m.RegisterModule
-      ),
   },
   {
     path: 'filterpsikologlar',

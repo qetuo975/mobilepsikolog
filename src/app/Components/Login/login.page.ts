@@ -5,10 +5,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { BlogsService } from 'src/Service/blogs.service';
-import { GoogleAuthServiceService } from 'src/Service/google-auth-service.service';
 
 @Component({
-  selector: 'app-tab1',
+  selector: 'app-login',
   templateUrl: 'login.page.html',
   styleUrls: ['login.page.scss'],
 })
@@ -23,7 +22,6 @@ export class LoginPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private toastController: ToastController,
-    private GoogleAuthService: GoogleAuthServiceService,
     private router: Router,
     private UserService: UserService,
     private BlogsService: BlogsService
@@ -75,7 +73,7 @@ export class LoginPage implements OnInit {
             localStorage.setItem('id', response.token.user.id);
             localStorage.setItem('type', response.token.type);
             this.presentToast('Giriş başarılı!', 'success', 'top');
-            this.router.navigate(['/']);
+            this.router.navigate(['/tabs']);
           }
         },
         error: (error) => {
